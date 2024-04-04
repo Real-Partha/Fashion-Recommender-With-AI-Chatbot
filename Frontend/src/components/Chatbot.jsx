@@ -10,6 +10,7 @@ const Chatbot = () => {
 
   const handleSubmit = async () => {
     try {
+      console.log("User message: ", message)
       const response = await fetch('http://127.0.0.1:8000/chats/1234/', {
         method: 'POST',
         headers: {
@@ -18,7 +19,7 @@ const Chatbot = () => {
         body: JSON.stringify({ message: message }),
       });
       let msg = await response.json();
-      console.log(msg.data);
+      console.log("Chatbot response: ", msg.data);
       
       if (!response.ok) {
         throw new Error('Failed to submit message');
