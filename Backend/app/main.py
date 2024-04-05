@@ -38,3 +38,16 @@ def chat(userid:int ,message:schemas.Message):
     curr_data[f"{userid}"][curr_date].append({curr_time:response_text})
     insert(curr_data)
     return {"data": response_text}
+    # return {"data": curr_data}
+
+@app.get("/chats/{userid}/")
+def chat(userid:int):
+    curr_data = read(userid)
+    if curr_data is None or curr_data == {}:
+        return {"data": "No chats found"}
+    return curr_data
+
+
+@app.get("/users/{userid}/")
+def get_user(userid:int):
+    return {"data": userid}

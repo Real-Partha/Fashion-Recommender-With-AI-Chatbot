@@ -1,33 +1,78 @@
 .chatbot-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 9999;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #242424;
+  padding: 10px;
+  width: 25%;
+  height: 50%;
+  overflow: auto;
+  border: 2px solid rgb(184, 255, 249);
+  box-shadow: 0 0 20px rgba(184, 255, 249, 0.458);
+}
+.chatbot-container::-webkit-scrollbar{
+  display: none;
+}
+  
+
+.msg-container {
+    display: flex;
+    flex-direction: column;
   }
   
-  .input-container {
+.msg{
+  text-align: left;
+}
+
+
+  .time {
     display: flex;
+    justify-content: flex-end;
+    font-size: 12px;
+    font-weight:bold;
+    color: #ffffff;
+    margin-top: 5px;
+    margin-bottom: -7px;
+    margin-right: -4px;
+  }
+
+  .date{
+    display: inline-block;
+    padding: 1.5%;
+    border : 2px solid #ffffff;
+    border-radius: 10px;
+    margin : 2% 0;
+    background-color: #242424;
+  }
+
+  .input-container{
+    display: flex;
+    justify-content: center;
     align-items: center;
   }
-  
-  .input-box {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-right: 8px;
-    flex: 1;
+
+  .input-container input{
+    width: 75%;
+    padding: 1%;
+    border-radius: 15px;
+    border: 2px solid #007bff;
   }
   
-  .submit-button {
+  .submit-button{
     padding: 8px 16px;
     background-color: #007bff;
     color: #fff;
     border: none;
-    border-radius: 4px;
+    border-radius: 15px;
     cursor: pointer;
+    margin : 0 2%;
   }
   
   .submit-button:hover {
     background-color: #0056b3;
   }
   
+  .submit-button:disabled {
+    background-color: #b3b3b3;
+    cursor: not-allowed;
+  }
