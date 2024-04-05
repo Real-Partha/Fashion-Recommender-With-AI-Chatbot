@@ -4,6 +4,7 @@ import "./Chatbot.css";
 const Chatbot = ({ userId }) => {
   const [chats, setChats] = useState({});
   const [message, setMessage] = useState("");
+  const [processing, setProcessing] = useState(false); // To prevent multiple requests
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -17,21 +18,36 @@ const Chatbot = ({ userId }) => {
 
   const fetchChatData = async () => {
     try {
+      setProcessing(true);
       const response = await fetch(`http://127.0.0.1:8000/chats/${userId}/`);
       if (!response.ok) {
         throw new Error("Failed to fetch chat data");
       }
       const data = await response.json();
       setChats(data);
+      setProcessing(false);
     } catch (error) {
       console.error(error.message);
+      setProcessing(false);
     }
   };
 
   const sendMessage = async () => {
     try {
+      setProcessing(true);
       setMessage("");
       const message_time = getCurrentTime();
+      const currentDate = getCurrentDate();
+      setChats((prevChats) => ({
+        ...prevChats,
+        [userId]: {
+          ...prevChats[userId],
+          [currentDate]: [
+            ...(prevChats[userId]?.[currentDate] || []),
+            { [message_time]: message },
+          ],
+        },
+      }))
       const response = await fetch(`http://127.0.0.1:8000/chats/${userId}/`, {
         method: "POST",
         headers: {
@@ -43,20 +59,20 @@ const Chatbot = ({ userId }) => {
         throw new Error("Failed to submit message");
       }
       const { data } = await response.json();
-      const currentDate = getCurrentDate();
       setChats((prevChats) => ({
         ...prevChats,
         [userId]: {
           ...prevChats[userId],
           [currentDate]: [
             ...(prevChats[userId]?.[currentDate] || []),
-            { [message_time]: message },
             { [getCurrentTime()]: data },
           ],
         },
       }));
+      setProcessing(false);
     } catch (error) {
       console.error(error.message);
+      setProcessing(false);
     }
   };
 
@@ -73,6 +89,12 @@ const Chatbot = ({ userId }) => {
     const hours = String(date.getHours()).padStart(2, "0");
     const minutes = String(date.getMinutes()).padStart(2, "0");
     return `${hours}:${minutes}`;
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" && processing === false) {
+      sendMessage(); // Call sendMessage when Enter key is pressed
+    }
   };
 
   const scrollToBottom = () => {
@@ -125,8 +147,9 @@ const Chatbot = ({ userId }) => {
           type="text"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={handleKeyDown}
         />
-        <button className="submit-button" onClick={sendMessage} disabled={message.length<1}>Send</button>
+        <button className="submit-button" onClick={sendMessage} disabled={message.length<1|| processing}>Send</button>
       </div>
     </div>
   );
