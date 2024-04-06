@@ -1,22 +1,31 @@
-import json
-import os
+import pymongo
 
-def insert(data):
-
-    os.makedirs("data", exist_ok=True)
-
-    json_string = json.dumps(data)
-
-    with open("data/data.json", "w") as json_file:
-        json_file.write(json_string)
-
-    return True
+def connect():
+    client = pymongo.MongoClient("mongodb://localhost:27017/")
+    db = client["chats"]
+    return db
 
 def read(userid):
-    if not os.path.exists("data/data.json"):
-        return None
-
-    with open("data/data.json", "r") as json_file:
-        data = json.load(json_file)
-
+    db = connect()
+    collection = db["chats"]
+    data = collection.find({"userid": userid})
     return data
+
+def insert(data):
+    db = connect()
+    collection = db["chats"]
+    collection.insert_one(data)
+    return True
+
+def update(userid,date,data):
+    a = list(read(userid))
+    a = list(a)
+    flag = False
+    for i in a:
+        if i["userid"] == userid:
+            if i["date"] == date:
+                flag = True
+                db = connect()
+                collection = db["chats"]
+                collection.update_one({"userid": userid, "date": date}, {"$push": {"chats": data}})
+                break

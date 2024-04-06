@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef  } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./Chatbot.css";
 
-const Chatbot = ({ userId }) => {
+const Chatbot = () => {
+  const [userId, setUserId] = useState(1234); // User ID to fetch chat data [Default: 1007
   const [chats, setChats] = useState({});
   const [message, setMessage] = useState("");
   const [processing, setProcessing] = useState(false); // To prevent multiple requests
@@ -18,17 +19,14 @@ const Chatbot = ({ userId }) => {
 
   const fetchChatData = async () => {
     try {
-      setProcessing(true);
       const response = await fetch(`http://127.0.0.1:8000/chats/${userId}/`);
       if (!response.ok) {
         throw new Error("Failed to fetch chat data");
       }
       const data = await response.json();
       setChats(data);
-      setProcessing(false);
     } catch (error) {
       console.error(error.message);
-      setProcessing(false);
     }
   };
 
@@ -38,16 +36,18 @@ const Chatbot = ({ userId }) => {
       setMessage("");
       const message_time = getCurrentTime();
       const currentDate = getCurrentDate();
-      setChats((prevChats) => ({
-        ...prevChats,
-        [userId]: {
-          ...prevChats[userId],
+      setChats((prevChats) => {
+        const existingChats = prevChats["exists"]
+          ? { ...prevChats }
+          : { exists: true };
+        return {
+          ...existingChats,
           [currentDate]: [
-            ...(prevChats[userId]?.[currentDate] || []),
+            ...(existingChats[currentDate] || []),
             { [message_time]: message },
           ],
-        },
-      }))
+        };
+      });
       const response = await fetch(`http://127.0.0.1:8000/chats/${userId}/`, {
         method: "POST",
         headers: {
@@ -59,16 +59,16 @@ const Chatbot = ({ userId }) => {
         throw new Error("Failed to submit message");
       }
       const { data } = await response.json();
-      setChats((prevChats) => ({
-        ...prevChats,
-        [userId]: {
-          ...prevChats[userId],
+      setChats((prevChats) => {
+        const existingChats = prevChats["exists"] ? { ...prevChats } : {};
+        return {
+          ...existingChats,
           [currentDate]: [
-            ...(prevChats[userId]?.[currentDate] || []),
+            ...(existingChats[currentDate] || []),
             { [getCurrentTime()]: data },
           ],
-        },
-      }));
+        };
+      });
       setProcessing(false);
     } catch (error) {
       console.error(error.message);
@@ -102,54 +102,78 @@ const Chatbot = ({ userId }) => {
   };
 
   const renderChat = () => {
-    if (!chats[userId]) return null;
+    if (!chats.exists) return null;
 
-    return Object.entries(chats[userId]).map(([date, messages], index) => (
-      <div key={index}>
-        <div className="date">Date: {date}</div>
-        {messages.map((msg, i) => (
-          <div
-            key={i}
-            style={{
-              display: "flex",
-              justifyContent: i % 2 === 1 ? "flex-start" : "flex-end",
-              margin: "5px 0",
-            }}
-          >
+    return Object.entries(chats).map(([date, messages], index) => {
+      if (date === "exists") return null;
+
+      return (
+        <div key={index}>
+          <div className="date">Date: {date}</div>
+          {messages.map((msg, i) => (
             <div
+              key={i}
               style={{
-                backgroundColor: i % 2 === 1 ? "red" : "blue",
-                padding: "10px",
-                borderRadius: "7px",
-                maxWidth: "70%", // Limit chat width to 70%
+                display: "flex",
+                justifyContent: i % 2 === 1 ? "flex-start" : "flex-end",
+                margin: "5px 0",
               }}
             >
-              {Object.entries(msg).map(([time, content], index) => (
-                <div key={index} className="msg-container">
-                  {/* <span>{`${time}: ${content}`}</span> */}
-                  <div className="msg">{`${content}`}</div>
-                  <div className="time">{`${time}`}</div>
-                </div>
-              ))}
+              <div
+                style={{
+                  backgroundColor: i % 2 === 1 ? "red" : "blue",
+                  padding: "10px",
+                  borderRadius: "7px",
+                  maxWidth: "70%",
+                }}
+              >
+                {Object.entries(msg).map(([time, content], index) => (
+                  <div key={index} className="msg-container">
+                    <div className="msg">{`${content}`}</div>
+                    <div className="time">{`${time}`}</div>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-    ));
+          ))}
+        </div>
+      );
+    });
   };
 
   return (
-    <div className="chatbot-container">
-      {renderChat()}
-      <div ref={messagesEndRef} />
-      <div className="input-container">
+    <div>
+      <div className="userid">
+        <div>User ID:</div>
         <input
           type="text"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          onKeyDown={handleKeyDown}
+          value={userId}
+          onChange={(e) => setUserId(e.target.value)}
+          placeholder="Enter User ID..."
         />
-        <button className="submit-button" onClick={sendMessage} disabled={message.length<1|| processing}>Send</button>
+        <button className="userid-submit-button" onClick={fetchChatData}>
+          Send
+        </button>
+      </div>
+      <div className="chatbot-container">
+        {renderChat()}
+        <div ref={messagesEndRef} />
+        <div className="input-container">
+          <input
+            type="text"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="Enter your message..."
+          />
+          <button
+            className="submit-button"
+            onClick={sendMessage}
+            disabled={message.length < 1 || processing}
+          >
+            Send
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ function App() {
 
   return (
     <>
-    <Chatbot userId={1234}/>
+    <Chatbot/>
     </>
   )
 }

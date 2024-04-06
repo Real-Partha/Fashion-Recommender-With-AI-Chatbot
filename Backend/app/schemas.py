@@ -3,13 +3,18 @@ from pydantic import BaseModel
 class Message(BaseModel):
     message: str
 
-class User(BaseModel):
+class BaseUser(BaseModel):
+    id: int
     email: str
-    password: str
+
+class User(BaseUser):
     name : str
     age : int
     mobile : int
 
-class UserInDB(User):
-    id: int
+class UserAuth(User):
+    password: str
+
+class TokenData(BaseUser):
     token: str
+    
