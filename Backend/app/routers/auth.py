@@ -29,7 +29,7 @@ def login_user(credentials,password):
         else:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail="Email or Username not found")
 
-@router.post("/",status_code=status.HTTP_200_OK,response_model=schemas.LoginData)
+@router.post("/",status_code=status.HTTP_200_OK)
 def login(user: schemas.Login):
     data = login_user(user.credentials,user.password)
     if data:

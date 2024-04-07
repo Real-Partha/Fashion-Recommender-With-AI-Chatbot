@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import "./App.css";
-import Chatbot from "./components/Chatbot";
+import "./Home.css";
+import Chatbot from "../components/Chatbot";
 
-function App() {
+function Home() {
   return (
     <>
       <div className="login">
@@ -15,4 +15,4 @@ function App() {
   );
 }
 
-export default App;
+export default Home;
