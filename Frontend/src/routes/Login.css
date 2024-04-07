@@ -71,6 +71,12 @@ form {
   cursor: not-allowed;
 }
 
+.redirect-timer{
+  color: #fff56c;
+  font-size: 1.1em;
+  margin-top: 20px;
+}
+
 
 .hidden {
   display: none;

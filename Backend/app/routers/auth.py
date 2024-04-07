@@ -2,7 +2,7 @@ from fastapi import APIRouter,HTTPException,status
 from .. import schemas
 from ..database import connect
 from ..encrypt import verify_password
-from ..oauth2 import create_access_token
+from ..oauth2 import create_access_token,verify_access_token
 
 router = APIRouter(
     prefix="/login", tags=["auth"]
@@ -37,4 +37,8 @@ def login(user: schemas.Login):
         data["token"]=token
         return data
     
+@router.post("/verify/",status_code=status.HTTP_200_OK)
+def verify(token : schemas.TokenVerify):
+    data = verify_access_token(token.token)
+    return data
     

@@ -9,13 +9,42 @@ const LoginPage = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [redirectTimer, setRedirectTimer] = useState(5);
 
   useEffect(() => {
-    // Check if the user is already logged in
-    if (localStorage.getItem("usertoken")) {
-      setSuccess(true);
-      setSuccessMessage("You are already logged in");
-    }
+    const timer = setInterval(() => {
+      setRedirectTimer((prevTimer) => prevTimer - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [success]);
+
+  useEffect(() => {
+    (async () => {
+      // Check if the user is already logged in{
+      const token = localStorage.getItem("usertoken");
+      if (token !== null) {
+        const response = await fetch("http://127.0.0.1:8000/login/verify/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            token: token,
+          }),
+        });
+        const data = await response.json();
+        if (response.ok) {
+          setSuccessMessage("You are already logged in");
+          setSuccess(true);
+          setTimeout(() => {
+            window.location.href = "/"; // Replace "/homepage" with the actual URL of your homepage
+          }, 5000);
+        } else {
+          localStorage.removeItem("usertoken");
+        }
+      }
+    })();
   }, []);
 
   const handleLogin = async (e) => {
@@ -33,13 +62,16 @@ const LoginPage = () => {
       });
       const data = await response.json();
       if (response.ok) {
-        setSuccess(true);
         setPasswordok(true);
         setEmailok(true);
         setPassword("");
         setCredentials("");
         setSuccessMessage("You have successfully logged in");
-        localStorage.setItem("usertoken", data.token); // Store token in local storage
+        localStorage.setItem("usertoken", data["token"]); // Store token in local storage
+        setSuccess(true);
+        setTimeout(() => {
+          window.location.href = "/"; // Replace "/homepage" with the actual URL of your homepage
+        }, 5000);
       } else {
         if (data.detail === "Incorrect Password") {
           setPasswordok(false);
@@ -108,6 +140,9 @@ const LoginPage = () => {
       >
         <h2>Success</h2>
         <p>{successMessage}</p>
+      </div>
+      <div className="redirect-timer" style={success ? { display: "block" } : { display: "none" }}>
+        Redirecting in {redirectTimer} seconds...
       </div>
     </>
   );

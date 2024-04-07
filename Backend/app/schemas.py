@@ -20,7 +20,8 @@ class Admin(BaseUser):
     age : int
     mobile : int    
 
-class TokenData(BaseUser):
+class TokenData(BaseModel):
+    userid: int
     token: str
     
 class AcceptUser(BaseUser):
@@ -44,3 +45,6 @@ class LoginData(BaseModel):
     uername: Optional[str]
     email: Optional[EmailStr]
     token: str
+
+class TokenVerify(BaseModel):
+    token : str

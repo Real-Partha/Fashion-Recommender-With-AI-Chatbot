@@ -2,16 +2,48 @@ import React, { useState, useEffect, useRef } from "react";
 import "./Chatbot.css";
 
 const Chatbot = () => {
-  const [userId, setUserId] = useState(1234); // User ID to fetch chat data [Default: 1007
+  const [userId, setUserId] = useState(0); // User ID to fetch chat data
   const [chats, setChats] = useState({});
   const [message, setMessage] = useState("");
   const [processing, setProcessing] = useState(false); // To prevent multiple requests
+  const [authenticated, setAuthenticated] = useState(false); // To check if the user is authenticated
+  const [details, setDetails] = useState("");
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
-    // Fetch initial chat data from backend
-    fetchChatData();
+    (async () => {
+      // Check if the user is already logged in
+      const token = localStorage.getItem("usertoken");
+      if (token === null) {
+        setAuthenticated(false);
+        setDetails("Please login to continue");
+      } else {
+        const response = await fetch("http://127.0.0.1:8000/login/verify/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            "token": token,
+          }),
+        });
+        const data = await response.json();
+        if (response.ok) {
+          setAuthenticated(true);
+          setUserId(data["userid"]);
+        } else {
+          localStorage.removeItem("usertoken");
+          setAuthenticated(false);
+          setDetails(data["detail"]);
+        }
+      }
+    })();
   }, []);
+
+  useEffect(() => {
+    if (userId) fetchChatData(); // Fetch chat data when userId is updated
+  }, [userId])
+  
 
   useEffect(() => {
     scrollToBottom(); // Scroll to the bottom when chats are updated
@@ -156,16 +188,19 @@ const Chatbot = () => {
             }
           }}
         />
-        <button
-          className="userid-submit-button"
-          onClick={fetchChatData}
-        >
+        <button className="userid-submit-button" onClick={fetchChatData}>
           Send
         </button>
       </div>
       <div className="chatbot-container">
         {renderChat()}
         <div ref={messagesEndRef} />
+        <div
+          className="chatbot-error"
+          style={authenticated ? { display: "none" } : { display: "block" }}
+        >
+          {details}
+        </div>
         <div className="input-container">
           <input
             type="text"
