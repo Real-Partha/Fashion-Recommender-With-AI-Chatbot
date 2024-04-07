@@ -51,17 +51,3 @@ def create_user(data):
     except:
         return False
     
-def login_user(credentials,password):
-    db = connect()
-    collection = db["users"]
-    data = collection.find_one({"email":credentials},{"_id":0,"email":1,"userid":1,"password":1})
-    if data:
-        if data["password"] == password:
-            return data
-        else:
-            return False
-    else:
-        return False
-    
-
-    

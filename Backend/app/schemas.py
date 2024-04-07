@@ -1,10 +1,11 @@
-from pydantic import BaseModel,EmailStr, AnyOf
+from typing import Optional
+from pydantic import BaseModel,EmailStr
 
 class Message(BaseModel):
     message: str
 
 class BaseUser(BaseModel):
-    email: str
+    email: EmailStr
     username: str
 
 class User(BaseUser):
@@ -35,5 +36,11 @@ class AcceptAdmin(BaseUser):
     mobile : int
 
 class Login(BaseModel):
-    email_or_username: AnyOf[str, EmailStr]
+    credentials: str
     password: str
+
+class LoginData(BaseModel):
+    userid: int
+    uername: Optional[str]
+    email: Optional[EmailStr]
+    token: str

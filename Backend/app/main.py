@@ -4,7 +4,7 @@ from . import schemas
 # from .recommend import response
 # from datetime import datetime
 # from .database import insert,read
-from .routers import chats,users
+from .routers import chats,users,auth
 
 app = FastAPI()
 
@@ -20,6 +20,7 @@ app.add_middleware(
 
 app.include_router(chats.router)
 app.include_router(users.router)
+app.include_router(auth.router)
 
 @app.get("/")
 def read_root():

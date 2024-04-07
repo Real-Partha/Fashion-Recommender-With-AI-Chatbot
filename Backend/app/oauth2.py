@@ -1,4 +1,3 @@
-import time
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
 from . import schemas
@@ -26,7 +25,7 @@ def create_access_token(data: dict):
 def verify_access_token(token: str, credentials_exception):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
-        id: str = payload["user_id"]
+        id: int = payload["userid"]
 
         if id == None:
             raise credentials_exception
@@ -43,11 +42,5 @@ def get_current_user(token: str = Depends(oauth2_schema)):
         headers={"WWW-Authenticate": "Bearer"},
     )
     token_data = verify_access_token(token, credentials_exception)
-
-    cur = open_connection()
-    current_user = cur.execute(
-        """ SELECT * FROM users WHERE id=%s """, (token_data.id,)
-    ).fetchone()
-    conn.close()
 
     return current_user
