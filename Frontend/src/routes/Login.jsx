@@ -12,11 +12,13 @@ const LoginPage = () => {
   const [redirectTimer, setRedirectTimer] = useState(5);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setRedirectTimer((prevTimer) => prevTimer - 1);
-    }, 1000);
-
-    return () => clearInterval(timer);
+    if (success) {
+      const timer = setInterval(() => {
+        setRedirectTimer((prevTimer) => prevTimer - 1);
+      }, 1000);
+  
+      return () => clearInterval(timer);;
+    }
   }, [success]);
 
   useEffect(() => {

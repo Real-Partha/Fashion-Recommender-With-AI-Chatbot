@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "./Chatbot.css";
 
 const Chatbot = () => {
-  const [userId, setUserId] = useState(0); // User ID to fetch chat data
+  const [userId, setUserId] = useState(""); // User ID to fetch chat data
   const [chats, setChats] = useState({});
   const [message, setMessage] = useState("");
   const [processing, setProcessing] = useState(false); // To prevent multiple requests
@@ -16,7 +16,7 @@ const Chatbot = () => {
       const token = localStorage.getItem("usertoken");
       if (token === null) {
         setAuthenticated(false);
-        setDetails("Please login to continue");
+        setDetails("You are not logged in...Please login to continue...");
       } else {
         const response = await fetch("http://127.0.0.1:8000/login/verify/", {
           method: "POST",
@@ -41,7 +41,7 @@ const Chatbot = () => {
   }, []);
 
   useEffect(() => {
-    if (userId) fetchChatData(); // Fetch chat data when userId is updated
+    if (userId !== "") fetchChatData(); // Fetch chat data when userId is updated
   }, [userId])
   
 
@@ -180,17 +180,17 @@ const Chatbot = () => {
         <input
           type="text"
           value={userId}
-          onChange={(e) => setUserId(e.target.value)}
-          placeholder="Enter User ID..."
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              fetchChatData(); // Call fetchChatData when Enter key is pressed
-            }
-          }}
+          // onChange={(e) => setUserId(e.target.value)}
+          // placeholder="Enter User ID..."
+          // onKeyDown={(event) => {
+          //   if (event.key === "Enter") {
+          //     fetchChatData(); // Call fetchChatData when Enter key is pressed
+          //   }
+          // }}
         />
-        <button className="userid-submit-button" onClick={fetchChatData}>
+        {/* <button className="userid-submit-button" onClick={fetchChatData}>
           Send
-        </button>
+        </button> */}
       </div>
       <div className="chatbot-container">
         {renderChat()}
@@ -207,6 +207,7 @@ const Chatbot = () => {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleKeyDown}
+            disabled={!authenticated}
             placeholder="Enter your message..."
           />
           <button
