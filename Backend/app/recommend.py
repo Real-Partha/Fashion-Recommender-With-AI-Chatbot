@@ -5,6 +5,7 @@ API_KEY = settings.api_key
 
 genai.configure(api_key=API_KEY)
 model = genai.GenerativeModel('gemini-pro')
+model.temperature = 0.4
 
 preprompt = "You are a prompt helper for a fashion product recommendation system \
             You should return a reply if the user eneter prompts like hi hello or any other greetings \

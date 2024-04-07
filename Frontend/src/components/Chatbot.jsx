@@ -150,8 +150,16 @@ const Chatbot = () => {
           value={userId}
           onChange={(e) => setUserId(e.target.value)}
           placeholder="Enter User ID..."
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              fetchChatData(); // Call fetchChatData when Enter key is pressed
+            }
+          }}
         />
-        <button className="userid-submit-button" onClick={fetchChatData}>
+        <button
+          className="userid-submit-button"
+          onClick={fetchChatData}
+        >
           Send
         </button>
       </div>
