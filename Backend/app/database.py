@@ -50,3 +50,20 @@ def create_user(data):
     except:
         return False
     
+def token_entry(token,status):
+    db = connect()
+    collection = db["tokens"]
+    if status == "active":
+        collection.insert_one({"token": token, "status": status})
+    elif status == "expired":
+        collection.update_one({"token": token}, {"$set": {"status": status}})
+
+def verify_token(token):
+    db = connect()
+    collection = db["tokens"]
+    data = collection.find_one({"token": token})
+    if data["status"] == "active":
+        return True
+    else:
+        return False
+    

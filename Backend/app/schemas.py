@@ -48,3 +48,7 @@ class LoginData(BaseModel):
 
 class TokenVerify(BaseModel):
     token : str
+
+class TokenEntry(BaseModel):
+    token : str
+    status : str

@@ -1,11 +1,11 @@
 from fastapi import APIRouter,HTTPException,status
 from .. import schemas
-from ..database import connect
+from ..database import connect,token_entry
 from ..encrypt import verify_password
 from ..oauth2 import create_access_token,verify_access_token
 
 router = APIRouter(
-    prefix="/login", tags=["auth"]
+    prefix="/auth", tags=["auth"]
 )
 
 def login_user(credentials,password):
@@ -29,7 +29,7 @@ def login_user(credentials,password):
         else:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail="Email or Username not found")
 
-@router.post("/",status_code=status.HTTP_200_OK)
+@router.post("/login/",status_code=status.HTTP_200_OK)
 def login(user: schemas.Login):
     data = login_user(user.credentials,user.password)
     if data:
@@ -37,8 +37,10 @@ def login(user: schemas.Login):
         data["token"]=token
         return data
     
-# @router.post("/verify/",status_code=status.HTTP_200_OK)
-# def verify(token : schemas.TokenVerify):
-#     data = verify_access_token(token.token)
-#     return data
+@router.post("/logout/",status_code=status.HTTP_200_OK)
+def logout(token : schemas.TokenEntry):
+    if token.status == "logout":
+        token_entry(token.token,"expired")
+    return {"message":"Logged Out"}
+
     

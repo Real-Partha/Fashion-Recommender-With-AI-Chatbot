@@ -1,9 +1,5 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from . import schemas
-# from .recommend import response
-# from datetime import datetime
-# from .database import insert,read
 from .routers import chats,users,auth
 
 app = FastAPI()
@@ -25,3 +21,4 @@ app.include_router(auth.router)
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
+
