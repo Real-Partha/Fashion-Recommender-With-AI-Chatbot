@@ -1,4 +1,3 @@
-from time import sleep
 from fastapi import APIRouter,status,HTTPException
 from .. import schemas
 from ..encrypt import hash_password
