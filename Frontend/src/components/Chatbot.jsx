@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "./Chatbot.css";
 
 const Chatbot = () => {
-  const [userId, setUserId] = useState(""); // User ID to fetch chat data
+  const [user, setUser] = useState("");
   const [chats, setChats] = useState({});
   const [message, setMessage] = useState("");
   const [processing, setProcessing] = useState(false); // To prevent multiple requests
@@ -18,36 +18,14 @@ const Chatbot = () => {
         setAuthenticated(false);
         setDetails("You are not logged in...Please login to continue...");
       } else {
-        const response = await fetch("http://127.0.0.1:8000/login/verify/", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            token: token,
-          }),
-        });
-        const data = await response.json();
-        if (response.ok) {
-          setAuthenticated(true);
-          setUserId(data["userid"]);
-        } else if (data["detail"] === "Token has Expired") {
-          setAuthenticated(false);
-          setDetails(
-            "Your Token has expired...Please login again to continue..."
-          );
-        } else {
-          localStorage.removeItem("usertoken");
-          setAuthenticated(false);
-          setDetails(data["detail"]);
-        }
+        fetchChatData();
       }
     })();
   }, []);
 
-  useEffect(() => {
-    if (userId !== "") fetchChatData(); // Fetch chat data when userId is updated
-  }, [userId]);
+  // useEffect(() => {
+  //   if (user["userid"] !== "") fetchChatData(); // Fetch chat data when userId is updated
+  // }, [user]);
 
   useEffect(() => {
     scrollToBottom(); // Scroll to the bottom when chats are updated
@@ -55,12 +33,38 @@ const Chatbot = () => {
 
   const fetchChatData = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/chats/${userId}/`);
-      if (!response.ok) {
-        throw new Error("Failed to fetch chat data");
-      }
+      const response = await fetch("http://127.0.0.1:8000/chats/", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("usertoken")}`,
+        },
+      });
       const data = await response.json();
-      setChats(data);
+      if (response.ok) {
+        setAuthenticated(true);
+        setUser(data["user"]);
+        setChats(data["data"]);
+      } else if (
+        data["detail"] === "Token has Expired" ||
+        data["detail"] === "Not Authenticated"
+      ) {
+        setAuthenticated(false);
+        setDetails(
+          "Your Token has expired...Please login again to continue..."
+        );
+      } else {
+        localStorage.removeItem("usertoken");
+        setAuthenticated(false);
+        setDetails(data["detail"]);
+      }
+      //   if (!response.ok) {
+      //     console.log(data.detail);
+      //   }
+      //   setUser(data["user"]);
+      //   setChats(data["data"]);
+      //   console.log(user);
+      // } catch (error) {
+      //   console.error(error.message);
+      // }
     } catch (error) {
       console.error(error.message);
     }
@@ -84,10 +88,11 @@ const Chatbot = () => {
           ],
         };
       });
-      const response = await fetch(`http://127.0.0.1:8000/chats/${userId}/`, {
+      const response = await fetch("http://127.0.0.1:8000/chats/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("usertoken")}`,
         },
         body: JSON.stringify({ message }),
       });
@@ -183,18 +188,8 @@ const Chatbot = () => {
         <div>User ID:</div>
         <input
           type="text"
-          value={userId}
-          // onChange={(e) => setUserId(e.target.value)}
-          // placeholder="Enter User ID..."
-          // onKeyDown={(event) => {
-          //   if (event.key === "Enter") {
-          //     fetchChatData(); // Call fetchChatData when Enter key is pressed
-          //   }
-          // }}
+          value={user["userid"]}
         />
-        {/* <button className="userid-submit-button" onClick={fetchChatData}>
-          Send
-        </button> */}
       </div>
       <div className="chatbot-container">
         {renderChat()}
@@ -217,7 +212,7 @@ const Chatbot = () => {
           <button
             className="submit-button"
             onClick={sendMessage}
-            disabled={message.length < 1 || processing}
+            disabled={message.length < 1|| processing}
           >
             Send
           </button>

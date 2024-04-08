@@ -4,7 +4,7 @@ import "./Login.css"; // Import the CSS file for styling
 const LoginPage = () => {
   const [credentials, setCredentials] = useState("");
   const [password, setPassword] = useState("");
-  const [emailok, setEmailok] = useState(true);
+  const [credentialsok, setCredentialsOk] = useState(true);
   const [passwordok, setPasswordok] = useState(true);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
@@ -16,8 +16,8 @@ const LoginPage = () => {
       const timer = setInterval(() => {
         setRedirectTimer((prevTimer) => prevTimer - 1);
       }, 1000);
-  
-      return () => clearInterval(timer);;
+
+      return () => clearInterval(timer);
     }
   }, [success]);
 
@@ -26,14 +26,11 @@ const LoginPage = () => {
       // Check if the user is already logged in{
       const token = localStorage.getItem("usertoken");
       if (token !== null) {
-        const response = await fetch("http://127.0.0.1:8000/login/verify/", {
-          method: "POST",
+        const response = await fetch("http://127.0.0.1:8000/users/", {
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("usertoken")}`,
           },
-          body: JSON.stringify({
-            token: token,
-          }),
         });
         const data = await response.json();
         if (response.ok) {
@@ -65,7 +62,7 @@ const LoginPage = () => {
       const data = await response.json();
       if (response.ok) {
         setPasswordok(true);
-        setEmailok(true);
+        setCredentialsOk(true);
         setPassword("");
         setCredentials("");
         setSuccessMessage("You have successfully logged in");
@@ -77,10 +74,10 @@ const LoginPage = () => {
       } else {
         if (data.detail === "Incorrect Password") {
           setPasswordok(false);
-          setEmailok(true);
+          setCredentialsOk(true);
           setError(data.detail);
         } else {
-          setEmailok(false);
+          setCredentialsOk(false);
           setPasswordok(true);
           setError(data.detail);
         }
@@ -106,12 +103,12 @@ const LoginPage = () => {
               onChange={(e) => setCredentials(e.target.value)}
               required
             />
-            <div
-              className="error"
-              style={emailok ? { display: "none" } : { display: "block" }}
-            >
-              {error}
-            </div>
+          </div>
+          <div
+            className="error"
+            style={credentialsok ? { display: "none" } : { display: "block" }}
+          >
+            {error}
           </div>
           <div className="form-group">
             <div className="credentials">Password</div>
@@ -143,7 +140,10 @@ const LoginPage = () => {
         <h2>Success</h2>
         <p>{successMessage}</p>
       </div>
-      <div className="redirect-timer" style={success ? { display: "block" } : { display: "none" }}>
+      <div
+        className="redirect-timer"
+        style={success ? { display: "block" } : { display: "none" }}
+      >
         Redirecting in {redirectTimer} seconds...
       </div>
     </>

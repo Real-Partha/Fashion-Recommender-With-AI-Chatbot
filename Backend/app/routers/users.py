@@ -1,24 +1,25 @@
-from fastapi import APIRouter,status,HTTPException
-from .. import schemas
+from fastapi import APIRouter, status, HTTPException, Depends
+from .. import schemas, oauth2
 from ..encrypt import hash_password
 from ..database import create_user, get_userbyid, get_userbycondition
 from datetime import datetime
+import re
 
 router = APIRouter(prefix="/users", tags=["chats"])
 
 
-@router.get("/{cred}/",response_model=schemas.User, status_code=status.HTTP_200_OK)
-def fetchuser(cred: str):
-    if cred.isdigit():
-        data = get_userbyid(int(cred))
-    else:
-        data = get_userbycondition({"username": cred})
+@router.get("/", response_model=schemas.User, status_code=status.HTTP_200_OK)
+def fetchuserbytoken(current_user: schemas.User = Depends(oauth2.get_current_user)):
+    data = get_userbyid(int(current_user["userid"]))
     if data:
         return data
     else:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User Not Found with userid or username: " + cred)
-    
-@router.post("/",response_model=schemas.Message ,status_code=status.HTTP_201_CREATED)
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User Not Found with userid or username: " + current_user["userid"],
+        )
+
+@router.post("/", response_model=schemas.Message, status_code=status.HTTP_201_CREATED)
 def createuser(user: schemas.AcceptUser):
     email = user.email
     password = user.password
@@ -36,11 +37,28 @@ def createuser(user: schemas.AcceptUser):
         #     return {"message": "User Creation Failed....Try Again Later...."}
 
     if get_userbycondition({"email": email}):
-        return {"message": "Email Already Exists....Try Again with Different Email...."}
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Email Exists",
+        )
     
+    if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid Email",
+        )
+
     if get_userbycondition({"username": username}):
-        return {"message": "Username Already Exists....Try Again with Different Username...."}
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Username Exists",
+        )
     
+    if len(password) < 4:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Password Wrong",
+        )
 
     data = {
         "userid": temp_userid,

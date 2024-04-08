@@ -28,10 +28,8 @@ def verify_access_token(token: str):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
         id: int = payload["userid"]
-        expire: int = payload["exp"]
 
         if id == None:
-            print("id is None")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="You are not authorized",
@@ -47,11 +45,11 @@ def verify_access_token(token: str):
     return token_data
 
 
-# def get_current_user(token: str = Depends(oauth2_schema)):
-#     token_data = verify_access_token(token)
-#     userid = token_data.userid
-#     user = get_userbyid(userid)
-#     return user
+def get_current_user(token: str = Depends(oauth2_schema)):
+    token_data = verify_access_token(token)
+    userid = token_data.userid
+    user = get_userbyid(userid)
+    return user
 
 
 

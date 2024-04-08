@@ -13,22 +13,16 @@ const auth = () => {
       if (token === null) {
         setAuthenticated(false);
       } else {
-        const response = await fetch("http://127.0.0.1:8000/login/verify/", {
-          method: "POST",
+        const response = await fetch("http://127.0.0.1:8000/users/", {
           headers: {
             "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            token: token,
-          }),
+            Authorization: `Bearer ${localStorage.getItem("usertoken")}`,
+          }
         });
         const data = await response.json();
         if (response.ok) {
           setAuthenticated(true);
-        } else if (data["detail"] === "Token has Expired") {
-          setAuthenticated(false);
-        } else {
-          localStorage.removeItem("usertoken");
+        } else if (data["detail"] === "Token has Expired" || data["detail"] === "Not Authenticated") {
           setAuthenticated(false);
         }
       }

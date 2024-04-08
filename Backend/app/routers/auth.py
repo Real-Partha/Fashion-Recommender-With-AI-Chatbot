@@ -37,8 +37,8 @@ def login(user: schemas.Login):
         data["token"]=token
         return data
     
-@router.post("/verify/",status_code=status.HTTP_200_OK)
-def verify(token : schemas.TokenVerify):
-    data = verify_access_token(token.token)
-    return data
+# @router.post("/verify/",status_code=status.HTTP_200_OK)
+# def verify(token : schemas.TokenVerify):
+#     data = verify_access_token(token.token)
+#     return data
     

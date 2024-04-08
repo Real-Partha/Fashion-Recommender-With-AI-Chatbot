@@ -1,5 +1,5 @@
-from fastapi import APIRouter
-from .. import schemas
+from fastapi import APIRouter, Depends, HTTPException, status
+from .. import schemas,oauth2
 from ..recommend import response
 from datetime import datetime
 from ..database import insert, read, update
@@ -8,19 +8,21 @@ router = APIRouter(
     prefix="/chats", tags=["chats"]
 )
 
-@router.get("/{userid}/")
-def chat(userid:int):
-    curr_data = list(read(userid))
+@router.get("/")
+def chat(current_user: schemas.User = Depends(oauth2.get_current_user)):
+    curr_data = list(read(current_user["userid"]))
     if len(curr_data) == 0:
-        return {"exists": False}
-    db_data = {}
-    db_data["exists"] = True
-    for data in curr_data:
-        db_data[data["date"]] = data["chats"]
-    return db_data
+        db_data = {"exists": False}
+    else:
+        db_data = {}
+        db_data["exists"] = True
+        for data in curr_data:
+            db_data[data["date"]] = data["chats"]
+    return {"user":current_user,"data":db_data}
 
-@router.post("/{userid}/")
-def chat(userid:int ,message:schemas.Message):
+@router.post("/")
+def chat(message:schemas.Message,current_user: schemas.User = Depends(oauth2.get_current_user)):
+    userid = current_user["userid"]
     curr_data = read(userid)
     curr_date = datetime.now().strftime("%d-%m-%Y")
     curr_time = datetime.now().strftime("%H:%M")

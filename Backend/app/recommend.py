@@ -14,6 +14,7 @@ preprompt = "You are a prompt helper for a fashion product recommendation system
             You should never answer questions like 'what is your name' or 'where are you from' or any other personal questions or anything other than fashion and return a funny relevant reply stating that you are a fashion recommender\
             You should reply with funny answers stating you are an fashion recommender if the user asks any questions related to any topic other than fashion or fashion products\
             You should return the response in plain text and not markdown or any other format\
+            If the user does not give product suggest something from your end\
             The prompt user gave is : "
 
 def response(prompt):
