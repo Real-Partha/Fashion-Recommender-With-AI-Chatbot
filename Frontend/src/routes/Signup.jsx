@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "./Signup.css"; // Import the CSS file for styling
 import { useNavigate } from "react-router-dom";
 
@@ -10,7 +10,32 @@ const SignupPage = () => {
   const [age, setAge] = useState("");
   const [mobile, setMobile] = useState("");
   const [error, setError] = useState("");
+  const [authed, setAuthed] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    (async () => {
+      // Check if the user is already logged in{
+      const token = localStorage.getItem("usertoken");
+      if (token !== null) {
+        const response = await fetch("http://127.0.0.1:8000/login/verify/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            token: token,
+          }),
+        });
+        const data = await response.json();
+        if (response.ok) {
+            navigate("/");
+        } else {
+          localStorage.removeItem("usertoken");
+        }
+      }
+    })();
+  }, []);
 
   const handleSignup = async (e) => {
     e.preventDefault(); // Prevent the default form submission
@@ -33,6 +58,7 @@ const SignupPage = () => {
       const data = await response.json();
       if (response.ok) {
         setError("");
+
         navigate("/login"); // Redirect to login page upon successful signup
       } else {
         setError(data.message);

@@ -47,7 +47,9 @@ const auth = () => {
         className="login-logout"
         style={authenticated ? { display: "none" } : { display: "flex" }}
       >
-        <span>Click here to login</span>
+        <Link to="/signup">
+          <button>Signup</button>
+        </Link>
         <Link to="/login">
           <button>Login</button>
         </Link>

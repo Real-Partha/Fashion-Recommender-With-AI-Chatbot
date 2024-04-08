@@ -25,7 +25,6 @@ def create_access_token(data: dict):
 
 
 def verify_access_token(token: str):
-    print(token)
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
         id: int = payload["userid"]
@@ -40,7 +39,6 @@ def verify_access_token(token: str):
             )
         token_data = schemas.TokenData(userid=id, token=token)
     except Exception as e:
-        print(e)
         raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Token has Expired",
