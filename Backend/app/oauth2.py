@@ -17,7 +17,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = settings.access_token_expire_minutes
 def create_access_token(data: dict):
     to_encode = data.copy()
 
-    expire = datetime.utcnow() + timedelta(seconds=20)
+    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
 
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, ALGORITHM)
@@ -25,28 +25,25 @@ def create_access_token(data: dict):
 
 
 def verify_access_token(token: str):
+    print(token)
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
         id: int = payload["userid"]
         expire: int = payload["exp"]
 
         if id == None:
+            print("id is None")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="You are not authorized",
                 headers={"WWW-Authenticate": "Bearer"},
             )
-        if datetime.fromtimestamp(expire) < datetime.utcnow():
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Token has expired",
-                headers={"WWW-Authenticate": "Bearer"},
-            )
         token_data = schemas.TokenData(userid=id, token=token)
-    except JWTError:
+    except Exception as e:
+        print(e)
         raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="You are not authorized",
+        detail="Token has Expired",
         headers={"WWW-Authenticate": "Bearer"},
     )
     return token_data

@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Auth.css";
@@ -25,6 +25,8 @@ const auth = () => {
         const data = await response.json();
         if (response.ok) {
           setAuthenticated(true);
+        } else if (data["detail"] === "Token has Expired") {
+          setAuthenticated(false);
         } else {
           localStorage.removeItem("usertoken");
           setAuthenticated(false);

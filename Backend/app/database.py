@@ -19,7 +19,6 @@ def insert(data):
 
 def update(userid,date,data):
     a = list(read(userid))
-    a = list(a)
     flag = False
     for i in a:
         if i["userid"] == userid:

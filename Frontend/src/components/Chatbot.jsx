@@ -24,13 +24,18 @@ const Chatbot = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            "token": token,
+            token: token,
           }),
         });
         const data = await response.json();
         if (response.ok) {
           setAuthenticated(true);
           setUserId(data["userid"]);
+        } else if (data["detail"] === "Token has Expired") {
+          setAuthenticated(false);
+          setDetails(
+            "Your Token has expired...Please login again to continue..."
+          );
         } else {
           localStorage.removeItem("usertoken");
           setAuthenticated(false);
@@ -42,8 +47,7 @@ const Chatbot = () => {
 
   useEffect(() => {
     if (userId !== "") fetchChatData(); // Fetch chat data when userId is updated
-  }, [userId])
-  
+  }, [userId]);
 
   useEffect(() => {
     scrollToBottom(); // Scroll to the bottom when chats are updated

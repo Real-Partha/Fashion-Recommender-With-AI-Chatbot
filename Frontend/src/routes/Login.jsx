@@ -40,7 +40,7 @@ const LoginPage = () => {
           setSuccessMessage("You are already logged in");
           setSuccess(true);
           setTimeout(() => {
-            window.location.href = "/"; // Replace "/homepage" with the actual URL of your homepage
+            window.location.href = "/";
           }, 5000);
         } else {
           localStorage.removeItem("usertoken");
