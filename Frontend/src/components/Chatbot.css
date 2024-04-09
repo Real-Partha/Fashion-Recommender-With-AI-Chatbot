@@ -1,21 +1,12 @@
-.userid {
+.user {
   position: fixed;
   top: 20px;
-  left: 20px;
+  left: 60px;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.userid div {
-  width: 100px;
-}
-
-.userid input {
-  height: 1%;
-  padding: 1.5% 2%;
-  border-radius: 15px;
-  border: 2px solid #ff006f;
+  z-index: -1;
 }
 
 .userid-submit-button {
@@ -47,7 +38,6 @@
   display: none;
 }
 
-
 .msg-container {
   display: flex;
   flex-direction: column;
@@ -57,7 +47,7 @@
   text-align: left;
 }
 
-.chatbot-error{
+.chatbot-error {
   color: rgb(255, 94, 94);
   font-size: 1.5rem;
   margin: 0;

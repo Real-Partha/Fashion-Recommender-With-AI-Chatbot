@@ -23,10 +23,6 @@ const Chatbot = () => {
     })();
   }, []);
 
-  // useEffect(() => {
-  //   if (user["userid"] !== "") fetchChatData(); // Fetch chat data when userId is updated
-  // }, [user]);
-
   useEffect(() => {
     scrollToBottom(); // Scroll to the bottom when chats are updated
   }, [chats]);
@@ -49,22 +45,13 @@ const Chatbot = () => {
       ) {
         setAuthenticated(false);
         setDetails(
-          "Your Token has expired...Please login again to continue..."
+          "Your Session has expired...Please login again to continue..."
         );
       } else {
         localStorage.removeItem("usertoken");
         setAuthenticated(false);
         setDetails(data["detail"]);
       }
-      //   if (!response.ok) {
-      //     console.log(data.detail);
-      //   }
-      //   setUser(data["user"]);
-      //   setChats(data["data"]);
-      //   console.log(user);
-      // } catch (error) {
-      //   console.error(error.message);
-      // }
     } catch (error) {
       console.error(error.message);
     }
@@ -184,12 +171,11 @@ const Chatbot = () => {
 
   return (
     <div>
-      <div className="userid">
-        <div>User ID:</div>
-        <input
-          type="text"
-          value={user["userid"]}
-        />
+      <div
+        className="user"
+        style={authenticated ? { display: "block" } : { display: "none" }}
+      >
+        <div>{"Welcome, " + user["name"]}</div>
       </div>
       <div className="chatbot-container">
         {renderChat()}
@@ -212,7 +198,7 @@ const Chatbot = () => {
           <button
             className="submit-button"
             onClick={sendMessage}
-            disabled={message.length < 1|| processing}
+            disabled={message.length < 1 || processing}
           >
             Send
           </button>
