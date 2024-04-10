@@ -44,6 +44,7 @@ def verify_access_token(token: str):
             )
         token_data = schemas.TokenData(userid=id, token=token)
     except Exception as e:
+        token_entry(token,"expired")
         raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Token has Expired",

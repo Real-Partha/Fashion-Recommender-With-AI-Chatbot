@@ -24,7 +24,7 @@
   bottom: 20px;
   right: 20px;
   background-color: #242424;
-  padding: 10px;
+  /* padding: 10px; */
   width: 30%;
   height: 60%;
   overflow: auto;
@@ -33,6 +33,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  padding-bottom: 0;
 }
 .chatbot-container::-webkit-scrollbar {
   display: none;
@@ -44,6 +45,15 @@
 }
 
 .msg {
+  text-align: left;
+}
+
+.msg-name{
+  text-align: right;
+  font-weight: bold;
+}
+.msg-chatname{
+  font-weight: bold;
   text-align: left;
 }
 
@@ -78,6 +88,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: sticky;
+  bottom: 0;
+  padding: 10px;
+  background-color: #242424;
+  /* border-top: 2px solid #ffffff; */
+  box-shadow: 0 0 20px rgba(184, 255, 249, 0.458);
 }
 
 .input-container input {
@@ -91,7 +107,7 @@
   cursor: not-allowed;
   filter: drop-shadow(0 0 0.2rem #7a0000);
 }
-.submit-button {
+/* .submit-button {
   padding: 8px 16px;
   background-color: #007bff;
   color: #fff;
@@ -108,4 +124,151 @@
 .submit-button:disabled {
   background-color: #b3b3b3;
   cursor: not-allowed;
+} */
+
+.submit-button {
+  font-family: inherit;
+  font-size: 20px;
+  background: royalblue;
+  color: white;
+  padding: 0.7em 1em;
+  padding-left: 0.9em;
+  display: flex;
+  align-items: center;
+  border: none;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.2s;
+  cursor: pointer;
+  margin: 0 10px;
+  height: 66%;
 }
+
+.submit-button span {
+  display: block;
+  margin-left: 0.3em;
+  transition: all 0.3s ease-in-out;
+  font-size: 15px;
+}
+
+.submit-button svg {
+  display: block;
+  transform-origin: center center;
+  transition: transform 0.3s ease-in-out;
+}
+
+.submit-button:hover .svg-wrapper {
+  animation: fly-1 0.6s ease-in-out infinite alternate;
+}
+
+.submit-button:hover svg {
+  transform: translateX(0.9em) rotate(45deg) scale(0.9);
+}
+
+.submit-button:hover span {
+  transform: translateX(5em);
+}
+
+.submit-button:active {
+  transform: scale(0.95);
+}
+
+@keyframes fly-1 {
+  from {
+    transform: translateY(0.1em);
+  }
+
+  to {
+    transform: translateY(-0.1em);
+  }
+}
+
+.wrapper {
+  width: 200px;
+  height: 60px;
+  position: relative;
+  z-index: 1;
+}
+
+.circle {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgb(255, 73, 103);
+  left: 15%;
+  transform-origin: 50%;
+  animation: circle7124 .5s alternate infinite ease;
+}
+
+@keyframes circle7124 {
+  0% {
+    top: 60px;
+    height: 5px;
+    border-radius: 50px 50px 25px 25px;
+    transform: scaleX(1.7);
+  }
+
+  40% {
+    height: 20px;
+    border-radius: 50%;
+    transform: scaleX(1);
+  }
+
+  100% {
+    top: 0%;
+  }
+}
+
+.circle:nth-child(2) {
+  left: 45%;
+  animation-delay: .2s;
+}
+
+.circle:nth-child(3) {
+  left: auto;
+  right: 15%;
+  animation-delay: .3s;
+}
+
+.shadow {
+  width: 20px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: rgba(0,0,0,0.9);
+  position: absolute;
+  top: 62px;
+  transform-origin: 50%;
+  z-index: -1;
+  left: 15%;
+  filter: blur(1px);
+  animation: shadow046 .5s alternate infinite ease;
+}
+
+@keyframes shadow046 {
+  0% {
+    transform: scaleX(1.5);
+  }
+
+  40% {
+    transform: scaleX(1);
+    opacity: .7;
+  }
+
+  100% {
+    transform: scaleX(.2);
+    opacity: .4;
+  }
+}
+
+.shadow:nth-child(4) {
+  left: 45%;
+  animation-delay: .2s
+}
+
+.shadow:nth-child(5) {
+  left: auto;
+  right: 15%;
+  animation-delay: .3s;
+}
+

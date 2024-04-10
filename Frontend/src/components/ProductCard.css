@@ -1,0 +1,83 @@
+/* Chatbot.css */
+.product-card {
+  /* display: flex; */
+  /* align-items: center; */
+  width: 200px;
+  /* margin-bottom: 10px; */
+  padding: 10px;
+  /* border: 1px solid #ccc; */
+  box-shadow: 1px 0.5px 1em #303030aa;
+  border-radius: 5px;
+  background-color: rgb(255, 31, 68);
+  margin: 5px 5px;
+  /* color: rgb(26, 81, 101) */
+}
+
+.product-image {
+  width: 130px; /* Set the maximum width of the image */
+  /* max-height: 100px; */
+  height: 140px;
+  border: 2px solid black;
+}
+
+.product-details {
+  flex: 1;
+}
+
+.product-name {
+  font-weight: bold;
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: default;
+}
+
+.product-name:hover {
+  cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+.product-price {
+  margin-top: 5px;
+  margin-right: 10px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.product-discount {
+  margin-top: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  animation: flash 1s infinite, changeColor 3s infinite;
+  filter: drop-shadow(0 0 5px #000000);
+}
+
+.price-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@keyframes flash {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes changeColor {
+  0% {
+    color: #ffe770;
+  } /* Red */
+  50% {
+    color: #00ff00;
+  } /* Green */
+  100% {
+    color: #03e2ff;
+  } /* Blue */
+}

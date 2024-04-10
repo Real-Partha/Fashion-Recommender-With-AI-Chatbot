@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Chatbot.css";
+import ProductCard from "./ProductCard";
 
 const Chatbot = () => {
   const [user, setUser] = useState("");
@@ -18,7 +19,9 @@ const Chatbot = () => {
         setAuthenticated(false);
         setDetails("You are not logged in...Please login to continue...");
       } else {
+        setProcessing(true);
         fetchChatData();
+        setProcessing(false);
       }
     })();
   }, []);
@@ -39,6 +42,7 @@ const Chatbot = () => {
         setAuthenticated(true);
         setUser(data["user"]);
         setChats(data["data"]);
+        console.log(chats);
       } else if (
         data["detail"] === "Token has Expired" ||
         data["detail"] === "Not Authenticated"
@@ -57,56 +61,8 @@ const Chatbot = () => {
     }
   };
 
-  // const sendMessage = async () => {
-  //   try {
-  //     setProcessing(true);
-  //     setMessage("");
-  //     const message_time = getCurrentTime();
-  //     const currentDate = getCurrentDate();
-  //     setChats((prevChats) => {
-  //       const existingChats = prevChats["exists"]
-  //         ? { ...prevChats }
-  //         : { exists: true };
-  //       return {
-  //         ...existingChats,
-  //         [currentDate]: [
-  //           ...(existingChats[currentDate] || []),
-  //           { [message_time]: message },
-  //         ],
-  //       };
-  //     });
-  //     const response = await fetch("http://127.0.0.1:8000/chats/", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${localStorage.getItem("usertoken")}`,
-  //       },
-  //       body: JSON.stringify({ message }),
-  //     });
-  //     if (!response.ok) {
-  //       throw new Error("Failed to submit message");
-  //     }
-  //     const { data } = await response.json();
-  //     setChats((prevChats) => {
-  //       const existingChats = prevChats["exists"] ? { ...prevChats } : {};
-  //       return {
-  //         ...existingChats,
-  //         [currentDate]: [
-  //           ...(existingChats[currentDate] || []),
-  //           { [getCurrentTime()]: data },
-  //         ],
-  //       };
-  //     });
-  //     setProcessing(false);
-  //   } catch (error) {
-  //     console.error(error.message);
-  //     setProcessing(false);
-  //   }
-  // };
-
   const sendMessage = async () => {
     try {
-      setProcessing(true);
       setMessage("");
 
       const message_time = getCurrentTime();
@@ -131,6 +87,7 @@ const Chatbot = () => {
         };
       });
 
+      setProcessing(true);
       // Send the message to the backend
       const response = await fetch("http://127.0.0.1:8000/chats/", {
         method: "POST",
@@ -161,6 +118,7 @@ const Chatbot = () => {
               time: getCurrentTime(),
               type: "text",
               message: data,
+              products: [],
               role: "chatbot",
             },
           ],
@@ -199,46 +157,6 @@ const Chatbot = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }); // Scroll to the last message
   };
 
-  // const renderChat = () => {
-  //   if (!chats.exists) return null;
-
-  //   return Object.entries(chats).map(([date, messages], index) => {
-  //     if (date === "exists") return null;
-
-  //     return (
-  //       <div key={index}>
-  //         <div className="date">Date: {date}</div>
-  //         {messages.map((msg, i) => (
-  //           <div
-  //             key={i}
-  //             style={{
-  //               display: "flex",
-  //               justifyContent: i % 2 === 1 ? "flex-start" : "flex-end",
-  //               margin: "5px 0",
-  //             }}
-  //           >
-  //             <div
-  //               style={{
-  //                 backgroundColor: i % 2 === 1 ? "red" : "blue",
-  //                 padding: "10px",
-  //                 borderRadius: "7px",
-  //                 maxWidth: "70%",
-  //               }}
-  //             >
-  //               {Object.entries(msg).map(([time, content], index) => (
-  //                 <div key={index} className="msg-container">
-  //                   <div className="msg">{`${content}`}</div>
-  //                   <div className="time">{`${time}`}</div>
-  //                 </div>
-  //               ))}
-  //             </div>
-  //           </div>
-  //         ))}
-  //       </div>
-  //     );
-  //   });
-  // };
-
   const renderChat = () => {
     if (!chats.exists) return null;
 
@@ -259,16 +177,44 @@ const Chatbot = () => {
             >
               <div
                 style={{
-                  backgroundColor: msg.role === "user" ? "blue" : "red", // Adjust based on the role
+                  margin: "10px",
+                  backgroundColor:
+                    msg.role === "user"
+                      ? "rgb(26, 81, 101)"
+                      : msg.type === "product"
+                      ? "transparent"
+                      : "rgb(255, 31, 68)", // Adjust based on the role
                   padding: "10px",
                   borderRadius: "7px",
                   maxWidth: "70%",
                 }}
               >
-                <div className="msg-container">
-                  <div className="msg">{msg.message}</div>
-                  <div className="time">{msg.time}</div>
-                </div>
+                {msg.type === "text" && (
+                  <div className="msg-container">
+                    {msg.role === "user" && (
+                      <div className="msg-name">{user.name.split(" ")[0]}</div>
+                    )}
+                    {msg.role === "chatbot" && (
+                      <div className="msg-chatname">{"Chatbot"}</div>
+                    )}
+                    <div className="msg">{msg.message}</div>
+                    <div className="time">{msg.time}</div>
+                  </div>
+                )}
+                {msg.type === "product" && (
+                  <div
+                    className="product-container"
+                    style={{
+                      display: "flex",
+                      overflow: "auto",
+                      borderRadius: "5",
+                    }}
+                  >
+                    {msg.products.map((product, index) => (
+                      <ProductCard key={index} product={product} />
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           ))}
@@ -287,6 +233,19 @@ const Chatbot = () => {
       </div>
       <div className="chatbot-container">
         {renderChat()}
+        {processing && (
+          <div className="msg-container">
+            <div class="wrapper">
+              <div class="circle"></div>
+              <div class="circle"></div>
+              <div class="circle"></div>
+              <div class="shadow"></div>
+              <div class="shadow"></div>
+              <div class="shadow"></div>
+            </div>
+          </div>
+        )}
+        <div>{" "}</div>
         <div ref={messagesEndRef} />
         <div
           className="chatbot-error"
@@ -303,12 +262,31 @@ const Chatbot = () => {
             disabled={!authenticated}
             placeholder="Enter your message..."
           />
-          <button
+          {/* <button
             className="submit-button"
             onClick={sendMessage}
             disabled={message.length < 1 || processing}
           >
             Send
+          </button> */}
+          <button className="submit-button">
+            <div class="svg-wrapper-1">
+              <div class="svg-wrapper">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  height="24"
+                >
+                  <path fill="none" d="M0 0h24v24H0z"></path>
+                  <path
+                    fill="currentColor"
+                    d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+            <span>Send</span>
           </button>
         </div>
       </div>
