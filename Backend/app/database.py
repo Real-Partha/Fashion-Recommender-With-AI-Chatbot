@@ -17,17 +17,30 @@ def insert(data):
     collection.insert_one(data)
     return True
 
-def update(userid,date,data):
-    a = list(read(userid))
-    flag = False
-    for i in a:
-        if i["userid"] == userid:
-            if i["date"] == date:
-                flag = True
-                db = connect()
-                collection = db["chats"]
-                collection.update_one({"userid": userid, "date": date}, {"$push": {"chats": data}})
-                break
+# def update(userid,date,data):
+#     a = list(read(userid))
+#     flag = False
+#     for i in a:
+#         if i["userid"] == userid:
+#             if i["date"] == date:
+#                 flag = True
+#                 db = connect()
+#                 collection = db["chats"]
+#                 collection.update_one({"userid": userid, "date": date}, {"$push": {"chats": data}})
+#                 break
+
+def update(userid, date, data):
+    try:
+        db = connect()
+        collection = db["chats"]
+        collection.update_one(
+            {"userid": userid, "date": date},
+            {"$push": {"chats": data}}
+        )
+        return True
+    except Exception as e:
+        print(f"Error updating document: {e}")
+        return False
 
 def get_userbyid(userid):
     db = connect()

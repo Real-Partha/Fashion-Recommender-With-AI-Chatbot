@@ -57,24 +57,81 @@ const Chatbot = () => {
     }
   };
 
+  // const sendMessage = async () => {
+  //   try {
+  //     setProcessing(true);
+  //     setMessage("");
+  //     const message_time = getCurrentTime();
+  //     const currentDate = getCurrentDate();
+  //     setChats((prevChats) => {
+  //       const existingChats = prevChats["exists"]
+  //         ? { ...prevChats }
+  //         : { exists: true };
+  //       return {
+  //         ...existingChats,
+  //         [currentDate]: [
+  //           ...(existingChats[currentDate] || []),
+  //           { [message_time]: message },
+  //         ],
+  //       };
+  //     });
+  //     const response = await fetch("http://127.0.0.1:8000/chats/", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${localStorage.getItem("usertoken")}`,
+  //       },
+  //       body: JSON.stringify({ message }),
+  //     });
+  //     if (!response.ok) {
+  //       throw new Error("Failed to submit message");
+  //     }
+  //     const { data } = await response.json();
+  //     setChats((prevChats) => {
+  //       const existingChats = prevChats["exists"] ? { ...prevChats } : {};
+  //       return {
+  //         ...existingChats,
+  //         [currentDate]: [
+  //           ...(existingChats[currentDate] || []),
+  //           { [getCurrentTime()]: data },
+  //         ],
+  //       };
+  //     });
+  //     setProcessing(false);
+  //   } catch (error) {
+  //     console.error(error.message);
+  //     setProcessing(false);
+  //   }
+  // };
+
   const sendMessage = async () => {
     try {
       setProcessing(true);
       setMessage("");
+
       const message_time = getCurrentTime();
       const currentDate = getCurrentDate();
+
+      // Prepare the message object
+      const newMessage = {
+        time: message_time,
+        type: "text",
+        message: message,
+        role: "user",
+      };
+
+      // Update the chats state
       setChats((prevChats) => {
-        const existingChats = prevChats["exists"]
+        const existingChats = prevChats.exists
           ? { ...prevChats }
           : { exists: true };
         return {
           ...existingChats,
-          [currentDate]: [
-            ...(existingChats[currentDate] || []),
-            { [message_time]: message },
-          ],
+          [currentDate]: [...(existingChats[currentDate] || []), newMessage],
         };
       });
+
+      // Send the message to the backend
       const response = await fetch("http://127.0.0.1:8000/chats/", {
         method: "POST",
         headers: {
@@ -83,20 +140,33 @@ const Chatbot = () => {
         },
         body: JSON.stringify({ message }),
       });
+
       if (!response.ok) {
         throw new Error("Failed to submit message");
       }
+
+      // Receive the response from the backend
       const { data } = await response.json();
+
+      // Update the chats state with the response
       setChats((prevChats) => {
-        const existingChats = prevChats["exists"] ? { ...prevChats } : {};
+        const existingChats = prevChats.exists
+          ? { ...prevChats }
+          : { exists: true };
         return {
           ...existingChats,
           [currentDate]: [
             ...(existingChats[currentDate] || []),
-            { [getCurrentTime()]: data },
+            {
+              time: getCurrentTime(),
+              type: "text",
+              message: data,
+              role: "chatbot",
+            },
           ],
         };
       });
+
       setProcessing(false);
     } catch (error) {
       console.error(error.message);
@@ -129,6 +199,46 @@ const Chatbot = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }); // Scroll to the last message
   };
 
+  // const renderChat = () => {
+  //   if (!chats.exists) return null;
+
+  //   return Object.entries(chats).map(([date, messages], index) => {
+  //     if (date === "exists") return null;
+
+  //     return (
+  //       <div key={index}>
+  //         <div className="date">Date: {date}</div>
+  //         {messages.map((msg, i) => (
+  //           <div
+  //             key={i}
+  //             style={{
+  //               display: "flex",
+  //               justifyContent: i % 2 === 1 ? "flex-start" : "flex-end",
+  //               margin: "5px 0",
+  //             }}
+  //           >
+  //             <div
+  //               style={{
+  //                 backgroundColor: i % 2 === 1 ? "red" : "blue",
+  //                 padding: "10px",
+  //                 borderRadius: "7px",
+  //                 maxWidth: "70%",
+  //               }}
+  //             >
+  //               {Object.entries(msg).map(([time, content], index) => (
+  //                 <div key={index} className="msg-container">
+  //                   <div className="msg">{`${content}`}</div>
+  //                   <div className="time">{`${time}`}</div>
+  //                 </div>
+  //               ))}
+  //             </div>
+  //           </div>
+  //         ))}
+  //       </div>
+  //     );
+  //   });
+  // };
+
   const renderChat = () => {
     if (!chats.exists) return null;
 
@@ -143,24 +253,22 @@ const Chatbot = () => {
               key={i}
               style={{
                 display: "flex",
-                justifyContent: i % 2 === 1 ? "flex-start" : "flex-end",
+                justifyContent: msg.role === "user" ? "flex-end" : "flex-start", // Adjust based on the role
                 margin: "5px 0",
               }}
             >
               <div
                 style={{
-                  backgroundColor: i % 2 === 1 ? "red" : "blue",
+                  backgroundColor: msg.role === "user" ? "blue" : "red", // Adjust based on the role
                   padding: "10px",
                   borderRadius: "7px",
                   maxWidth: "70%",
                 }}
               >
-                {Object.entries(msg).map(([time, content], index) => (
-                  <div key={index} className="msg-container">
-                    <div className="msg">{`${content}`}</div>
-                    <div className="time">{`${time}`}</div>
-                  </div>
-                ))}
+                <div className="msg-container">
+                  <div className="msg">{msg.message}</div>
+                  <div className="time">{msg.time}</div>
+                </div>
               </div>
             </div>
           ))}
