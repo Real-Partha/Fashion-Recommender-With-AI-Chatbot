@@ -187,6 +187,7 @@ const Chatbot = () => {
                   padding: "10px",
                   borderRadius: "7px",
                   maxWidth: "70%",
+                  boxShadow:msg.role === "user"?"0 0 10px rgba(69, 197, 243, 0.538)":"0 0 10px rgb(255, 31, 68)"
                 }}
               >
                 {msg.type === "text" && (
@@ -233,19 +234,21 @@ const Chatbot = () => {
       </div>
       <div className="chatbot-container">
         {renderChat()}
+
         {processing && (
-          <div className="msg-container">
-            <div class="wrapper">
-              <div class="circle"></div>
-              <div class="circle"></div>
-              <div class="circle"></div>
-              <div class="shadow"></div>
-              <div class="shadow"></div>
-              <div class="shadow"></div>
+          <div className="msg-container" style={{maxWidth:"35%", borderRadius:"10px", margin:"10px", backgroundColor:"rgb(255, 31, 68)",boxShadow:"0 0 10px rgb(255, 31, 68)"}}>
+            <div className="msg-chatname" style={{paddingLeft:"10px",paddingTop:"10px"}}>{"Chatbot"}</div>
+            <div className="wrapper" style={{marginTop:"10px"}}>
+              <div className="circle"></div>
+              <div className="circle"></div>
+              <div className="circle"></div>
+              <div className="shadow"></div>
+              <div className="shadow"></div>
+              <div className="shadow"></div>
             </div>
           </div>
         )}
-        <div>{" "}</div>
+
         <div ref={messagesEndRef} />
         <div
           className="chatbot-error"
@@ -262,14 +265,11 @@ const Chatbot = () => {
             disabled={!authenticated}
             placeholder="Enter your message..."
           />
-          {/* <button
+          <button
             className="submit-button"
             onClick={sendMessage}
             disabled={message.length < 1 || processing}
           >
-            Send
-          </button> */}
-          <button className="submit-button">
             <div class="svg-wrapper-1">
               <div class="svg-wrapper">
                 <svg

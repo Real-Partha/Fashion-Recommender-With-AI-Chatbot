@@ -39,8 +39,6 @@ const LoginPage = () => {
           setTimeout(() => {
             window.location.href = "/";
           }, 5000);
-        } else {
-          localStorage.removeItem("usertoken");
         }
       }
     })();
