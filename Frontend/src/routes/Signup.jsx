@@ -153,7 +153,9 @@ const SignupPage = () => {
       <div
         className="redirect-timer"
         style={created ? { display: "block" } : { display: "none" }}
-      ></div>
+      >
+        Redirecting in to login....
+      </div>
     </div>
   );
 };

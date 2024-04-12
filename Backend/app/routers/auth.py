@@ -2,7 +2,7 @@ from fastapi import APIRouter,HTTPException,status
 from .. import schemas
 from ..database import connect,token_entry
 from ..encrypt import verify_password
-from ..oauth2 import create_access_token,verify_access_token
+from ..oauth2 import create_access_token
 
 router = APIRouter(
     prefix="/auth", tags=["auth"]

@@ -21,7 +21,7 @@
 
 .chatbot-container {
   position: fixed;
-  bottom: 50px;
+  bottom: 110px;
   right: 20px;
   background-color: #242424;
   /* padding: 10px; */
@@ -42,6 +42,7 @@
 .msg-container {
   display: flex;
   flex-direction: column;
+  word-wrap: break-word;
 }
 
 .msg {

@@ -52,3 +52,11 @@ class TokenVerify(BaseModel):
 class TokenEntry(BaseModel):
     token : str
     status : str
+
+class Product(BaseModel):
+    pid: int
+    name: str
+    price: float
+    ofprice: float
+    discount: float
+    imglink: str
