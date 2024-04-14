@@ -103,7 +103,7 @@ const Chatbot = () => {
       }
 
       // Receive the response from the backend
-      const { data } = await response.json();
+      const { type,msg,prod } = await response.json();
 
       // Update the chats state with the response
       setChats((prevChats) => {
@@ -116,9 +116,9 @@ const Chatbot = () => {
             ...(existingChats[currentDate] || []),
             {
               time: getCurrentTime(),
-              type: "text",
-              message: data,
-              products: [],
+              type: type,
+              message: msg,
+              products: prod,
               role: "chatbot",
             },
           ],
