@@ -1,5 +1,9 @@
 import google.generativeai as genai
 from .config import settings
+from .text_recommend import recommend
+from .database import get_product
+
+# import config
 
 API_KEY = settings.api_key
 
@@ -32,5 +36,209 @@ preprompt = "You are a prompt helper for a fashion product recommendation system
 
 
 def response(prompt):
-    response = model.generate_content(preprompt + prompt)
-    return response.text
+    # response = model.generate_content(preprompt + prompt)
+    # return response.text
+    prod=[]
+
+    dict = {
+        "product_name": None,
+        "discounts": None,
+        "price_range": None,
+        "is_discounts": None,
+        "greetings": None,
+        "color": None,
+    }
+    greetings = [
+        "Hello",
+        "Hi",
+        "Hey",
+        "Good morning",
+        "Good afternoon",
+        "Good evening",
+        "Howdy",
+        "Greetings",
+        "Salutations",
+        "What's up?",
+        "How's it going?",
+        "How are you?",
+        "What's happening?",
+        "Howdy-do",
+        "What's new?",
+        "Yo",
+        "Sup?",
+        "Hi there",
+        "Good to see you",
+        "What's going on?",
+        "Howdy partner",
+        "Top of the morning to you",
+        "What's crackin'?",
+        "How's tricks?",
+        "How goes it?",
+        "How's everything?",
+        "How's life treating you?",
+        "How are things?",
+        "Lovely to see you",
+        "It's a pleasure to meet you",
+        "Welcome",
+        "Good day",
+        "Well met",
+        "Nice to meet you",
+        "How's your day?",
+        "How are you doing today?",
+        "Long time no see",
+        "Hey there, stranger",
+        "How's your week been?",
+        "What's the good word?",
+    ]
+    colors = [
+        "black",
+        "blue",
+        "brown",
+        "green",
+        "grey",
+        "orange",
+        "pink",
+        "purple",
+        "red",
+        "silver",
+        "white",
+        "yellow",
+    ]
+    fashion_articles = [
+        "T-shirts",
+        "Jeans",
+        "Dresses",
+        "Suits",
+        "Skirts",
+        "Shorts",
+        "Jackets",
+        "Coats",
+        "Sweaters",
+        "Hoodies",
+        "Blouses",
+        "Shirts",
+        "Trousers",
+        "Leggings",
+        "Blazers",
+        "Jumpsuits",
+        "Cardigans",
+        "Vests",
+        "Trench coats",
+        "Ponchos",
+        "Waistcoats",
+        "Sarees",
+        "Kurtas",
+        "Lehengas",
+        "Sherwanis",
+        "Salwar Kameez",
+        "Anarkali Suits",
+        "Dupattas",
+        "Gowns",
+        "Crop tops",
+        "Pants",
+        "Swimwear",
+        "Activewear",
+        "Lingerie",
+        "Sleepwear",
+        "Socks",
+        "Stockings",
+        "Scarves",
+        "Hats",
+        "Gloves",
+        "Belts",
+        "Ties",
+        "Bowties",
+        "Handbags",
+        "Backpacks",
+        "Clutches",
+        "Tote bags",
+        "Shoulder bags",
+        "Crossbody bags",
+        "Wallets",
+        "Purses",
+        "Sunglasses",
+        "Watches",
+        "Bracelets",
+        "Necklaces",
+        "Earrings",
+        "Rings",
+        "Hair accessories",
+        "Brooches",
+        "Cufflinks",
+        "Tie pins",
+        "Pocket squares",
+        "Umbrellas",
+        "Footwear - Sneakers",
+        "Footwear - Boots",
+        "Footwear - Sandals",
+        "Footwear - Heels",
+        "Footwear - Flats",
+        "Footwear - Loafers",
+        "Footwear - Oxfords",
+        "Footwear - Espadrilles",
+        "Footwear - Wedges",
+        "Footwear - Flip-flops",
+        "Footwear - Mules",
+        "Footwear - Slippers",
+        "Footwear - Trainers",
+    ]
+
+    if "discount" in prompt or "discounts" in prompt:
+        dict["is_discounts"] = True
+        for i in prompt.split():
+            if i in fashion_articles:
+                dict["product_name"] = i
+            if i.isdigit():
+                dict["discounts"] = i
+            if i in colors:
+                dict["color"] = i
+            if i in greetings:
+                dict["greetings"] = i
+    else:
+        dict["is_discounts"] = False
+        for i in prompt.split():
+            if i in fashion_articles:
+                dict["product_name"] = i
+            if i in colors:
+                dict["color"] = i
+            if i.isdigit():
+                dict["price_range"] = i
+            if i in greetings:
+                dict["greetings"] = i
+    
+    if dict["is_discounts"]:
+        if dict["discounts"]:
+            if dict["product_name"]:
+                # search product
+                products=recommend(dict["product_name"],20)
+                products = list(products)
+                products = list(map(int, products))
+                for i in products:
+                    product = get_product(i)
+                    prod.append(product)
+                return {"type": "product", "data": prod}
+            else:
+                response = "Please Provide Product Name along with discount for recommendations."
+        else:
+            response = model.generate_content(preprompt+prompt)
+    else:
+        if dict["product_name"]:
+            if dict["price_range"]:
+                # search product by price
+                pass
+            else:
+                # search product by name
+                pass
+        else:
+            if dict["greetings"]:
+                response = model.generate_content(preprompt+prompt)
+            else:
+                response = model.generate_content(preprompt+prompt)
+            
+    # print(response.text)
+    # return response.text
+
+    # print(dict)
+    # print(prod)
+    # return "sample"
+    return {"type": "text", "data": "sample"}

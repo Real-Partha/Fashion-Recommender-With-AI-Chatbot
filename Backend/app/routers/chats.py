@@ -37,11 +37,15 @@ def chat(message:schemas.Message,current_user: schemas.User = Depends(oauth2.get
     if flag == False:
         insert({"userid":userid,"date":curr_date,"chats":[{"time":curr_time,"type":"text","message":message.message,"role":"user"}]})
     try:
-        response_text = response(message.message)
+        response_data = response(message.message)
     except Exception as e:
         print(e)
-        response_text = "Sorry, I didn't understand that."
+        response_data = {"type":"text","data":"Sorry, I am not able to understand this."}
     # response_text = "Test" + " at " + curr_date + curr_time
-    update(userid,curr_date,{"time":curr_time,"type":"text","message":response_text,"products":[],"role":"chatbot"})
-    sleep(4)
-    return {"data": response_text}
+    if response_data["type"] == "text":
+        update(userid,curr_date,{"time":curr_time,"type":"text","message":response_data["data"],"products":[],"role":"chatbot"})
+        return {"type":"text","msg": response_data["data"],"prod": []}
+    else:
+        update(userid,curr_date,{"time":curr_time,"type":"product","message":"","products":response_data["data"],"role":"chatbot"})
+        return {"type":"product","msg":"","prod": response_data["data"]}
+    # sleep(4)
