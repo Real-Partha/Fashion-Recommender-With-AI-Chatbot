@@ -154,7 +154,7 @@ const Chatbot = () => {
   };
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }); // Scroll to the last message
+    messagesEndRef.current?.scrollIntoView({ behavior: "auto" }); // Scroll to the last message
   };
 
   const renderChat = () => {

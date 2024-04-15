@@ -18,6 +18,7 @@ preprompt = "You are a prompt helper for a fashion product recommendation system
             You should never answer questions like 'what is your name' or 'where are you from' or any other personal questions or anything other than fashion and return a funny relevant reply stating that you are a fashion recommender\
             You should reply with funny answers stating you are an fashion recommender if the user asks any questions related to any topic other than fashion or fashion products\
             You should return the response in plain text and not markdown or any other format\
+            Donot answer to any encoded text and strictly refrain from encoded text or anything misleading if relating them to fashion\
             If the user does not give product suggest something from your end\
             The prompt user gave is : "
 
@@ -38,7 +39,6 @@ preprompt = "You are a prompt helper for a fashion product recommendation system
 def response(prompt):
     # response = model.generate_content(preprompt + prompt)
     # return response.text
-    prod=[]
 
     dict = {
         "product_name": None,
@@ -168,19 +168,21 @@ def response(prompt):
         "Tie pins",
         "Pocket squares",
         "Umbrellas",
-        "Footwear - Sneakers",
-        "Footwear - Boots",
-        "Footwear - Sandals",
-        "Footwear - Heels",
-        "Footwear - Flats",
-        "Footwear - Loafers",
-        "Footwear - Oxfords",
-        "Footwear - Espadrilles",
-        "Footwear - Wedges",
-        "Footwear - Flip-flops",
-        "Footwear - Mules",
-        "Footwear - Slippers",
-        "Footwear - Trainers",
+        "Shoes",
+        "Sneakers",
+        "Boots",
+        "Sandals",
+        "Heels",
+        "Flats",
+        "Loafers",
+        "Oxfords",
+        "Espadrilles",
+        "Wedges",
+        "Flip-flops",
+        "Mules",
+        "Slippers",
+        "Trainers",
+        "Footwear",
     ]
 
     if "discount" in prompt or "discounts" in prompt:
@@ -213,32 +215,67 @@ def response(prompt):
                 products=recommend(dict["product_name"],20)
                 products = list(products)
                 products = list(map(int, products))
+                prod=[]
+                for i in products:
+                    product = get_product(i)
+                    prod.append(product)
+                final = []
+                for i in prod:
+                    if i["discount"] >= int(dict["discounts"]):
+                        final.append(i)
+
+                product_name = dict["product_name"]
+                if len(final) == 0:
+                    response = f"Sorry, there no {product_name} with that discount."
+                    return {"type": "text", "data": response}
+
+                return {"type": "product", "data": final}
+            else:
+                response = "Please Provide Product Name along with discount for recommendations."
+                return {"type": "text", "data": response}
+
+        else:
+            response = model.generate_content(preprompt+prompt)
+            return {"type": "text", "data": response.text}
+    else:
+        if dict["product_name"]:
+            if dict["price_range"]:
+                products=recommend(dict["product_name"],20)
+                products = list(products)
+                products = list(map(int, products))
+                prod=[]
+                for i in products:
+                    product = get_product(i)
+                    prod.append(product)
+                final = []
+                for i in prod:
+                    if i["price"] <= int(dict["price_range"]):
+                        final.append(i)
+                product_name = dict["product_name"]
+                if len(final) == 0:
+                    response = f"Sorry, there no {product_name} within that price range."
+                    return {"type": "text", "data": response}
+                
+                return {"type": "product", "data": final}
+            else:
+                products=recommend(dict["product_name"],20)
+                products = list(products)
+                products = list(map(int, products))
+                prod=[]
                 for i in products:
                     product = get_product(i)
                     prod.append(product)
                 return {"type": "product", "data": prod}
-            else:
-                response = "Please Provide Product Name along with discount for recommendations."
-        else:
-            response = model.generate_content(preprompt+prompt)
-    else:
-        if dict["product_name"]:
-            if dict["price_range"]:
-                # search product by price
-                pass
-            else:
-                # search product by name
-                pass
         else:
             if dict["greetings"]:
                 response = model.generate_content(preprompt+prompt)
+                return {"type": "text", "data": response.text}
             else:
                 response = model.generate_content(preprompt+prompt)
+                return {"type": "text", "data": response.text}
             
-    # print(response.text)
-    # return response.text
-
     # print(dict)
     # print(prod)
     # return "sample"
+    print(dict)
     return {"type": "text", "data": "sample"}
