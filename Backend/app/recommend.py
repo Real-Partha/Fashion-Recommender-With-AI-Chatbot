@@ -189,24 +189,42 @@ def response(prompt):
         dict["is_discounts"] = True
         for i in prompt.split():
             if i in fashion_articles:
-                dict["product_name"] = i
+                if dict["product_name"] == None:
+                    dict["product_name"] = i
+                else:
+                    dict["product_name"] += i
             if i.isdigit():
                 dict["discounts"] = i
             if i in colors:
-                dict["color"] = i
+                if dict["color"] == None:
+                    dict["color"] = i
+                else:
+                    dict["color"] += i
             if i in greetings:
-                dict["greetings"] = i
+                if dict["greetings"] == None:
+                    dict["greetings"] = i
+                else:
+                    dict["greetings"] = i
     else:
         dict["is_discounts"] = False
         for i in prompt.split():
             if i in fashion_articles:
-                dict["product_name"] = i
+                if dict["product_name"] == None:
+                    dict["product_name"] = i
+                else:
+                    dict["product_name"] += i
             if i in colors:
-                dict["color"] = i
+                if dict["color"] == None:
+                    dict["color"] = i
+                else:
+                    dict["color"] += i
             if i.isdigit():
                 dict["price_range"] = i
             if i in greetings:
-                dict["greetings"] = i
+                if dict["greetings"] == None:
+                    dict["greetings"] = i
+                else:
+                    dict["greetings"] = i
     
     if dict["is_discounts"]:
         if dict["discounts"]:
