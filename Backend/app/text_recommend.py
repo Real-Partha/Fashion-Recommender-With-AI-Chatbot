@@ -7,15 +7,15 @@ import os
 def recommend(user_query,k):
     # Load your dataset
     # df = pd.read_csv("test.csv")
-    products = pd.read_csv('D:\\SRM AP All Documents\\College Files\\Semester - VI\\Software Engineering\\Fashion Recommender Final\\Backend\\app\Data\\test.csv', on_bad_lines="skip")
+    products = pd.read_csv('/Users/mdehteshamansari00/Fashion-Recommender-With-AI-Chatbot/Backend/app/Data/test.csv', on_bad_lines="skip")
     new_product = products[['id', 'productDisplayName']]
     # Load pre-trained Universal Sentence Encoder
     # embed = hub.load("https://tfhub.dev/google/universal-sentence-encoder/4")
-    embed = hub.load("C:\\Users\\parth\\.cache\\kagglehub\\models\\google\\universal-sentence-encoder\\tensorFlow2\\universal-sentence-encoder\\2")
+    embed = hub.load("/Users/mdehteshamansari00/.cache/kagglehub/models/google/universal-sentence-encoder/tensorFlow2/universal-sentence-encoder/2")
 
     # Check if FAISS index file exists
-    index_file = 'D:\\SRM AP All Documents\\College Files\\Semester - VI\\Software Engineering\\Fashion Recommender Final\\Backend\\app\\Data\\faiss_index.index'
-    ids_file = 'D:\\SRM AP All Documents\\College Files\\Semester - VI\\Software Engineering\\Fashion Recommender Final\\Backend\\app\\Data\\faiss_index_ids.npy'
+    index_file = '/Users/mdehteshamansari00/Fashion-Recommender-With-AI-Chatbot/Backend/app/Data/faiss_index.index'
+    ids_file = '/Users/mdehteshamansari00/Fashion-Recommender-With-AI-Chatbot/Backend/app/Data/faiss_index_ids.npy'
     if os.path.exists(index_file):
         # Load FAISS index
         index = faiss.read_index(index_file)
