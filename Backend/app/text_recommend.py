@@ -7,6 +7,7 @@ import os
 def recommend(user_query,k):
     # Load your dataset
     # df = pd.read_csv("test.csv")
+    
     products = pd.read_csv('/Users/mdehteshamansari00/Fashion-Recommender-With-AI-Chatbot/Backend/app/Data/test.csv', on_bad_lines="skip")
     new_product = products[['id', 'productDisplayName']]
     # Load pre-trained Universal Sentence Encoder
