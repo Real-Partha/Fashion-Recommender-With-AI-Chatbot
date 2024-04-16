@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Chatbot.css";
 import ProductCard from "./ProductCard";
+import { useSelector, useDispatch } from 'react-redux'
+import { setChatHistory } from "../redux/Chats/chatHistory";
+import { setProductList } from "../redux/ProductList/productList";
 
 const Chatbot = () => {
   const [user, setUser] = useState("");
@@ -10,6 +13,8 @@ const Chatbot = () => {
   const [authenticated, setAuthenticated] = useState(false); // To check if the user is authenticated
   const [details, setDetails] = useState("");
   const messagesEndRef = useRef(null);
+  const chatHistory = useSelector((state) => state.chatHistory.value);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     (async () => {
@@ -56,6 +61,15 @@ const Chatbot = () => {
         setAuthenticated(false);
         setDetails(data["detail"]);
       }
+
+
+      // console.log(chatHistory.payload)
+      // setChats(chatHistory.payload.data)
+      // setUser(chatHistory.payload.user)
+      // console.log(chats)
+      // console.log(user)
+      // setAuthenticated(true)
+      // console.log(chatHistory)
     } catch (error) {
       console.error(error.message);
     }
@@ -86,7 +100,7 @@ const Chatbot = () => {
           [currentDate]: [...(existingChats[currentDate] || []), newMessage],
         };
       });
-
+      // dispatch(setChatHistory({data:chats,user:user}))
       setProcessing(true);
       // Send the message to the backend
       const response = await fetch("http://127.0.0.1:8000/chats/", {
@@ -104,7 +118,9 @@ const Chatbot = () => {
 
       // Receive the response from the backend
       const { type,msg,prod } = await response.json();
-
+      if (type === "product"){
+        dispatch(setProductList(prod))
+      }
       // Update the chats state with the response
       setChats((prevChats) => {
         const existingChats = prevChats.exists
@@ -124,6 +140,7 @@ const Chatbot = () => {
           ],
         };
       });
+      // dispatch(setChatHistory({data:chats,user:user}))
 
       setProcessing(false);
     } catch (error) {
@@ -154,7 +171,7 @@ const Chatbot = () => {
   };
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "auto" }); // Scroll to the last message
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }); // Scroll to the last message
   };
 
   const renderChat = () => {
@@ -211,9 +228,9 @@ const Chatbot = () => {
                       borderRadius: "5",
                     }}
                   >
-                    {msg.products.map((product, index) => (
-                      <ProductCard key={index} product={product} />
-                    ))}
+                    {msg.products.slice(0, 5).map((product, index) => (
+                    <ProductCard key={index} product={product} />
+                  ))}
                   </div>
                 )}
               </div>
@@ -270,8 +287,8 @@ const Chatbot = () => {
             onClick={sendMessage}
             disabled={message.length < 1 || processing}
           >
-            <div class="svg-wrapper-1">
-              <div class="svg-wrapper">
+            <div className="svg-wrapper-1">
+              <div className="svg-wrapper">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"

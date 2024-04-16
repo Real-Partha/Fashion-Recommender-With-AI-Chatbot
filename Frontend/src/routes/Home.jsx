@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./Home.css";
 import Chatbot from "../components/Chatbot";
 import Auth from "../components/Auth";
+import HomeProducts from "../components/HomeProducts";
 
 function Home() {
   const [chatbotVisible, setChatbotVisible] = useState(false);
@@ -13,6 +14,7 @@ function Home() {
   return (
     <>
       <Auth />
+      <HomeProducts />
       <div className={`${!chatbotVisible?"chat-button-container":"chat-button-container-active"}`}>
         <div
           className={`chat-button ${chatbotVisible ? "active" : ""}`}

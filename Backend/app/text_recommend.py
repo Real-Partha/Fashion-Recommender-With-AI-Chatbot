@@ -11,7 +11,8 @@ def recommend(user_query,k):
     products = pd.read_csv('D:\\SRM AP All Documents\\College Files\\Semester - VI\\Software Engineering\\Fashion Recommender Final\\Backend\\app\Data\\test.csv', on_bad_lines="skip")
     new_product = products[['id', 'productDisplayName']]
     # Load pre-trained Universal Sentence Encoder
-    embed = hub.load("https://tfhub.dev/google/universal-sentence-encoder/4")
+    # embed = hub.load("https://tfhub.dev/google/universal-sentence-encoder/4")
+    embed = hub.load("C:\\Users\\parth\\.cache\\kagglehub\\models\\google\\universal-sentence-encoder\\tensorFlow2\\universal-sentence-encoder\\2")
 
     # Check if FAISS index file exists
     index_file = 'D:\\SRM AP All Documents\\College Files\\Semester - VI\\Software Engineering\\Fashion Recommender Final\\Backend\\app\\Data\\faiss_index.index'

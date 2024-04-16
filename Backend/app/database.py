@@ -86,3 +86,9 @@ def get_product(product_id):
     collection = db["products"]
     data = collection.find_one({"pid": product_id},{"_id":0})
     return data
+
+def get_random_products(number):
+    db = connect()
+    collection = db["products"]
+    data = collection.find({},{"_id":0})
+    return list(data)[:number]

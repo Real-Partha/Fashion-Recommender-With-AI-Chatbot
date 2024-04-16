@@ -212,7 +212,7 @@ def response(prompt):
         if dict["discounts"]:
             if dict["product_name"]:
                 # search product
-                products=recommend(dict["product_name"],20)
+                products=recommend(dict["product_name"],30)
                 products = list(products)
                 products = list(map(int, products))
                 prod=[]
@@ -240,7 +240,7 @@ def response(prompt):
     else:
         if dict["product_name"]:
             if dict["price_range"]:
-                products=recommend(dict["product_name"],20)
+                products=recommend(dict["product_name"],30)
                 products = list(products)
                 products = list(map(int, products))
                 prod=[]
@@ -258,7 +258,7 @@ def response(prompt):
                 
                 return {"type": "product", "data": final}
             else:
-                products=recommend(dict["product_name"],20)
+                products=recommend(dict["product_name"],30)
                 products = list(products)
                 products = list(map(int, products))
                 prod=[]
@@ -277,5 +277,5 @@ def response(prompt):
     # print(dict)
     # print(prod)
     # return "sample"
-    print(dict)
-    return {"type": "text", "data": "sample"}
+    # print(dict)
+    # return {"type": "text", "data": "sample"}
