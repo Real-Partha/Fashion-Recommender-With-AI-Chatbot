@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 import tensorflow_hub as hub
 import faiss
-import time
 import os
 
 def recommend(user_query,k):

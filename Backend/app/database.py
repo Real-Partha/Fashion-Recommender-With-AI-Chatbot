@@ -1,3 +1,4 @@
+import random
 import pymongo
 
 def connect():
@@ -91,4 +92,7 @@ def get_random_products(number):
     db = connect()
     collection = db["products"]
     data = collection.find({},{"_id":0})
-    return list(data)[:number]
+    data = list(data)
+    random_indexes = random.sample(range(len(data)), number)
+    random_products = [data[i] for i in random_indexes]
+    return random_products
