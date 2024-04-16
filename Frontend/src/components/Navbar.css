@@ -1,18 +1,24 @@
-.login-logout {
+.navbar-wrapper {
   position: fixed;
-  top: 10px;
-  right: 10px;
-  display: flex;
-}
-
-.login-logout button {
-  margin: 10px;
-}
-
-.navbar{
-  position: sticky;
   top: 0;
+  left: 0;
+  width: 100%;
   z-index: 1000;
-  background-color: #242424;
-  width: 100vw;
+  margin-bottom: 10px;
+  /* height: 60px; Adjust height as needed */
+  /* overflow: hidden; */
+}
+
+.navbar {
+  display: flex;
+  justify-content: flex-end;
+  background-color: #333; /* Change this to your desired background color */
+  padding: 10px 20px;
+  background-color: rgba(36, 36, 36, 0.5); /* Transparent black color */
+  backdrop-filter: blur(20px);
+  box-shadow: 0 0 20px rgba(184, 255, 249, 0.458);
+}
+
+.navbar button{
+  margin : 3px 10px;
 }

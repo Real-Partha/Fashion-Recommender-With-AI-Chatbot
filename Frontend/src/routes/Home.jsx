@@ -12,7 +12,7 @@ function Home() {
   };
 
   return (
-    <>
+    <div>
       <Navbar />
       <HomeProducts />
       <div className={`${!chatbotVisible?"chat-button-container":"chat-button-container-active"}`}>
@@ -64,7 +64,7 @@ function Home() {
         </div>
       </div>
       {chatbotVisible && <Chatbot />}
-    </>
+    </div>
   );
 }
 export default Home;

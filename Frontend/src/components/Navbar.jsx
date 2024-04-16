@@ -49,9 +49,9 @@ const Navbar = () => {
   };
 
   return (
-    <div className="navbar">
+    <div className="navbar-wrapper">
       <div
-        className="login-logout"
+        className="navbar"
         style={authenticated ? { display: "none" } : { display: "flex" }}
       >
         <Link to="/signup">
@@ -76,7 +76,7 @@ const Navbar = () => {
         </Link>
       </div>
       <div
-        className="login-logout"
+        className="navbar"
         style={authenticated ? { display: "flex" } : { display: "none" }}
       >
         <button className="relative border hover:border-sky-600 duration-500 group cursor-pointer text-sky-50 overflow-hidden h-10 w-40 rounded-md bg-gradient-to-r from-red-500 via-red-600 to-yellow-500 p-1 flex justify-center items-center font-extrabold" onClick={handleLogout}>
