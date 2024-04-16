@@ -18,7 +18,7 @@ const HomeProducts = () => {
         (async () => {
             // Check if the user is already logged in
             try {
-              const response = await fetch("http://127.0.0.1:8000/product/random/30");
+              const response = await fetch("http://127.0.0.1:8000/product/random/50");
               const data = await response.json();
               dispatch(setProductList(data))
             } catch (err) {

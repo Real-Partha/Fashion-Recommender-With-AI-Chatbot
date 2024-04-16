@@ -1,0 +1,18 @@
+.login-logout {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  display: flex;
+}
+
+.login-logout button {
+  margin: 10px;
+}
+
+.navbar{
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: #242424;
+  width: 100vw;
+}

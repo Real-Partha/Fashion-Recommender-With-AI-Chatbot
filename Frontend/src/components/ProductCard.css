@@ -1,8 +1,9 @@
 /* Chatbot.css */
 .product-card {
-  /* display: flex; */
-  /* align-items: center; */
-  width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 200px;
   /* margin-bottom: 10px; */
   padding: 10px;
   /* border: 1px solid #ccc; */
@@ -17,7 +18,7 @@
   width: 130px; /* Set the maximum width of the image */
   /* max-height: 100px; */
   height: 140px;
-  border: 2px solid black;
+  border: 2px solid black;;
 }
 
 .product-details {
@@ -25,6 +26,7 @@
 }
 
 .product-name {
+  max-width: 180px;
   font-weight: bold;
   font-size: 14px;
   overflow: hidden;
