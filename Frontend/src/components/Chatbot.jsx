@@ -349,32 +349,36 @@ const Chatbot = () => {
           {details}
         </div>
         <div className="input-container">
-          <input
+          {/* <input
             type="file"
             accept="image/*"
             onChange={handleImageUpload}
             disabled={!authenticated}
-          />
+          /> */}
 
-          {/* <input
+          <input
             type="file"
             id="upload"
             name="upload"
-            style={{display: "none"}}
+            style={{ display: "none" }}
             accept="image/*"
+            onChange={handleImageUpload}
           />
           <label for="upload" className="upload-button">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              width="24"
-              height="24"
-            >
-              <path fill="none" d="M0 0h24v24H0z" />
-              <path d="M21 15v5H3v-5H0l12-9 12 9h-3zM11 0v13h2V0h-2z" />
-            </svg>
-            <span>Upload Image</span>
-          </label> */}
+            <lord-icon
+              src="https://cdn.lordicon.com/bzqvamqv.json"
+              trigger="hover"
+              style={
+                image !== null ? { display: "none" } : { display: "block" }
+              }
+            ></lord-icon>
+            <lord-icon
+              src="https://cdn.lordicon.com/dangivhk.json"
+              trigger="loop"
+              delay="1000"
+              style={image !== null ? { display: "block" } : { display: "none" }}
+            ></lord-icon>
+          </label>
 
           <input
             type="text"
