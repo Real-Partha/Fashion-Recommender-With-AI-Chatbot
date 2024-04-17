@@ -297,3 +297,22 @@
   animation-delay: .3s;
 }
 
+
+.upload-button {
+  display: inline-block;
+  background-color: #4CAF50;
+  color: white;
+  padding: 5px 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.upload-button:hover {
+  background-color: #45a049;
+}
+
+/* Hide the default file input */
+.upload-button input[type="file"] {
+  display: none;
+}
+

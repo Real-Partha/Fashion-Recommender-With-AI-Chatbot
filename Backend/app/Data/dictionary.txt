@@ -12,6 +12,8 @@ j.crew
 pink
 almond
 no
+brief
+briefs
 dupattas
 decathlon
 eyeliners
@@ -21,6 +23,9 @@ met
 flats
 crop
 handbags
+women
+womens
+women's
 what's
 eyeshadows
 leggings

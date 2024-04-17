@@ -138,7 +138,7 @@ const Chatbot = () => {
         // Clear the image state
         setImage(null);
       }
-      console.log(formData)
+      console.log(formData);
       setProcessing(true);
       // Send the message to the backend
       const response = await fetch("http://127.0.0.1:8000/chats/", {
@@ -287,7 +287,11 @@ const Chatbot = () => {
                       borderRadius: "5",
                     }}
                   >
-                    <img style={{maxHeight:"200px", maxWidth:"200px"}} src={msg.image} alt="" />
+                    <img
+                      style={{ maxHeight: "200px", maxWidth: "200px" }}
+                      src={msg.image}
+                      alt=""
+                    />
                   </div>
                 )}
               </div>
@@ -351,6 +355,27 @@ const Chatbot = () => {
             onChange={handleImageUpload}
             disabled={!authenticated}
           />
+
+          {/* <input
+            type="file"
+            id="upload"
+            name="upload"
+            style={{display: "none"}}
+            accept="image/*"
+          />
+          <label for="upload" className="upload-button">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              width="24"
+              height="24"
+            >
+              <path fill="none" d="M0 0h24v24H0z" />
+              <path d="M21 15v5H3v-5H0l12-9 12 9h-3zM11 0v13h2V0h-2z" />
+            </svg>
+            <span>Upload Image</span>
+          </label> */}
+
           <input
             type="text"
             value={message}

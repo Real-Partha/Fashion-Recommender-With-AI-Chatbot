@@ -63,6 +63,8 @@ bra
 bras
 sweaty
 bombs
+brief
+briefs
 citizens
 fjallraven
 shirt
@@ -245,6 +247,9 @@ rompers
 fendi
 umbrellas
 shawls
+women
+womens
+women's
 wallets
 alexander
 dick's
