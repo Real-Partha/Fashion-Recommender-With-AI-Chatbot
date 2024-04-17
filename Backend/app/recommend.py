@@ -74,6 +74,9 @@ def response(prompt1):
     # return response.text
     str1 = ""
     for i in prompt1.split():
+        if i.isnumeric():
+            str1 += i + " "
+            continue
         suggestions = spell_check(i, dictionary)
         #join the words into another string
         suggestions = [elem[0] for elem in suggestions]
@@ -89,142 +92,6 @@ def response(prompt1):
         "greetings": None,
         "color": None,
     }
-    # greetings = [
-    #     "Hello",
-    #     "Hi",
-    #     "Hey",
-    #     "Good morning",
-    #     "Good afternoon",
-    #     "Good evening",
-    #     "Howdy",
-    #     "Greetings",
-    #     "Salutations",
-    #     "What's up?",
-    #     "How's it going?",
-    #     "How are you?",
-    #     "What's happening?",
-    #     "Howdy-do",
-    #     "What's new?",
-    #     "Yo",
-    #     "Sup?",
-    #     "Hi there",
-    #     "Good to see you",
-    #     "What's going on?",
-    #     "Howdy partner",
-    #     "Top of the morning to you",
-    #     "What's crackin'?",
-    #     "How's tricks?",
-    #     "How goes it?",
-    #     "How's everything?",
-    #     "How's life treating you?",
-    #     "How are things?",
-    #     "Lovely to see you",
-    #     "It's a pleasure to meet you",
-    #     "Welcome",
-    #     "Good day",
-    #     "Well met",
-    #     "Nice to meet you",
-    #     "How's your day?",
-    #     "How are you doing today?",
-    #     "Long time no see",
-    #     "Hey there, stranger",
-    #     "How's your week been?",
-    #     "What's the good word?",
-    # ]
-    # colors = [
-    #     "black",
-    #     "blue",
-    #     "brown",
-    #     "green",
-    #     "grey",
-    #     "orange",
-    #     "pink",
-    #     "purple",
-    #     "red",
-    #     "silver",
-    #     "white",
-    #     "yellow",
-    # ]
-    # fashion_articles = [
-    #     "T-shirts",
-    #     "Jeans",
-    #     "Dresses",
-    #     "Suits",
-    #     "Skirts",
-    #     "Shorts",
-    #     "Jackets",
-    #     "Coats",
-    #     "Sweaters",
-    #     "Hoodies",
-    #     "Blouses",
-    #     "Shirts",
-    #     "Trousers",
-    #     "Leggings",
-    #     "Blazers",
-    #     "Jumpsuits",
-    #     "Cardigans",
-    #     "Vests",
-    #     "Trench coats",
-    #     "Ponchos",
-    #     "Waistcoats",
-    #     "Sarees",
-    #     "Kurtas",
-    #     "Lehengas",
-    #     "Sherwanis",
-    #     "Salwar Kameez",
-    #     "Anarkali Suits",
-    #     "Dupattas",
-    #     "Gowns",
-    #     "Crop tops",
-    #     "Pants",
-    #     "Swimwear",
-    #     "Activewear",
-    #     "Lingerie",
-    #     "Sleepwear",
-    #     "Socks",
-    #     "Stockings",
-    #     "Scarves",
-    #     "Hats",
-    #     "Gloves",
-    #     "Belts",
-    #     "Ties",
-    #     "Bowties",
-    #     "Handbags",
-    #     "Backpacks",
-    #     "Clutches",
-    #     "Tote bags",
-    #     "Shoulder bags",
-    #     "Crossbody bags",
-    #     "Wallets",
-    #     "Purses",
-    #     "Sunglasses",
-    #     "Watches",
-    #     "Bracelets",
-    #     "Necklaces",
-    #     "Earrings",
-    #     "Rings",
-    #     "Hair accessories",
-    #     "Brooches",
-    #     "Cufflinks",
-    #     "Tie pins",
-    #     "Pocket squares",
-    #     "Umbrellas",
-    #     "Shoes",
-    #     "Sneakers",
-    #     "Boots",
-    #     "Sandals",
-    #     "Heels",
-    #     "Flats",
-    #     "Loafers",
-    #     "Oxfords",
-    #     "Espadrilles",
-    #     "Wedges",
-    #     "Flip-flops",
-    #     "Mules",
-    #     "Slippers",
-    #     "Trainers",
-    #     "Footwear",
-    # ]
     fashion_path = settings.fashion_path_url
     color_path = settings.color_path_url
     greeting_path = settings.greeting_path_url
@@ -278,6 +145,42 @@ def response(prompt1):
     if dict["is_discounts"]:
         if dict["discounts"]:
             if dict["product_name"]:
+                if dict["color"]:
+                    if dict['greetings']:
+                        print(dict)
+                        products=recommend(dict["color"]+" "+dict["product_name"],30)
+                        products = list(products)
+                        products = list(map(int, products))
+                        prod=[]
+                        for i in products:
+                            product = get_product(i)
+                            prod.append(product)
+                        final = []
+                        for i in prod:
+                            if i["discount"] >= int(dict["discounts"]):
+                                final.append(i)
+                        product_name = dict["product_name"]
+                        if len(final) == 0:
+                            response = f"Sorry, there no {product_name} with that discount."
+                            return {"type": "text", "data": response}
+                        return {"type": "product", "data": final}
+                    print(dict)
+                    products=recommend(dict["color"]+" "+dict["product_name"],30)
+                    products = list(products)
+                    products = list(map(int, products))
+                    prod=[]
+                    for i in products:
+                        product = get_product(i)
+                        prod.append(product)
+                    final = []
+                    for i in prod:
+                        if i["discount"] >= int(dict["discounts"]):
+                            final.append(i)
+                    product_name = dict["product_name"]
+                    if len(final) == 0:
+                        response = f"Sorry, there no {product_name} with that discount."
+                        return {"type": "text", "data": response}
+                    return {"type": "product", "data": final}
                 # search product
                 print(dict)
                 products=recommend(dict["product_name"],30)
@@ -308,6 +211,42 @@ def response(prompt1):
     else:
         if dict["product_name"]:
             if dict["price_range"]:
+                if dict['color']:
+                    if dict['greetings']:
+                        print(dict)
+                        products=recommend(dict["color"]+" "+dict["product_name"],30)
+                        products = list(products)
+                        products = list(map(int, products))
+                        prod=[]
+                        for i in products:
+                            product = get_product(i)
+                            prod.append(product)
+                        final = []
+                        for i in prod:
+                            if i["price"] <= int(dict["price_range"]):
+                                final.append(i)
+                        product_name = dict["product_name"]
+                        if len(final) == 0:
+                            response = f"Sorry, there no {product_name} within that price range."
+                            return {"type": "text", "data": response}
+                        return {"type": "product", "data": final}
+                    print(dict)
+                    products=recommend(dict["color"]+" "+dict["product_name"],30)
+                    products = list(products)
+                    products = list(map(int, products))
+                    prod=[]
+                    for i in products:
+                        product = get_product(i)
+                        prod.append(product)
+                    final = []
+                    for i in prod:
+                        if i["price"] <= int(dict["price_range"]):
+                            final.append(i)
+                    product_name = dict["product_name"]
+                    if len(final) == 0:
+                        response = f"Sorry, there no {product_name} within that price range."
+                        return {"type": "text", "data": response}
+                    return {"type": "product", "data": final}
                 products=recommend(dict["product_name"],30)
                 products = list(products)
                 products = list(map(int, products))
@@ -325,7 +264,7 @@ def response(prompt1):
                     return {"type": "text", "data": response}
                 
                 return {"type": "product", "data": final}
-            elif dict["color"]:
+            if dict["color"]:
                 print(dict)
                 products=recommend(dict["color"]+" "+dict["product_name"],30)
                 products = list(products)
@@ -335,16 +274,15 @@ def response(prompt1):
                     product = get_product(i)
                     prod.append(product)
                 return {"type": "product", "data": prod}
-            else:
-                print(dict)
-                products=recommend(dict["product_name"],30)
-                products = list(products)
-                products = list(map(int, products))
-                prod=[]
-                for i in products:
-                    product = get_product(i)
-                    prod.append(product)
-                return {"type": "product", "data": prod}
+            print(dict)
+            products=recommend(dict["product_name"],30)
+            products = list(products)
+            products = list(map(int, products))
+            prod=[]
+            for i in products:
+                product = get_product(i)
+                prod.append(product)
+            return {"type": "product", "data": prod}
         else:
             if dict["greetings"]:
                 response = model.generate_content(preprompt+prompt)
