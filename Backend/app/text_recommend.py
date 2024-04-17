@@ -3,20 +3,21 @@ import numpy as np
 import tensorflow_hub as hub
 import faiss
 import os
+from .config import settings
 
 def recommend(user_query,k):
     # Load your dataset
     # df = pd.read_csv("test.csv")
     
-    products = pd.read_csv('/Users/mdehteshamansari00/Fashion-Recommender-With-AI-Chatbot/Backend/app/Data/test.csv', on_bad_lines="skip")
+    products = pd.read_csv(settings.products_url, on_bad_lines="skip")
     new_product = products[['id', 'productDisplayName']]
     # Load pre-trained Universal Sentence Encoder
     # embed = hub.load("https://tfhub.dev/google/universal-sentence-encoder/4")
-    embed = hub.load("/Users/mdehteshamansari00/.cache/kagglehub/models/google/universal-sentence-encoder/tensorFlow2/universal-sentence-encoder/2")
+    embed = hub.load(settings.saved_model_path)
 
     # Check if FAISS index file exists
-    index_file = '/Users/mdehteshamansari00/Fashion-Recommender-With-AI-Chatbot/Backend/app/Data/faiss_index.index'
-    ids_file = '/Users/mdehteshamansari00/Fashion-Recommender-With-AI-Chatbot/Backend/app/Data/faiss_index_ids.npy'
+    index_file = settings.index_file_url
+    ids_file = settings.ids_file_url
     if os.path.exists(index_file):
         # Load FAISS index
         index = faiss.read_index(index_file)

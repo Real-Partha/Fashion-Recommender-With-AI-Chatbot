@@ -109,7 +109,6 @@ blouses
 pull&bear
 clearance
 emerald
-pea
 reduced
 red
 forest
@@ -181,8 +180,10 @@ final
 hoodie
 necklaces
 for
+bra
 ghost
 hair
+bras
 treating
 brown
 turquoise

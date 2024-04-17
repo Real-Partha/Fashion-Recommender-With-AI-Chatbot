@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Chatbot.css";
 import ProductCard from "./ProductCard";
-import { useSelector, useDispatch } from 'react-redux'
-import { setChatHistory } from "../redux/Chats/chatHistory";
+import { useSelector, useDispatch } from "react-redux";
 import { setProductList } from "../redux/ProductList/productList";
 
 const Chatbot = () => {
@@ -12,8 +11,8 @@ const Chatbot = () => {
   const [processing, setProcessing] = useState(false); // To prevent multiple requests
   const [authenticated, setAuthenticated] = useState(false); // To check if the user is authenticated
   const [details, setDetails] = useState("");
+  const [image, setImage] = useState(null);
   const messagesEndRef = useRef(null);
-  const chatHistory = useSelector((state) => state.chatHistory.value);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -62,7 +61,6 @@ const Chatbot = () => {
         setDetails(data["detail"]);
       }
 
-
       // console.log(chatHistory.payload)
       // setChats(chatHistory.payload.data)
       // setUser(chatHistory.payload.user)
@@ -81,9 +79,10 @@ const Chatbot = () => {
 
       const message_time = getCurrentTime();
       const currentDate = getCurrentDate();
+      let formData = new FormData();
 
       // Prepare the message object
-      const newMessage = {
+      const newTextMessage = {
         time: message_time,
         type: "text",
         message: message,
@@ -97,19 +96,58 @@ const Chatbot = () => {
           : { exists: true };
         return {
           ...existingChats,
-          [currentDate]: [...(existingChats[currentDate] || []), newMessage],
+          [currentDate]: [
+            ...(existingChats[currentDate] || []),
+            newTextMessage,
+          ],
         };
       });
-      // dispatch(setChatHistory({data:chats,user:user}))
+
+      formData.append("message", message);
+
+      if (image !== null) {
+        formData.append("image", image); // Append image to FormData
+
+        // Prepare the message object for image
+        const newImageMessage = {
+          time: message_time,
+          type: "image",
+          image: URL.createObjectURL(image), // Convert the image to a URL
+          role: "user",
+        };
+
+        // console.log(newImageMessage)
+
+        // Update the chats state with image message
+        setChats((prevChats) => {
+          const existingChats = prevChats.exists
+            ? { ...prevChats }
+            : { exists: true };
+          return {
+            ...existingChats,
+            [currentDate]: [
+              ...(existingChats[currentDate] || []),
+              newImageMessage,
+            ],
+          };
+        });
+
+        // Add image message to FormData
+        // formData.append("image_message", JSON.stringify(newImageMessage));
+
+        // Clear the image state
+        setImage(null);
+      }
+      console.log(formData)
       setProcessing(true);
       // Send the message to the backend
       const response = await fetch("http://127.0.0.1:8000/chats/", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("usertoken")}`,
         },
-        body: JSON.stringify({ message }),
+        // body: JSON.stringify({ message }),
+        body: formData,
       });
 
       if (!response.ok) {
@@ -117,9 +155,9 @@ const Chatbot = () => {
       }
 
       // Receive the response from the backend
-      const { type,msg,prod } = await response.json();
-      if (type === "product"){
-        dispatch(setProductList(prod))
+      const { type, msg, prod } = await response.json();
+      if (type === "product") {
+        dispatch(setProductList(prod));
       }
       // Update the chats state with the response
       setChats((prevChats) => {
@@ -141,7 +179,6 @@ const Chatbot = () => {
         };
       });
       // dispatch(setChatHistory({data:chats,user:user}))
-
       setProcessing(false);
     } catch (error) {
       console.error(error.message);
@@ -174,6 +211,11 @@ const Chatbot = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }); // Scroll to the last message
   };
 
+  const handleImageUpload = (event) => {
+    const uploadedImage = event.target.files[0];
+    setImage(uploadedImage);
+  };
+
   const renderChat = () => {
     if (!chats.exists) return null;
 
@@ -204,7 +246,10 @@ const Chatbot = () => {
                   padding: "10px",
                   borderRadius: "7px",
                   maxWidth: "70%",
-                  boxShadow:msg.role === "user"?"0 0 10px rgba(69, 197, 243, 0.538)":"0 0 10px rgb(255, 31, 68)"
+                  boxShadow:
+                    msg.role === "user"
+                      ? "0 0 10px rgba(69, 197, 243, 0.538)"
+                      : "0 0 10px rgb(255, 31, 68)",
                 }}
               >
                 {msg.type === "text" && (
@@ -229,8 +274,20 @@ const Chatbot = () => {
                     }}
                   >
                     {msg.products.slice(0, 5).map((product, index) => (
-                    <ProductCard key={index} product={product} />
-                  ))}
+                      <ProductCard key={index} product={product} />
+                    ))}
+                  </div>
+                )}
+                {msg.type === "image" && (
+                  <div
+                    className="msg-container"
+                    style={{
+                      display: "flex",
+                      overflow: "auto",
+                      borderRadius: "5",
+                    }}
+                  >
+                    <img style={{maxHeight:"200px", maxWidth:"200px"}} src={msg.image} alt="" />
                   </div>
                 )}
               </div>
@@ -253,9 +310,23 @@ const Chatbot = () => {
         {renderChat()}
 
         {processing && (
-          <div className="msg-container" style={{maxWidth:"35%", borderRadius:"10px", margin:"10px", backgroundColor:"rgb(255, 31, 68)",boxShadow:"0 0 10px rgb(255, 31, 68)"}}>
-            <div className="msg-chatname" style={{paddingLeft:"10px",paddingTop:"10px"}}>{"Chatbot"}</div>
-            <div className="wrapper" style={{marginTop:"10px"}}>
+          <div
+            className="msg-container"
+            style={{
+              maxWidth: "35%",
+              borderRadius: "10px",
+              margin: "10px",
+              backgroundColor: "rgb(255, 31, 68)",
+              boxShadow: "0 0 10px rgb(255, 31, 68)",
+            }}
+          >
+            <div
+              className="msg-chatname"
+              style={{ paddingLeft: "10px", paddingTop: "10px" }}
+            >
+              {"Chatbot"}
+            </div>
+            <div className="wrapper" style={{ marginTop: "10px" }}>
               <div className="circle"></div>
               <div className="circle"></div>
               <div className="circle"></div>
@@ -274,6 +345,12 @@ const Chatbot = () => {
           {details}
         </div>
         <div className="input-container">
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            disabled={!authenticated}
+          />
           <input
             type="text"
             value={message}

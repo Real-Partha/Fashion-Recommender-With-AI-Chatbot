@@ -67,7 +67,7 @@ def spell_check(word, dictionary):
     suggestions.sort(key=lambda x: x[1])
     return suggestions[:1]
 # Spell check function ends here
-dictionary = load_dictionary("/Users/mdehteshamansari00/Fashion-Recommender-With-AI-Chatbot/Backend/app/Data/dictionary.txt")
+dictionary = load_dictionary(settings.dictionary_url)
 
 def response(prompt1):
     # response = model.generate_content(preprompt + prompt)
@@ -225,9 +225,9 @@ def response(prompt1):
     #     "Trainers",
     #     "Footwear",
     # ]
-    fashion_path = '/Users/mdehteshamansari00/Fashion-Recommender-With-AI-Chatbot/Backend/app/Data/products.txt'
-    color_path = '/Users/mdehteshamansari00/Fashion-Recommender-With-AI-Chatbot/Backend/app/Data/colors.txt'
-    greeting_path = '/Users/mdehteshamansari00/Fashion-Recommender-With-AI-Chatbot/Backend/app/Data/greetings.txt'
+    fashion_path = settings.fashion_path_url
+    color_path = settings.color_path_url
+    greeting_path = settings.greeting_path_url
     with open(fashion_path, "r") as f:
         fashion_articles = f.read().split("\n")
     with open(color_path, "r") as f:
