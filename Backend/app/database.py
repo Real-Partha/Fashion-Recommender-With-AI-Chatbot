@@ -84,3 +84,23 @@ def get_random_products(number):
     random_indexes = random.sample(range(len(data)), number)
     random_products = [data[i] for i in random_indexes]
     return random_products
+
+def get_orders_user(userid):
+    db = connect()
+    collection = db["orders"]
+    print("inside database :",userid)
+    print("inside database :",type(userid))
+    data = collection.find({"userid": userid},{"_id":0})
+    return data
+
+def get_ordersbyid(orderid):
+    db = connect()
+    collection = db["orders"]
+    data = collection.find_one({"orderid": orderid},{"_id":0})
+    return data
+
+def create_order(data):
+    db = connect()
+    collection = db["orders"]
+    collection.insert_one(data)
+    return True

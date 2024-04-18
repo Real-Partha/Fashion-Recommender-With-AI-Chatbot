@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends, UploadFile, Form
 from .. import schemas, oauth2
-from .. import schemas, oauth2
 from ..recommend import response
 from datetime import datetime
 from ..database import insert, read, update
