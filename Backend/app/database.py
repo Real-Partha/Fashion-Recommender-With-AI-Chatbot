@@ -52,6 +52,27 @@ def create_user(data):
     except:
         return False
     
+def create_admin(data):
+    try:
+        db = connect()
+        collection = db["admins"]
+        collection.insert_one(data)
+        return True
+    except:
+        return False
+    
+def get_adminbyid(adminid):
+    db = connect()
+    collection = db["admins"]
+    data = collection.find_one({"adminid": adminid}, {"_id": 0,"password": 0})
+    return data
+
+def get_adminbycondition(condition):
+    db = connect()
+    collection = db["admins"]
+    data = collection.find_one(condition, {"_id": 0,"password": 0})
+    return data
+    
 def token_entry(token,status):
     db = connect()
     collection = db["tokens"]
