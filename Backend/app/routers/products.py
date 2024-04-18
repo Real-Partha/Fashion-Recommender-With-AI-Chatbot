@@ -21,6 +21,10 @@ def getproduct(product_id:int):
 
 @router.get("/random/{number}",status_code=status.HTTP_200_OK,response_model=list[schemas.Product])
 def getrandomproducts(number:int):
+
+    if number==0:
+        return []
+
     try:
         data = get_random_products(number)
         if data:

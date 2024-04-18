@@ -1,5 +1,4 @@
-from time import sleep
-from fastapi import APIRouter, Depends, HTTPException, status,  File, UploadFile, Form
+from fastapi import APIRouter, Depends, UploadFile, Form
 from .. import schemas, oauth2
 from .. import schemas, oauth2
 from ..recommend import response
@@ -21,6 +20,7 @@ def chat(current_user: schemas.User = Depends(oauth2.get_current_user)):
         for data in curr_data:
             db_data[data["date"]] = data["chats"]
     return {"user": current_user, "data": db_data}
+
 
 @router.post("/")
 async def chat(
@@ -64,7 +64,7 @@ async def chat(
     if image is not None:
         # Save image to file
         os.makedirs("../Frontend/public/images", exist_ok=True)
-        file = str(userid)+ datetime.now().strftime("%H%M%S")+image.filename
+        file = str(userid) + datetime.now().strftime("%H%M%S") + image.filename
         with open(f"../Frontend/public/images/{file}", "wb") as f:
             f.write(image.file.read())
 
@@ -81,13 +81,19 @@ async def chat(
         )
 
     # Process text message and get response
-    try:
-        response_data = response(message)
-    except Exception as e:
-        print(e)
+    if message != None:
+        try:
+            response_data = response(message)
+        except Exception as e:
+            print(e)
+            response_data = {
+                "type": "text",
+                "data": "Sorry, I am not able to understand this.",
+            }
+    else:
         response_data = {
             "type": "text",
-            "data": "Sorry, I am not able to understand this.",
+            "data": "Currently Recommendation using only image is in progress...Please Try Again Later...",
         }
 
     # Update database with response
@@ -112,7 +118,7 @@ async def chat(
                 "time": curr_time,
                 "type": "product",
                 "message": "",
-                "products": response_data["data"],
+                "products": response_data["data"][:5],
                 "role": "chatbot",
             },
         )

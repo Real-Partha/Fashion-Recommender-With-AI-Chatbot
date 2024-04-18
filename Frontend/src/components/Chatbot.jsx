@@ -82,29 +82,30 @@ const Chatbot = () => {
       let formData = new FormData();
 
       // Prepare the message object
-      const newTextMessage = {
-        time: message_time,
-        type: "text",
-        message: message,
-        role: "user",
-      };
-
-      // Update the chats state
-      setChats((prevChats) => {
-        const existingChats = prevChats.exists
-          ? { ...prevChats }
-          : { exists: true };
-        return {
-          ...existingChats,
-          [currentDate]: [
-            ...(existingChats[currentDate] || []),
-            newTextMessage,
-          ],
+      if (message.length > 1) {
+        const newTextMessage = {
+          time: message_time,
+          type: "text",
+          message: message,
+          role: "user",
         };
-      });
 
-      formData.append("message", message);
+        // Update the chats state
+        setChats((prevChats) => {
+          const existingChats = prevChats.exists
+            ? { ...prevChats }
+            : { exists: true };
+          return {
+            ...existingChats,
+            [currentDate]: [
+              ...(existingChats[currentDate] || []),
+              newTextMessage,
+            ],
+          };
+        });
 
+        formData.append("message", message);
+      }
       if (image !== null) {
         formData.append("image", image); // Append image to FormData
 
@@ -132,13 +133,9 @@ const Chatbot = () => {
           };
         });
 
-        // Add image message to FormData
-        // formData.append("image_message", JSON.stringify(newImageMessage));
-
         // Clear the image state
         setImage(null);
       }
-      console.log(formData);
       setProcessing(true);
       // Send the message to the backend
       const response = await fetch("http://127.0.0.1:8000/chats/", {
@@ -349,13 +346,6 @@ const Chatbot = () => {
           {details}
         </div>
         <div className="input-container">
-          {/* <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageUpload}
-            disabled={!authenticated}
-          /> */}
-
           <input
             type="file"
             id="upload"
@@ -376,7 +366,9 @@ const Chatbot = () => {
               src="https://cdn.lordicon.com/dangivhk.json"
               trigger="loop"
               delay="1000"
-              style={image !== null ? { display: "block" } : { display: "none" }}
+              style={
+                image !== null ? { display: "block" } : { display: "none" }
+              }
             ></lord-icon>
           </label>
 
@@ -391,7 +383,7 @@ const Chatbot = () => {
           <button
             className="submit-button"
             onClick={sendMessage}
-            disabled={message.length < 1 || processing}
+            disabled={!(message.length > 1 || image !== null) || processing}
           >
             <div className="svg-wrapper-1">
               <div className="svg-wrapper">
