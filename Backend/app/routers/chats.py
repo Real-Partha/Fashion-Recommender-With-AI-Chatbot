@@ -1,9 +1,11 @@
-from fastapi import APIRouter, Depends, UploadFile, Form
-from .. import schemas, oauth2
-from ..recommend import response
-from datetime import datetime
-from ..database import insert, read, update
 import os
+from datetime import datetime
+
+from fastapi import APIRouter, Depends, Form, UploadFile
+
+from .. import oauth2, schemas
+from ..database import insert, read, update
+from ..recommend import response
 
 router = APIRouter(prefix="/chats", tags=["chats"])
 
