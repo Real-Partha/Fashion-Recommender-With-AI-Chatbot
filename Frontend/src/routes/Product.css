@@ -20,7 +20,7 @@ body {
   background-color: #fff; /* Set product container background color 
 }*/
 
-
+/* 
 .product-img {
   width: 350px;
   height: auto;
@@ -117,10 +117,10 @@ body {
 .add-to-cart-btn:hover,
 .buy-now-btn:hover {
   background-color: #00796b;
-}
+} */
 
 /* Responsive adjustments */
-@media screen and (max-width: 768px) {
+/* @media screen and (max-width: 768px) {
   .product-container {
     flex-direction: column;
     align-items: stretch;
@@ -143,20 +143,20 @@ body {
   border-radius: 5px;
   background-color: aliceblue;
   
-}
+} */
 
 
 
-.product-details-scrollable {
+/* .product-details-scrollable {
   flex: 1;
-  overflow-y: auto; /* Enable vertical scrolling for overflow content */
-}
+  overflow-y: auto;
+} */
 
 /* Remaining CSS styles for product details remain unchanged */
 
 /* Default styles */
 /* Default styles */
-.eachSize {
+/* .eachSize {
   display: inline-block;
   margin-right: 10px;
   cursor: pointer;
@@ -193,4 +193,4 @@ body {
 
 .product-rating {
   margin-bottom: 10px;
-}
+} */
