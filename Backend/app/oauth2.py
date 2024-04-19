@@ -59,5 +59,10 @@ def get_current_user(token: str = Depends(oauth2_schema)):
     user = get_userbyid(userid)
     return user
 
+def get_current_admin(token: str = Depends(oauth2_schema)):
+    token_data = verify_access_token(token)
+    userid = token_data.userid
+    user = get_userbyid(userid)
+    return user
 
 

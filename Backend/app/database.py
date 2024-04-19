@@ -18,18 +18,6 @@ def insert(data):
     collection.insert_one(data)
     return True
 
-# def update(userid,date,data):
-#     a = list(read(userid))
-#     flag = False
-#     for i in a:
-#         if i["userid"] == userid:
-#             if i["date"] == date:
-#                 flag = True
-#                 db = connect()
-#                 collection = db["chats"]
-#                 collection.update_one({"userid": userid, "date": date}, {"$push": {"chats": data}})
-#                 break
-
 def update(userid, date, data):
     try:
         db = connect()
@@ -64,6 +52,27 @@ def create_user(data):
     except:
         return False
     
+def create_admin(data):
+    try:
+        db = connect()
+        collection = db["admins"]
+        collection.insert_one(data)
+        return True
+    except:
+        return False
+    
+def get_adminbyid(adminid):
+    db = connect()
+    collection = db["admins"]
+    data = collection.find_one({"adminid": adminid}, {"_id": 0,"password": 0})
+    return data
+
+def get_adminbycondition(condition):
+    db = connect()
+    collection = db["admins"]
+    data = collection.find_one(condition, {"_id": 0,"password": 0})
+    return data
+    
 def token_entry(token,status):
     db = connect()
     collection = db["tokens"]
@@ -96,3 +105,23 @@ def get_random_products(number):
     random_indexes = random.sample(range(len(data)), number)
     random_products = [data[i] for i in random_indexes]
     return random_products
+
+def get_orders_user(userid):
+    db = connect()
+    collection = db["orders"]
+    print("inside database :",userid)
+    print("inside database :",type(userid))
+    data = collection.find({"userid": userid},{"_id":0})
+    return data
+
+def get_ordersbyid(orderid):
+    db = connect()
+    collection = db["orders"]
+    data = collection.find_one({"orderid": orderid},{"_id":0})
+    return data
+
+def create_order(data):
+    db = connect()
+    collection = db["orders"]
+    collection.insert_one(data)
+    return True

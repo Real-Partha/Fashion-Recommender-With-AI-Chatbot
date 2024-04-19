@@ -79,7 +79,20 @@ const Navbar = () => {
         className="navbar"
         style={authenticated ? { display: "flex" } : { display: "none" }}
       >
-        <button className="relative border hover:border-sky-600 duration-500 group cursor-pointer text-sky-50 overflow-hidden h-10 w-40 rounded-md bg-gradient-to-r from-red-500 via-red-600 to-yellow-500 p-1 flex justify-center items-center font-extrabold" onClick={handleLogout}>
+        <Link to="/orders">
+        <button className="relative border hover:border-sky-600 duration-500 group cursor-pointer text-sky-50 overflow-hidden h-10 w-40 rounded-md bg-sky-800 p-1 flex justify-center items-center font-extrabold">
+            <div className="absolute z-10 w-32 h-32 rounded-full group-hover:scale-150 transition-all duration-500 ease-in-out bg-sky-900 delay-150 group-hover:delay-75"></div>
+            <div className="absolute z-10 w-28 h-28 rounded-full group-hover:scale-150 transition-all duration-500 ease-in-out bg-sky-800 delay-150 group-hover:delay-100"></div>
+            <div className="absolute z-10 w-24 h-24 rounded-full group-hover:scale-150 transition-all duration-500 ease-in-out bg-sky-700 delay-150 group-hover:delay-150"></div>
+            <div className="absolute z-10 w-20 h-20 rounded-full group-hover:scale-150 transition-all duration-500 ease-in-out bg-sky-600 delay-150 group-hover:delay-200"></div>
+            <div className="absolute z-10 w-16 h-16 rounded-full group-hover:scale-150 transition-all duration-500 ease-in-out bg-sky-500 delay-150 group-hover:delay-300"></div>
+            <p className="z-10">My Orders</p>
+          </button>
+        </Link>
+        <button
+          className="relative border hover:border-sky-600 duration-500 group cursor-pointer text-sky-50 overflow-hidden h-10 w-40 rounded-md bg-gradient-to-r from-red-500 via-red-600 to-yellow-500 p-1 flex justify-center items-center font-extrabold"
+          onClick={handleLogout}
+        >
           <div className="absolute z-10 w-40 h-40 rounded-full group-hover:scale-150 transition-all duration-500 ease-in-out bg-gradient-to-r from-red-900 via-red-800 to-yellow-900 delay-150 group-hover:delay-75"></div>
           <div className="absolute z-10 w-28 h-28 rounded-full group-hover:scale-150 transition-all duration-500 ease-in-out bg-gradient-to-r from-red-800 via-red-700 to-yellow-800 delay-150 group-hover:delay-100"></div>
           <div className="absolute z-10 w-24 h-24 rounded-full group-hover:scale-150 transition-all duration-500 ease-in-out bg-gradient-to-r from-red-700 via-red-600 to-yellow-700 delay-150 group-hover:delay-150"></div>

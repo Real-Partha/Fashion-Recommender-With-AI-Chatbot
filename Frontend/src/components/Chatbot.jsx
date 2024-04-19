@@ -82,29 +82,30 @@ const Chatbot = () => {
       let formData = new FormData();
 
       // Prepare the message object
-      const newTextMessage = {
-        time: message_time,
-        type: "text",
-        message: message,
-        role: "user",
-      };
-
-      // Update the chats state
-      setChats((prevChats) => {
-        const existingChats = prevChats.exists
-          ? { ...prevChats }
-          : { exists: true };
-        return {
-          ...existingChats,
-          [currentDate]: [
-            ...(existingChats[currentDate] || []),
-            newTextMessage,
-          ],
+      if (message.length > 1) {
+        const newTextMessage = {
+          time: message_time,
+          type: "text",
+          message: message,
+          role: "user",
         };
-      });
 
-      formData.append("message", message);
+        // Update the chats state
+        setChats((prevChats) => {
+          const existingChats = prevChats.exists
+            ? { ...prevChats }
+            : { exists: true };
+          return {
+            ...existingChats,
+            [currentDate]: [
+              ...(existingChats[currentDate] || []),
+              newTextMessage,
+            ],
+          };
+        });
 
+        formData.append("message", message);
+      }
       if (image !== null) {
         formData.append("image", image); // Append image to FormData
 
@@ -132,13 +133,9 @@ const Chatbot = () => {
           };
         });
 
-        // Add image message to FormData
-        // formData.append("image_message", JSON.stringify(newImageMessage));
-
         // Clear the image state
         setImage(null);
       }
-      console.log(formData);
       setProcessing(true);
       // Send the message to the backend
       const response = await fetch("http://127.0.0.1:8000/chats/", {
@@ -304,12 +301,12 @@ const Chatbot = () => {
 
   return (
     <div>
-      <div
+      {/* <div
         className="user"
         style={authenticated ? { display: "block" } : { display: "none" }}
       >
         <div>{"Welcome, " + user["name"]}</div>
-      </div>
+      </div> */}
       <div className="chatbot-container">
         {renderChat()}
 
@@ -351,30 +348,29 @@ const Chatbot = () => {
         <div className="input-container">
           <input
             type="file"
-            accept="image/*"
-            onChange={handleImageUpload}
-            disabled={!authenticated}
-          />
-
-          {/* <input
-            type="file"
             id="upload"
             name="upload"
-            style={{display: "none"}}
+            style={{ display: "none" }}
             accept="image/*"
+            onChange={handleImageUpload}
           />
           <label for="upload" className="upload-button">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              width="24"
-              height="24"
-            >
-              <path fill="none" d="M0 0h24v24H0z" />
-              <path d="M21 15v5H3v-5H0l12-9 12 9h-3zM11 0v13h2V0h-2z" />
-            </svg>
-            <span>Upload Image</span>
-          </label> */}
+            <lord-icon
+              src="https://cdn.lordicon.com/bzqvamqv.json"
+              trigger="hover"
+              style={
+                image !== null ? { display: "none" } : { display: "block" }
+              }
+            ></lord-icon>
+            <lord-icon
+              src="https://cdn.lordicon.com/dangivhk.json"
+              trigger="loop"
+              delay="1000"
+              style={
+                image !== null ? { display: "block" } : { display: "none" }
+              }
+            ></lord-icon>
+          </label>
 
           <input
             type="text"
@@ -387,7 +383,7 @@ const Chatbot = () => {
           <button
             className="submit-button"
             onClick={sendMessage}
-            disabled={message.length < 1 || processing}
+            disabled={!(message.length > 1 || image !== null) || processing}
           >
             <div className="svg-wrapper-1">
               <div className="svg-wrapper">

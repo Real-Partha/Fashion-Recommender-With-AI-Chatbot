@@ -60,3 +60,15 @@ class Product(BaseModel):
     ofprice: float
     discount: float
     imglink: str
+
+class Order(BaseModel):
+    products: list[Product]
+    total: float
+
+class OrderView(Order):
+    orderid: str
+    status: str
+    date: str
+    userid: int
+    time: str
+    
