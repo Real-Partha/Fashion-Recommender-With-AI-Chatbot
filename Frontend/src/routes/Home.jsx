@@ -1,19 +1,48 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./Home.css";
 import Chatbot from "../components/Chatbot";
-import Auth from "../components/Auth";
+import Navbar from "../components/Navbar";
+import HomeProducts from "../components/HomeProducts";
+import { useDispatch } from "react-redux";
+import { setUser } from "../redux/User/userSlice";
 
 function Home() {
   const [chatbotVisible, setChatbotVisible] = useState(false);
+  const dispatch = useDispatch();
 
   const toggleChatbot = () => {
     setChatbotVisible((prevVisible) => !prevVisible);
   };
 
+  useEffect(() => {
+    (async () => {
+      // Check if the user is already logged in
+      const token = localStorage.getItem("usertoken");
+      if (token !== null) {
+        try {
+          const response = await fetch("http://127.0.0.1:8000/users/", {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("usertoken")}`,
+            },
+          });
+          const data = await response.json();
+          dispatch(setUser(data));
+        } catch (error) {}
+      }
+    })();
+  }, []);
+
   return (
-    <>
-      <Auth />
-      <div className={`${!chatbotVisible?"chat-button-container":"chat-button-container-active"}`}>
+    <div>
+      <Navbar />
+      <HomeProducts />
+      <div
+        className={`${
+          !chatbotVisible
+            ? "chat-button-container"
+            : "chat-button-container-active"
+        }`}
+      >
         <div
           className={`chat-button ${chatbotVisible ? "active" : ""}`}
           onClick={toggleChatbot}
@@ -62,7 +91,7 @@ function Home() {
         </div>
       </div>
       {chatbotVisible && <Chatbot />}
-    </>
+    </div>
   );
 }
 export default Home;

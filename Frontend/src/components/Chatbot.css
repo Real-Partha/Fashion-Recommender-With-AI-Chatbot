@@ -28,8 +28,9 @@
   width: 30%;
   height: 60%;
   overflow: auto;
-  border: 2px solid rgb(184, 255, 249);
+  /* border: 2px solid rgb(184, 255, 249); */
   box-shadow: 0 0 20px rgba(184, 255, 249, 0.458);
+  border-radius: 15px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -56,6 +57,25 @@
 .msg-chatname{
   font-weight: bold;
   text-align: left;
+}
+
+.product-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+
+.product-container::-webkit-scrollbar-track {
+  border-radius: 8px;
+  /* border: 1px solid #cacaca; */
+  /* padding: 3px; */
+  /* box-shadow: inset 0 0 6px rgba(0, 0, 0, .3); */
+  background: transparent;
+}
+
+.product-container::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background-color: rgb(245, 241, 241);
+  box-shadow: inset 0 0 7px #000000;
 }
 
 .chatbot-error {
@@ -90,12 +110,13 @@
   justify-content: center;
   align-items: center;
   position: sticky;
-  bottom: 0;
+  bottom: -1px;
   padding: 10px;
   background-color: #242424;
   /* border-top: 2px solid #ffffff; */
   box-shadow: 0 0 20px rgba(184, 255, 249, 0.458);
   z-index: 10;
+  margin-bottom: 0;
 }
 
 .input-container input {
@@ -116,7 +137,7 @@
   background: royalblue;
   color: white;
   padding: 0.7em 1em;
-  padding-left: 0.9em;
+  padding-left: 0.4em;
   display: flex;
   align-items: center;
   border: none;
@@ -276,3 +297,25 @@
   animation-delay: .3s;
 }
 
+
+.upload-button {
+  background-color: transparent;
+  color: white;
+  padding: 5px 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-right: 5px;
+}
+
+.upload-button:hover {
+  filter: drop-shadow(0 0 0.7rem #dfdfd6);
+}
+
+/* Hide the default file input */
+.upload-button input[type="file"] {
+  display: block;
+}

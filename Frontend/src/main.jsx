@@ -6,6 +6,9 @@ import Signup from "./routes/Signup.jsx";
 import Product from "./routes/Product.jsx";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { store } from "./redux/store";
+import { Provider } from "react-redux";
+import Orders from "./routes/Orders.jsx";
 
 const router = createBrowserRouter([
   {
@@ -24,10 +27,16 @@ const router = createBrowserRouter([
     path: "/product",
     element: <Product />,
   },
+  {
+    path: "/orders",
+    element: <Orders />,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 );

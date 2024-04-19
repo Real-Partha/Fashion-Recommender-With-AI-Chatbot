@@ -1,5 +1,5 @@
 from fastapi import APIRouter,HTTPException,status
-from ..database import get_product
+from ..database import get_product, get_random_products
 from .. import schemas
 
 router = APIRouter(
@@ -16,5 +16,20 @@ def getproduct(product_id:int):
             return dict(data)
         else:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="Product not found")
+    except Exception as e:
+        print(f"Error fetching product: {e}")
+
+@router.get("/random/{number}",status_code=status.HTTP_200_OK,response_model=list[schemas.Product])
+def getrandomproducts(number:int):
+
+    if number==0:
+        return []
+
+    try:
+        data = get_random_products(number)
+        if data:
+            return data[:number]
+        else:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="Products could not be fetched")
     except Exception as e:
         print(f"Error fetching product: {e}")

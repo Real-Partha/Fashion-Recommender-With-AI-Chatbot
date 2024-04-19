@@ -1,15 +1,14 @@
+import os
 from datetime import datetime
-from time import sleep
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, Form, UploadFile
 
 from .. import oauth2, schemas
 from ..database import insert, read, update
 from ..recommend import response
 
-router = APIRouter(
-    prefix="/chats", tags=["chats"]
-)
+router = APIRouter(prefix="/chats", tags=["chats"])
+
 
 @router.get("/")
 def chat(current_user: schemas.User = Depends(oauth2.get_current_user)):
@@ -21,29 +20,107 @@ def chat(current_user: schemas.User = Depends(oauth2.get_current_user)):
         db_data["exists"] = True
         for data in curr_data:
             db_data[data["date"]] = data["chats"]
-    return {"user":current_user,"data":db_data}
+    return {"user": current_user, "data": db_data}
+
 
 @router.post("/")
-def chat(message:schemas.Message,current_user: schemas.User = Depends(oauth2.get_current_user)):
+async def chat(
+    message: str = Form(None),
+    image: UploadFile = Form(None),
+    current_user: schemas.User = Depends(oauth2.get_current_user),
+):
     userid = current_user["userid"]
-    curr_data = read(userid)
     curr_date = datetime.now().strftime("%d-%m-%Y")
     curr_time = datetime.now().strftime("%H:%M")
-    db_data = list(curr_data)
-    flag=False
+    print(message)
+    # Update text message in database
+    flag = False
+    db_data = read(userid)
     for data in db_data:
-        if data["userid"] == userid:
-            if data["date"] == curr_date:
-                flag=True
-                update(userid,curr_date,{"time":curr_time,"type":"text","message":message.message,"role":"user"})
-    if flag == False:
-        insert({"userid":userid,"date":curr_date,"chats":[{"time":curr_time,"type":"text","message":message.message,"role":"user"}]})
-    try:
-        response_text = response(message.message)
-    except Exception as e:
-        print(e)
-        response_text = "Sorry, I didn't understand that."
-    # response_text = "Test" + " at " + curr_date + curr_time
-    update(userid,curr_date,{"time":curr_time,"type":"text","message":response_text,"products":[],"role":"chatbot"})
-    # sleep(1)
-    return {"data": response_text}
+        if data["userid"] == userid and data["date"] == curr_date:
+            flag = True
+            update(
+                userid,
+                curr_date,
+                {"time": curr_time, "type": "text", "message": message, "role": "user"},
+            )
+            break
+    if not flag:
+        insert(
+            {
+                "userid": userid,
+                "date": curr_date,
+                "chats": [
+                    {
+                        "time": curr_time,
+                        "type": "text",
+                        "message": message,
+                        "role": "user",
+                    }
+                ],
+            }
+        )
+
+    # Process image if provided
+    if image is not None:
+        # Save image to file
+        os.makedirs("../Frontend/public/images", exist_ok=True)
+        file = str(userid) + datetime.now().strftime("%H%M%S") + image.filename
+        with open(f"../Frontend/public/images/{file}", "wb") as f:
+            f.write(image.file.read())
+
+        # Update image message in database
+        update(
+            userid,
+            curr_date,
+            {
+                "time": curr_time,
+                "type": "image",
+                "image": f"images/{file}",
+                "role": "user",
+            },
+        )
+
+    # Process text message and get response
+    if message != None:
+        try:
+            response_data = response(message)
+        except Exception as e:
+            print(e)
+            response_data = {
+                "type": "text",
+                "data": "Sorry, I am not able to understand this.",
+            }
+    else:
+        response_data = {
+            "type": "text",
+            "data": "Currently Recommendation using only image is in progress...Please Try Again Later...",
+        }
+
+    # Update database with response
+    if response_data["type"] == "text":
+        update(
+            userid,
+            curr_date,
+            {
+                "time": curr_time,
+                "type": "text",
+                "message": response_data["data"],
+                "products": [],
+                "role": "chatbot",
+            },
+        )
+        return {"type": "text", "msg": response_data["data"], "prod": []}
+    else:
+        update(
+            userid,
+            curr_date,
+            {
+                "time": curr_time,
+                "type": "product",
+                "message": "",
+                "products": response_data["data"][:5],
+                "role": "chatbot",
+            },
+        )
+        return {"type": "product", "msg": "", "prod": response_data["data"]}
