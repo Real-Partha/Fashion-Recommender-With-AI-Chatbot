@@ -1,9 +1,11 @@
-from time import sleep
-from fastapi import APIRouter, Depends, HTTPException, status
-from .. import schemas,oauth2
-from ..recommend import response
 from datetime import datetime
+from time import sleep
+
+from fastapi import APIRouter, Depends, HTTPException, status
+
+from .. import oauth2, schemas
 from ..database import insert, read, update
+from ..recommend import response
 
 router = APIRouter(
     prefix="/chats", tags=["chats"]
@@ -43,5 +45,5 @@ def chat(message:schemas.Message,current_user: schemas.User = Depends(oauth2.get
         response_text = "Sorry, I didn't understand that."
     # response_text = "Test" + " at " + curr_date + curr_time
     update(userid,curr_date,{"time":curr_time,"type":"text","message":response_text,"products":[],"role":"chatbot"})
-    sleep(4)
+    # sleep(1)
     return {"data": response_text}
