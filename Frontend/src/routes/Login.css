@@ -91,3 +91,25 @@ form {
   color: rgb(87, 255, 87);
   font-size: 1.1em;
 }
+
+.role-choice{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.divider{
+  color: #fff;
+  margin: 0 50px;
+  width: 2px;
+  height: 10px;
+  z-index: 1;
+}
+
+.user-login,.admin-login{
+  color: #fff;
+  font-size: 1.6em;
+  font-weight: bold;
+  cursor: pointer;
+}

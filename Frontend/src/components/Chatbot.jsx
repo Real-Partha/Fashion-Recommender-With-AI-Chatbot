@@ -301,12 +301,12 @@ const Chatbot = () => {
 
   return (
     <div>
-      <div
+      {/* <div
         className="user"
         style={authenticated ? { display: "block" } : { display: "none" }}
       >
         <div>{"Welcome, " + user["name"]}</div>
-      </div>
+      </div> */}
       <div className="chatbot-container">
         {renderChat()}
 

@@ -20,7 +20,7 @@ def fetchadminbytoken(current_user: schemas.User = Depends(oauth2.get_current_us
         )
 
 @router.post("/", response_model=schemas.Message, status_code=status.HTTP_201_CREATED)
-def createadmin(user: schemas.AcceptUser):
+def createadmin(user: schemas.AcceptAdmin):
     email = user.email
     password = user.password
     username = user.username

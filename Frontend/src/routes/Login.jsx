@@ -10,6 +10,7 @@ const LoginPage = () => {
   const [success, setSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [redirectTimer, setRedirectTimer] = useState(5);
+  const [choice, setChoice] = useState("user");
 
   useEffect(() => {
     if (success) {
@@ -85,9 +86,18 @@ const LoginPage = () => {
     }
   };
 
+  const handleRoleChoice = (role) => {
+    setChoice(role);
+  };
+
   return (
     <>
       <div className="login-container">
+        <div className="role-choice">
+          <div className="user-login" style={choice==="user"?{color:"green" , filter:"drop-shadow(0 0 0.5rem #cabdbdaa)"}:{color:"white"}}  onClick={() => handleRoleChoice("user")}>User</div>
+          <div className="divider"></div>
+          <div className="admin-login" style={choice==="user"?{color:"white"}:{color:"green", filter:"drop-shadow(0 0 0.5rem #cabdbdaa)"}}  onClick={() => handleRoleChoice("admin")}>Admin</div>
+        </div>
         <h2>Login</h2>
         <form onSubmit={handleLogin}>
           <div className="form-group">
