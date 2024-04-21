@@ -109,8 +109,6 @@ def get_random_products(number):
 def get_orders_user(userid):
     db = connect()
     collection = db["orders"]
-    print("inside database :",userid)
-    print("inside database :",type(userid))
     data = collection.find({"userid": userid},{"_id":0})
     return data
 

@@ -11,6 +11,7 @@ const Admin = () => {
   useEffect(() => {
     (async () => {
       // Check if the user is already logged in{
+      document.title = "Admin Panel | Pearl Fashion";
       const token = localStorage.getItem("token");
       if (token !== null) {
         if (localStorage.getItem("tokentype") === "user") {

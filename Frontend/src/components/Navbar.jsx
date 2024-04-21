@@ -5,6 +5,8 @@ import "./Navbar.css";
 
 const Navbar = () => {
   const [authenticated, setAuthenticated] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isUser, setIsUser] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -23,6 +25,7 @@ const Navbar = () => {
         const data = await response.json();
         if (response.ok) {
           setAuthenticated(true);
+          setIsUser(true);
         } else if (
           data["detail"] === "Token has Expired" ||
           data["detail"] === "Not Authenticated"
@@ -40,6 +43,7 @@ const Navbar = () => {
         const data = await response.json();
         if (response.ok) {
           setAuthenticated(true);
+          setIsAdmin(true);
         } else if (
           data["detail"] === "Token has Expired" ||
           data["detail"] === "Not Authenticated"
@@ -97,10 +101,11 @@ const Navbar = () => {
       </div>
       <div
         className="navbar"
-        style={authenticated ? { display: "flex" } : { display: "none" }}
+        style={authenticated? { display: "flex" } : { display: "none" }}
       >
         <Link to="/orders">
-        <button className="relative border hover:border-sky-600 duration-500 group cursor-pointer text-sky-50 overflow-hidden h-10 w-40 rounded-md bg-sky-800 p-1 flex justify-center items-center font-extrabold">
+        <button className="relative border hover:border-sky-600 duration-500 group cursor-pointer text-sky-50 overflow-hidden h-10 w-40 rounded-md bg-sky-800 p-1 flex justify-center items-center font-extrabold"
+        style={isUser? {} : { display: "none" }}>
             <div className="absolute z-10 w-32 h-32 rounded-full group-hover:scale-150 transition-all duration-500 ease-in-out bg-sky-900 delay-150 group-hover:delay-75"></div>
             <div className="absolute z-10 w-28 h-28 rounded-full group-hover:scale-150 transition-all duration-500 ease-in-out bg-sky-800 delay-150 group-hover:delay-100"></div>
             <div className="absolute z-10 w-24 h-24 rounded-full group-hover:scale-150 transition-all duration-500 ease-in-out bg-sky-700 delay-150 group-hover:delay-150"></div>

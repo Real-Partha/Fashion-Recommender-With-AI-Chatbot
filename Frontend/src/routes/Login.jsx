@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Login.css"; // Import the CSS file for styling
+import {useNavigate} from "react-router-dom";
 
 const LoginPage = () => {
   const [credentials, setCredentials] = useState("");
@@ -11,6 +12,7 @@ const LoginPage = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [redirectTimer, setRedirectTimer] = useState(5);
   const [choice, setChoice] = useState("user");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (success) {
@@ -25,6 +27,7 @@ const LoginPage = () => {
   useEffect(() => {
     (async () => {
       // Check if the user is already logged in{
+      document.title = 'Login | Pearl Fashion';
       const token = localStorage.getItem("token");
       if (token !== null) {
         if (localStorage.getItem("tokentype") === "user") {
@@ -86,7 +89,7 @@ const LoginPage = () => {
           localStorage.setItem("tokentype", "user"); // Store token in local storage
           setSuccess(true);
           setTimeout(() => {
-            window.location.href = "/"; // Replace "/homepage" with the actual URL of your homepage
+            navigate("/");
           }, 5000);
         } else {
           if (data.detail === "Incorrect Password") {
@@ -121,7 +124,7 @@ const LoginPage = () => {
           localStorage.setItem("tokentype", "admin"); // Store token in local storage
           setSuccess(true);
           setTimeout(() => {
-            window.location.href = "/admin"; // Replace "/homepage" with the actual URL of your homepage
+            navigate("/admin");
           }, 5000);
         } else {
           if (data.detail === "Incorrect Password") {

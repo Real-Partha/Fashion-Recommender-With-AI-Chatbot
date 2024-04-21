@@ -17,6 +17,7 @@ function Home() {
   useEffect(() => {
     (async () => {
       // Check if the user is already logged in
+      document.title = 'Home | Pearl Fashion | Online Fashion Shopping'
       const token = localStorage.getItem("token");
       if (token !== null) {
         if (localStorage.getItem("tokentype") === "user") {

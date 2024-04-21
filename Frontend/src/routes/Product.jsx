@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import "./Product.css";
 
 const ProductRating = ({ rating, setRating }) => {
-
   const handleStarClick = (index) => {
     // Set the rating to the index of the clicked star + 1
     setRating(index + 1);
@@ -45,20 +44,27 @@ const Product = () => {
     const fetchProductData = async () => {
       try {
         console.log("Type of productid:", typeof productid);
-        const response = await fetch(`http://127.0.0.1:8000/product/${productid}/`);
+        const response = await fetch(
+          `http://127.0.0.1:8000/product/${productid}/`
+        );
 
         const data = await response.json();
         setTimeout(() => {
           setProductData(data);
-        }, 200);
-        console.log(data);
+        }, 10);
       } catch (error) {
         console.error("Error fetching product data:", error);
       }
     };
 
     fetchProductData();
-  }, []);
+  }, [productData]);
+
+  useEffect(() => {
+    if (productData.name) {
+      document.title = `${productData.name}`;
+    }
+  }, [productData]);
 
   // Function to handle size selection
   const handleSizeSelection = (size) => {

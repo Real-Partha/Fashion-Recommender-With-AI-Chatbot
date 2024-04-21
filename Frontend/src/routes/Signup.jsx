@@ -19,6 +19,7 @@ const SignupPage = () => {
   useEffect(() => {
     (async () => {
       // Check if the user is already logged in{
+      document.title = "SignUp | Pearl Fashion";
       const token = localStorage.getItem("token");
       if (token !== null) {
         if (localStorage.getItem("tokentype") === "user") {
@@ -98,8 +99,7 @@ const SignupPage = () => {
       } catch (error) {
         console.error("Error:", error);
       }
-    }
-    else {
+    } else {
       try {
         const email = user["email"];
         const username = user["username"];
@@ -255,7 +255,8 @@ const SignupPage = () => {
         className="redirect-timer"
         style={created ? { display: "block" } : { display: "none" }}
       >
-        {choice==="user"?"User":"Admin"} registered ... Redirecting in to login....
+        {choice === "user" ? "User" : "Admin"} registered ... Redirecting in to
+        login....
       </div>
     </div>
   );
