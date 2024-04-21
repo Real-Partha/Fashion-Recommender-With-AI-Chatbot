@@ -213,6 +213,7 @@
   width: 200px;
   height: 45px;
   position: relative;
+  left: -8%;
   z-index: 1;
 }
 

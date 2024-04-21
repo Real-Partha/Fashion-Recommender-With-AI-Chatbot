@@ -10,6 +10,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { store } from "./redux/store";
 import { Provider } from "react-redux";
 import Orders from "./routes/Orders.jsx";
+import NotFound from "./routes/NotFound.jsx";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,11 @@ const router = createBrowserRouter([
   {
     path: "/admin",
     element: <Admin />,
+  },
+  {
+    path: "*",
+    element: <NotFound />,
+  
   },
 ]);
 

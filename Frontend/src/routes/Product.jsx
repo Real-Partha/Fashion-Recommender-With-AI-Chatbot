@@ -58,7 +58,7 @@ const Product = () => {
     };
 
     fetchProductData();
-  }, [productData]);
+  }, []);
 
   useEffect(() => {
     if (productData.name) {
