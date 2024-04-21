@@ -47,7 +47,7 @@ def verify_access_token(token: str):
                 detail="You are not authorized",
                 headers={"WWW-Authenticate": "Bearer"},
             )
-        token_data = schemas.TokenData(userid=id, token=token)
+        token_data = schemas.TokenData(id=id, token=token)
     except Exception as e:
         print("Here 3")
         token_entry(token,"expired")
@@ -61,13 +61,13 @@ def verify_access_token(token: str):
 
 def get_current_user(token: str = Depends(oauth2_schema)):
     token_data = verify_access_token(token)
-    userid = token_data.userid
+    userid = token_data.id
     user = get_userbyid(userid)
     return user
 
 def get_current_admin(token: str = Depends(oauth2_schema)):
     token_data = verify_access_token(token)
-    adminid = token_data.userid
+    adminid = token_data.id
     admin = get_adminbyid(adminid)
     return admin
 
