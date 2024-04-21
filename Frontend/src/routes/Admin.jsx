@@ -1,10 +1,11 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Admin = () => {
 
   const [admin, setAdmin] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
@@ -19,7 +20,7 @@ const Admin = () => {
             },
           });
           if (response.ok) {
-            window.location.href = "/";
+            navigate("/");
           }
         } else {
           const response = await fetch("http://127.0.0.1:8000/admin/", {
@@ -34,7 +35,7 @@ const Admin = () => {
           }
         }
       } else {
-        <Link>window.location.href = "/";</Link>;
+        navigate("/");
       }
     })();
   }, []);

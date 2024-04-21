@@ -13,21 +13,34 @@ const SignupPage = () => {
   const [created, setCreated] = useState(false); // To check if the user is created
   const [error, setError] = useState(false); // To display error message
   const [errormsg, setErrorMsg] = useState("");
+  const [choice, setChoice] = useState("user");
   const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
       // Check if the user is already logged in{
-      const token = localStorage.getItem("usertoken");
+      const token = localStorage.getItem("token");
       if (token !== null) {
-        const response = await fetch("http://127.0.0.1:8000/users/", {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("usertoken")}`,
-          },
-        });
-        if (response.ok) {
+        if (localStorage.getItem("tokentype") === "user") {
+          const response = await fetch("http://127.0.0.1:8000/users/", {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          });
+          if (response.ok) {
             navigate("/");
+          }
+        } else {
+          const response = await fetch("http://127.0.0.1:8000/admin/", {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          });
+          if (response.ok) {
+            navigate("/admin");
+          }
         }
       }
     })();
@@ -36,58 +49,93 @@ const SignupPage = () => {
   const handleSignup = async (e) => {
     e.preventDefault(); // Prevent the default form submission
     try {
-        const email = user["email"];
-        const username = user["username"];
-        const password = user["password"];
-        const name = user["name"];
-        const age = user["age"];
-        const mobile = user["mobile"];
-        
+      const email = user["email"];
+      const username = user["username"];
+      const password = user["password"];
+      const name = user["name"];
+      const age = user["age"];
+      const mobile = user["mobile"];
+
       const response = await fetch("http://127.0.0.1:8000/users/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            email,
-            username,
-            password,
-            name,
-            age,
-            mobile,
+          email,
+          username,
+          password,
+          name,
+          age,
+          mobile,
         }),
-    });
-    
+      });
+
       const data = await response.json();
       if (response.ok) {
-        setError(false); 
+        setError(false);
         setCreated(true);
         setTimeout(() => {
           navigate("/login");
         }, 4000); // Redirect to login page upon successful signup
       } else {
         if (data["detail"] === "Email Exists") {
-            setErrorMsg("Email already exists");
+          setErrorMsg("Email already exists");
         }
         if (data["detail"] === "Invalid Email") {
-            setErrorMsg("Enter a valid email address");
+          setErrorMsg("Enter a valid email address");
         }
         if (data["detail"] === "Username Exists") {
-            setErrorMsg("Username already exists");
+          setErrorMsg("Username already exists");
         }
         if (data["detail"] === "Password Wrong") {
-            setErrorMsg("Password must be at least 4 characters long");
+          setErrorMsg("Password must be at least 4 characters long");
         }
         setError(true);
-        console.log(data)
+        console.log(data);
       }
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
+  const handleRoleChoice = (role) => {
+    setChoice(role);
+  };
+
   return (
     <div className="signup-container">
+      <div className="role-choice">
+          <div
+            className="user-login"
+            style={
+              choice === "user"
+                ? {
+                    color: "green",
+                    filter: "drop-shadow(0 0 0.5rem #cabdbdaa)",
+                  }
+                : { color: "white" }
+            }
+            onClick={() => handleRoleChoice("user")}
+          >
+            User
+          </div>
+          <div className="divider"></div>
+          <div
+            className="admin-login"
+            style={
+              choice === "user"
+                ? { color: "white" }
+                : {
+                    color: "green",
+                    filter: "drop-shadow(0 0 0.5rem #cabdbdaa)",
+                  }
+            }
+            onClick={() => handleRoleChoice("admin")}
+          >
+            Admin
+          </div>
+        </div>
       <h2 style={{ margin: "10px 0" }}>Sign Up</h2>
       <form onSubmit={handleSignup}>
         {error && <div className="error">{errormsg}</div>}

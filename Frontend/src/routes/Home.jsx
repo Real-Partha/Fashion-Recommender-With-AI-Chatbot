@@ -37,8 +37,8 @@ function Home() {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
           });
-          const data = await response.json();
-          dispatch(setUser(data));
+          // const data = await response.json();
+          // dispatch(setUser(data));
           if (response.ok){
             window.location.href = "/admin";
           }
