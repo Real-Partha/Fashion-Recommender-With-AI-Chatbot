@@ -48,54 +48,107 @@ const SignupPage = () => {
 
   const handleSignup = async (e) => {
     e.preventDefault(); // Prevent the default form submission
-    try {
-      const email = user["email"];
-      const username = user["username"];
-      const password = user["password"];
-      const name = user["name"];
-      const age = user["age"];
-      const mobile = user["mobile"];
+    if (choice === "user") {
+      try {
+        const email = user["email"];
+        const username = user["username"];
+        const password = user["password"];
+        const name = user["name"];
+        const age = user["age"];
+        const mobile = user["mobile"];
 
-      const response = await fetch("http://127.0.0.1:8000/users/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          username,
-          password,
-          name,
-          age,
-          mobile,
-        }),
-      });
+        const response = await fetch("http://127.0.0.1:8000/users/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            username,
+            password,
+            name,
+            age,
+            mobile,
+          }),
+        });
 
-      const data = await response.json();
-      if (response.ok) {
-        setError(false);
-        setCreated(true);
-        setTimeout(() => {
-          navigate("/login");
-        }, 4000); // Redirect to login page upon successful signup
-      } else {
-        if (data["detail"] === "Email Exists") {
-          setErrorMsg("Email already exists");
+        const data = await response.json();
+        if (response.ok) {
+          setError(false);
+          setCreated(true);
+          setTimeout(() => {
+            navigate("/login");
+          }, 4000); // Redirect to login page upon successful signup
+        } else {
+          if (data["detail"] === "Email Exists") {
+            setErrorMsg("Email already exists");
+          }
+          if (data["detail"] === "Invalid Email") {
+            setErrorMsg("Enter a valid email address");
+          }
+          if (data["detail"] === "Username Exists") {
+            setErrorMsg("Username already exists");
+          }
+          if (data["detail"] === "Password Wrong") {
+            setErrorMsg("Password must be at least 4 characters long");
+          }
+          setError(true);
+          console.log(data);
         }
-        if (data["detail"] === "Invalid Email") {
-          setErrorMsg("Enter a valid email address");
-        }
-        if (data["detail"] === "Username Exists") {
-          setErrorMsg("Username already exists");
-        }
-        if (data["detail"] === "Password Wrong") {
-          setErrorMsg("Password must be at least 4 characters long");
-        }
-        setError(true);
-        console.log(data);
+      } catch (error) {
+        console.error("Error:", error);
       }
-    } catch (error) {
-      console.error("Error:", error);
+    }
+    else {
+      try {
+        const email = user["email"];
+        const username = user["username"];
+        const password = user["password"];
+        const name = user["name"];
+        const age = user["age"];
+        const mobile = user["mobile"];
+
+        const response = await fetch("http://127.0.0.1:8000/admin/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            username,
+            password,
+            name,
+            age,
+            mobile,
+          }),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          setError(false);
+          setCreated(true);
+          setTimeout(() => {
+            navigate("/login");
+          }, 4000); // Redirect to login page upon successful signup
+        } else {
+          if (data["detail"] === "Email Exists") {
+            setErrorMsg("Email already exists");
+          }
+          if (data["detail"] === "Invalid Email") {
+            setErrorMsg("Enter a valid email address");
+          }
+          if (data["detail"] === "Username Exists") {
+            setErrorMsg("Username already exists");
+          }
+          if (data["detail"] === "Password Wrong") {
+            setErrorMsg("Password must be at least 4 characters long");
+          }
+          setError(true);
+          console.log(data);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
     }
   };
 
@@ -106,36 +159,36 @@ const SignupPage = () => {
   return (
     <div className="signup-container">
       <div className="role-choice">
-          <div
-            className="user-login"
-            style={
-              choice === "user"
-                ? {
-                    color: "green",
-                    filter: "drop-shadow(0 0 0.5rem #cabdbdaa)",
-                  }
-                : { color: "white" }
-            }
-            onClick={() => handleRoleChoice("user")}
-          >
-            User
-          </div>
-          <div className="divider"></div>
-          <div
-            className="admin-login"
-            style={
-              choice === "user"
-                ? { color: "white" }
-                : {
-                    color: "green",
-                    filter: "drop-shadow(0 0 0.5rem #cabdbdaa)",
-                  }
-            }
-            onClick={() => handleRoleChoice("admin")}
-          >
-            Admin
-          </div>
+        <div
+          className="user-login"
+          style={
+            choice === "user"
+              ? {
+                  color: "green",
+                  filter: "drop-shadow(0 0 0.5rem #cabdbdaa)",
+                }
+              : { color: "white" }
+          }
+          onClick={() => handleRoleChoice("user")}
+        >
+          User
         </div>
+        <div className="divider"></div>
+        <div
+          className="admin-login"
+          style={
+            choice === "user"
+              ? { color: "white" }
+              : {
+                  color: "green",
+                  filter: "drop-shadow(0 0 0.5rem #cabdbdaa)",
+                }
+          }
+          onClick={() => handleRoleChoice("admin")}
+        >
+          Admin
+        </div>
+      </div>
       <h2 style={{ margin: "10px 0" }}>Sign Up</h2>
       <form onSubmit={handleSignup}>
         {error && <div className="error">{errormsg}</div>}
@@ -202,7 +255,7 @@ const SignupPage = () => {
         className="redirect-timer"
         style={created ? { display: "block" } : { display: "none" }}
       >
-        Redirecting in to login....
+        {choice==="user"?"User":"Admin"} registered ... Redirecting in to login....
       </div>
     </div>
   );

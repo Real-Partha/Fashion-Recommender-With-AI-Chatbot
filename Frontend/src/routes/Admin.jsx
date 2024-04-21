@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
 const Admin = () => {
 
@@ -40,7 +41,8 @@ const Admin = () => {
     })();
   }, []);
 
-  return <div>{admin?`You are logged in as Admin (${admin.name})`:"Not logged in"}</div>;
+  return <div>
+    <Navbar />{admin?`You are logged in as Admin (${admin.name})`:"Not logged in"}</div>;
 };
 
 export default Admin;
