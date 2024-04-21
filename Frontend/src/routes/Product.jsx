@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import "./Product.css";
 
 const ProductRating = ({ rating, setRating }) => {
+
   const handleStarClick = (index) => {
     // Set the rating to the index of the clicked star + 1
     setRating(index + 1);
@@ -36,11 +38,14 @@ const Product = () => {
   const [productData, setProductData] = useState({});
   const [rating, setRating] = useState(0);
   const [selectedSize, setSelectedSize] = useState("M"); // State to track the selected size
+  const params = useParams();
+  const productid = parseInt(params.productid);
 
   useEffect(() => {
     const fetchProductData = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/product/60010/");
+        console.log("Type of productid:", typeof productid);
+        const response = await fetch(`http://127.0.0.1:8000/product/${productid}/`);
 
         const data = await response.json();
         setTimeout(() => {

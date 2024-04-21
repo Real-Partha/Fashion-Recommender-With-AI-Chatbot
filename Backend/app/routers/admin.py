@@ -8,15 +8,15 @@ import re
 router = APIRouter(prefix="/admin", tags=["admin"])
 
 
-@router.get("/", response_model=schemas.User, status_code=status.HTTP_200_OK)
-def fetchadminbytoken(current_user: schemas.User = Depends(oauth2.get_current_user)):
-    data = get_adminbyid(int(current_user["userid"]))
+@router.get("/", response_model=schemas.Admin, status_code=status.HTTP_200_OK)
+def fetchadminbytoken(current_user: schemas.Admin = Depends(oauth2.get_current_admin)):
+    data = get_adminbyid(int(current_user["adminid"]))
     if data:
         return data
     else:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="User Not Found with userid or username: " + current_user["userid"],
+            detail="Admin Not Found with userid or username: " + current_user["userid"],
         )
 
 @router.post("/", response_model=schemas.Message, status_code=status.HTTP_201_CREATED)

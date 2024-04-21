@@ -17,7 +17,7 @@ def getproduct(product_id:int):
         else:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="Product not found")
     except Exception as e:
-        print(f"Error fetching product: {e}")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="Product not found")
 
 @router.get("/random/{number}",status_code=status.HTTP_200_OK,response_model=list[schemas.Product])
 def getrandomproducts(number:int):
@@ -32,4 +32,4 @@ def getrandomproducts(number:int):
         else:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="Products could not be fetched")
     except Exception as e:
-        print(f"Error fetching product: {e}")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="Products could not be fetched")

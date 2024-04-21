@@ -9,14 +9,15 @@ const Navbar = () => {
   useEffect(() => {
     (async () => {
       // Check if the user is already logged in
-      const token = localStorage.getItem("usertoken");
+      const token = localStorage.getItem("token");
       if (token === null) {
         setAuthenticated(false);
       } else {
+        if (localStorage.getItem("tokentype") === "user") {
         const response = await fetch("http://127.0.0.1:8000/users/", {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("usertoken")}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
         const data = await response.json();
@@ -29,6 +30,24 @@ const Navbar = () => {
           setAuthenticated(false);
         }
       }
+      else{
+        const response = await fetch("http://127.0.0.1:8000/admin/", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        const data = await response.json();
+        if (response.ok) {
+          setAuthenticated(true);
+        } else if (
+          data["detail"] === "Token has Expired" ||
+          data["detail"] === "Not Authenticated"
+        ) {
+          setAuthenticated(false);
+        }
+      }
+    }
     })();
   }, []);
 
@@ -39,11 +58,12 @@ const Navbar = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        token: localStorage.getItem("usertoken"),
+        token: localStorage.getItem("token"),
         status: "logout",
       }),
     });
-    localStorage.removeItem("usertoken");
+    localStorage.removeItem("token");
+    localStorage.removeItem("tokentype");
     setAuthenticated(false);
     window.location.reload();
   };

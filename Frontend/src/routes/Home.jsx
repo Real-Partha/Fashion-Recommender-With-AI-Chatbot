@@ -17,18 +17,34 @@ function Home() {
   useEffect(() => {
     (async () => {
       // Check if the user is already logged in
-      const token = localStorage.getItem("usertoken");
+      const token = localStorage.getItem("token");
       if (token !== null) {
+        if (localStorage.getItem("tokentype") === "user") {
         try {
           const response = await fetch("http://127.0.0.1:8000/users/", {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("usertoken")}`,
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
           });
           const data = await response.json();
           dispatch(setUser(data));
         } catch (error) {}
       }
+      else{
+        try {
+          const response = await fetch("http://127.0.0.1:8000/admin/", {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          });
+          const data = await response.json();
+          dispatch(setUser(data));
+          if (response.ok){
+            window.location.href = "/admin";
+          }
+        } catch (error) {}
+      }
+    }
     })();
   }, []);
 

@@ -25,21 +25,37 @@ const LoginPage = () => {
   useEffect(() => {
     (async () => {
       // Check if the user is already logged in{
-      const token = localStorage.getItem("usertoken");
+      const token = localStorage.getItem("token");
       if (token !== null) {
-        const response = await fetch("http://127.0.0.1:8000/users/", {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("usertoken")}`,
-          },
-        });
-        const data = await response.json();
-        if (response.ok) {
-          setSuccessMessage("You are already logged in");
-          setSuccess(true);
-          setTimeout(() => {
-            window.location.href = "/";
-          }, 5000);
+        if (localStorage.getItem("tokentype") === "user") {
+          const response = await fetch("http://127.0.0.1:8000/users/", {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          });
+          if (response.ok) {
+            setSuccessMessage("You are already logged in...");
+            setSuccess(true);
+            setTimeout(() => {
+              window.location.href = "/";
+            }, 5000);
+          }
+        }
+        else{
+          const response = await fetch("http://127.0.0.1:8000/admin/", {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          });
+          if (response.ok) {
+            setSuccessMessage("You are already logged in as Admin...");
+            setSuccess(true);
+            setTimeout(() => {
+              window.location.href = "/admin";
+            }, 5000);
+          }
         }
       }
     })();
@@ -48,37 +64,75 @@ const LoginPage = () => {
   const handleLogin = async (e) => {
     e.preventDefault(); // Prevent the default form
     try {
-      const response = await fetch("http://127.0.0.1:8000/auth/login/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          credentials: credentials,
-          password: password,
-        }),
-      });
-      const data = await response.json();
-      if (response.ok) {
-        setPasswordok(true);
-        setCredentialsOk(true);
-        setPassword("");
-        setCredentials("");
-        setSuccessMessage("You have successfully logged in");
-        localStorage.setItem("usertoken", data["token"]); // Store token in local storage
-        setSuccess(true);
-        setTimeout(() => {
-          window.location.href = "/"; // Replace "/homepage" with the actual URL of your homepage
-        }, 5000);
-      } else {
-        if (data.detail === "Incorrect Password") {
-          setPasswordok(false);
-          setCredentialsOk(true);
-          setError(data.detail);
-        } else {
-          setCredentialsOk(false);
+      if (choice === "user") {
+        const response = await fetch("http://127.0.0.1:8000/auth/login/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            credentials: credentials,
+            password: password,
+          }),
+        });
+        const data = await response.json();
+        if (response.ok) {
           setPasswordok(true);
-          setError(data.detail);
+          setCredentialsOk(true);
+          setPassword("");
+          setCredentials("");
+          setSuccessMessage("You have successfully logged in");
+          localStorage.setItem("token", data["token"]); // Store token in local storage
+          localStorage.setItem("tokentype", "user"); // Store token in local storage
+          setSuccess(true);
+          setTimeout(() => {
+            window.location.href = "/"; // Replace "/homepage" with the actual URL of your homepage
+          }, 5000);
+        } else {
+          if (data.detail === "Incorrect Password") {
+            setPasswordok(false);
+            setCredentialsOk(true);
+            setError(data.detail);
+          } else {
+            setCredentialsOk(false);
+            setPasswordok(true);
+            setError(data.detail);
+          }
+        }
+      } else {
+        const response = await fetch("http://127.0.0.1:8000/auth/login/admin", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            credentials: credentials,
+            password: password,
+          }),
+        });
+        const data = await response.json();
+        if (response.ok) {
+          setPasswordok(true);
+          setCredentialsOk(true);
+          setPassword("");
+          setCredentials("");
+          setSuccessMessage("You have successfully logged in as Admin");
+          localStorage.setItem("token", data["token"]); // Store token in local storage
+          localStorage.setItem("tokentype", "admin"); // Store token in local storage
+          setSuccess(true);
+          setTimeout(() => {
+            window.location.href = "/admin"; // Replace "/homepage" with the actual URL of your homepage
+          }, 5000);
+        } else {
+          if (data.detail === "Incorrect Password") {
+            setPasswordok(false);
+            setCredentialsOk(true);
+            setError(data.detail);
+          } else {
+            setCredentialsOk(false);
+            setPasswordok(true);
+            setError(data.detail);
+          }
         }
       }
     } catch (error) {
@@ -94,9 +148,35 @@ const LoginPage = () => {
     <>
       <div className="login-container">
         <div className="role-choice">
-          <div className="user-login" style={choice==="user"?{color:"green" , filter:"drop-shadow(0 0 0.5rem #cabdbdaa)"}:{color:"white"}}  onClick={() => handleRoleChoice("user")}>User</div>
+          <div
+            className="user-login"
+            style={
+              choice === "user"
+                ? {
+                    color: "green",
+                    filter: "drop-shadow(0 0 0.5rem #cabdbdaa)",
+                  }
+                : { color: "white" }
+            }
+            onClick={() => handleRoleChoice("user")}
+          >
+            User
+          </div>
           <div className="divider"></div>
-          <div className="admin-login" style={choice==="user"?{color:"white"}:{color:"green", filter:"drop-shadow(0 0 0.5rem #cabdbdaa)"}}  onClick={() => handleRoleChoice("admin")}>Admin</div>
+          <div
+            className="admin-login"
+            style={
+              choice === "user"
+                ? { color: "white" }
+                : {
+                    color: "green",
+                    filter: "drop-shadow(0 0 0.5rem #cabdbdaa)",
+                  }
+            }
+            onClick={() => handleRoleChoice("admin")}
+          >
+            Admin
+          </div>
         </div>
         <h2>Login</h2>
         <form onSubmit={handleLogin}>
