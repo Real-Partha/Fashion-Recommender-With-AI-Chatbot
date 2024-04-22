@@ -9,7 +9,7 @@ const ProductRating = ({ rating, setRating }) => {
   };
 
   return (
-    <div className="product-rating">
+    <div className="product-page-rating">
       Rating:
       {[...Array(5)].map((_, index) => (
         <span
@@ -58,7 +58,7 @@ const Product = () => {
     };
 
     fetchProductData();
-  }, []);
+  }, [productData]);
 
   useEffect(() => {
     if (productData.name) {
@@ -72,44 +72,50 @@ const Product = () => {
   };
 
   return (
-    <div className="product-container">
-      <img src={productData.imglink} alt="" className="product-img" />
-      <div className="product-details-scrollable">
-        <div className="product-details">
-          <div className="product-name responsive-text">{productData.name}</div>
-          <div className="product-pid">{productData.pid}</div>
-          <div className="product-ofprice">
-            Original Price: ${productData.ofprice}
-          </div>
-          <div className="product-discount">{productData.discount}% Off</div>
-          <div className="product-price">${productData.price}</div>
-
-          <div className="product-size">
-            <span className="size">Sizes: </span>
-            <div className="selectSize">
-              {["XS", "S", "M", "L", "XL", "2XL", "3XL"].map((size, index) => (
-                <div
-                  key={index}
-                  className={`eachSize ${
-                    selectedSize === size ? "activeSize" : ""
-                  }`}
-                  onClick={() => handleSizeSelection(size)}
-                >
-                  <span>{size}</span>
-                </div>
-              ))}
+    <div>
+      <div className="product-page-container">
+        <img src={productData.imglink} alt="" className="product-page-img" />
+        <div className="product-details-scrollable">
+          <div className="product-page-details">
+            <div className="product-page-name">{productData.name}</div>
+            <div className="product-page-pid">{productData.pid}</div>
+            <div className="product-page-ofprice">
+              Original Price: ${productData.ofprice}
             </div>
-          </div>
+            <div className="product-page-discount">
+              {productData.discount}% Off
+            </div>
+            <div className="product-page-price">${productData.price}</div>
 
-          <ProductRating rating={rating} setRating={setRating} />
+            <div className="product-page-size">
+              <span className="size">Sizes: </span>
+              <div className="selectSize">
+                {["XS", "S", "M", "L", "XL", "2XL", "3XL"].map(
+                  (size, index) => (
+                    <div
+                      key={index}
+                      className={`eachSize ${
+                        selectedSize === size ? "activeSize" : ""
+                      }`}
+                      onClick={() => handleSizeSelection(size)}
+                    >
+                      <span>{size}</span>
+                    </div>
+                  )
+                )}
+              </div>
+            </div>
 
-          <div className="product-buttons">
-            <button className="add-to-cart-btn" onClick={handleStarClick}>
-              Add to Cart
-            </button>
-            <button className="buy-now-btn" onClick={handlebuyClick}>
-              Buy Now
-            </button>
+            <ProductRating rating={rating} setRating={setRating} />
+
+            <div className="product-page-buttons">
+              <button className="add-to-cart-btn" onClick={handleStarClick}>
+                Add to Cart
+              </button>
+              <button className="buy-now-btn" onClick={handlebuyClick}>
+                Buy Now
+              </button>
+            </div>
           </div>
         </div>
       </div>
