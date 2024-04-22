@@ -22,3 +22,11 @@
 .navbar button{
   margin : 3px 10px;
 }
+
+.navbar-admin-welcome{
+  color: white !important;
+  font-size: 1.2rem;
+  font-weight: bold;
+  position: absolute;
+  left : 10px;
+}

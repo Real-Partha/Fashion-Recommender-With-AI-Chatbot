@@ -2,10 +2,12 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import "./Admin.css";
+import AddProduct from "../components/AddProduct";
 
 const Admin = () => {
-
   const [admin, setAdmin] = useState(null);
+  const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,8 +44,21 @@ const Admin = () => {
     })();
   }, []);
 
-  return <div>
-    <Navbar />{admin?`You are logged in as Admin (${admin.name})`:"Not logged in"}</div>;
+  const handleAddProductClick = () => {
+    setShowForm(!showForm);
+  };
+
+  return (
+    <div>
+      <Navbar />
+      <button className="add-product-button" onClick={handleAddProductClick}>
+        Add Product
+      </button>
+      {showForm && <div className={showForm ? "slide-down" : "slide-up"}>
+        {<AddProduct />}
+      </div>}
+    </div>
+  );
 };
 
 export default Admin;

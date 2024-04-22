@@ -5,7 +5,7 @@ import ProductCard from "./ProductCard";
 import { useSelector } from "react-redux";
 // import "./HomeProducts.css";
 import { useDispatch } from "react-redux";
-import styled from 'styled-components';
+// import styled from 'styled-components';
 import { setProductList } from "../redux/ProductList/productList";
 import {
   MDBRow,
@@ -51,7 +51,7 @@ const HomeProducts = () => {
         {productList.length !== 0 ? (
           productList.map((product, index) => (
             <MDBCol md="6" lg="4" className="mb-4">
-              <MDBCard onClick={(e)=>{window.open(`/product/${product.pid}`, "_blank");}}>
+              <MDBCard onClick={(e)=>{window.open(`/product/${product.pid}`, "_blank");}} style={{cursor:"pointer"}}>
                 <MDBRipple
                   // rippleColor="light"
                   rippleTag="div"
@@ -87,6 +87,7 @@ const HomeProducts = () => {
                         overflow: "hidden",
                         whiteSpace: "nowrap",
                       }}
+                      title={product.name}
                     >
                       {product.name}
                     </h5>{" "}

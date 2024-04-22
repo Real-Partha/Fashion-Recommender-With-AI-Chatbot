@@ -8,10 +8,16 @@ import { setUser } from "../redux/User/userSlice";
 
 function Home() {
   const [chatbotVisible, setChatbotVisible] = useState(false);
+  const [behaviorCount, setBehaviorCount] = useState(0);
+  const [behavior, setBehavior] = useState("smooth");
   const dispatch = useDispatch();
 
   const toggleChatbot = () => {
     setChatbotVisible((prevVisible) => !prevVisible);
+    setBehaviorCount(behaviorCount + 1); 
+    if (behaviorCount > 1) {
+      setBehavior("auto");
+    }
   };
 
   useEffect(() => {
@@ -107,7 +113,7 @@ function Home() {
           </svg>
         </div>
       </div>
-      {chatbotVisible && <Chatbot />}
+      {chatbotVisible && <Chatbot scroll_behavior={behavior} />}
     </div>
   );
 }

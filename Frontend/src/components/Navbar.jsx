@@ -2,11 +2,14 @@ import { useState, useEffect } from "react";
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [authenticated, setAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isUser, setIsUser] = useState(false);
+  const [adminData, setAdminData] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
@@ -44,6 +47,7 @@ const Navbar = () => {
         if (response.ok) {
           setAuthenticated(true);
           setIsAdmin(true);
+          setAdminData(data);
         } else if (
           data["detail"] === "Token has Expired" ||
           data["detail"] === "Not Authenticated"
@@ -69,7 +73,7 @@ const Navbar = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("tokentype");
     setAuthenticated(false);
-    window.location.reload();
+    navigate("/");
   };
 
   return (
@@ -103,6 +107,7 @@ const Navbar = () => {
         className="navbar"
         style={authenticated? { display: "flex" } : { display: "none" }}
       >
+        {isAdmin && <h2 style={isAdmin?{display:"inline"}:{display:"none"}} className="navbar-admin-welcome" >You are logged in as {adminData.name} (Amdin) </h2>}
         <Link to="/orders">
         <button className="relative border hover:border-sky-600 duration-500 group cursor-pointer text-sky-50 overflow-hidden h-10 w-40 rounded-md bg-sky-800 p-1 flex justify-center items-center font-extrabold"
         style={isUser? {} : { display: "none" }}>
