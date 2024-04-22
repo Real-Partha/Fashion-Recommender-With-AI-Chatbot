@@ -28,24 +28,6 @@ Here is what you need to be able to run Fashion Recommender With AI Chatbot
 
 3. Set up your `.env` file
 
-   - Duplicate `.env.example` to `.env`
-   - Use `openssl rand -base64 32` to generate a key and add it under `NEXTAUTH_SECRET` in the `.env` file.
-   - Use `openssl rand -base64 32` to generate a key and add it under `CALENDSO_ENCRYPTION_KEY` in the `.env` file.
-
-5. Setup Node
-   If your Node version does not meet the project's requirements as instructed by the docs, "nvm" (Node Version Manager) allows using Node at the version required by the project:
-
-   ```sh
-   nvm use
-   ```
-
-   You first might need to install the specific version and then use it:
-
-   ```sh
-   nvm install && nvm use
-   ```
-
-   You can install nvm from [here](https://github.com/nvm-sh/nvm).
 
 ### Configuring Backend
 
@@ -75,3 +57,30 @@ Here is what you need to be able to run Fashion Recommender With AI Chatbot
     ```sh
     npm install
     ```
+
+## Usage
+
+### Start Backend
+
+1. Go to Backend Folder
+    ```sh
+    -cd Backend
+    ```
+
+2. Start the Backend Server
+    ```sh
+    unicorn app.main:app --reload
+    ```
+### Start Frontend
+
+1. Go to Frontend Folder
+    ```sh
+    -cd Frontend
+    ```
+
+2. Start the Frontend Server
+    ```sh
+    npm run dev
+    ```
+
+3.
