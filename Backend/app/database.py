@@ -90,6 +90,18 @@ def verify_token(token):
     else:
         return False
 
+def add_product(data):
+    db = connect()
+    collection = db["products"]
+    collection.insert_one(data)
+    return True
+
+def get_last_product():
+    db = connect()
+    collection = db["products"]
+    last_product = collection.find({},{"_id":0}).sort("pid", pymongo.DESCENDING).limit(1)
+    last_product = list(last_product)
+    return last_product[0] if len(last_product) > 0 else None
 
 def get_product(product_id):
     db = connect()

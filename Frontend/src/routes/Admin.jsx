@@ -51,12 +51,16 @@ const Admin = () => {
   return (
     <div>
       <Navbar />
-      <button className="add-product-button" onClick={handleAddProductClick}>
-        Add Product
-      </button>
-      {showForm && <div className={showForm ? "slide-down" : "slide-up"}>
-        {<AddProduct />}
-      </div>}
+      <div className="admin-body-comtainer">
+        <button className="add-product-button" onClick={handleAddProductClick}>
+          Add Product
+        </button>
+        {showForm && (
+          <div className={showForm ? "slide-down" : "slide-up"}>
+            {<AddProduct />}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

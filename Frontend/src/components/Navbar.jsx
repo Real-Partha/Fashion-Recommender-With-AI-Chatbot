@@ -107,7 +107,7 @@ const Navbar = () => {
         className="navbar"
         style={authenticated? { display: "flex" } : { display: "none" }}
       >
-        {isAdmin && <h2 style={isAdmin?{display:"inline"}:{display:"none"}} className="navbar-admin-welcome" >You are logged in as {adminData.name} (Amdin) </h2>}
+        {isAdmin && <h2 style={isAdmin?{display:"inline"}:{display:"none"}} className="navbar-admin-welcome" >You are logged in as {adminData.name} (Admin) </h2>}
         <Link to="/orders">
         <button className="relative border hover:border-sky-600 duration-500 group cursor-pointer text-sky-50 overflow-hidden h-10 w-40 rounded-md bg-sky-800 p-1 flex justify-center items-center font-extrabold"
         style={isUser? {} : { display: "none" }}>

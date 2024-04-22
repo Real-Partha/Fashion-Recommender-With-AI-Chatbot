@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import "./AddProduct.css";
 
 const AddProduct = () => {
   const [productData, setProductData] = useState({
-    name: '',
-    price: '',
-    ogPrice: '',
-    discount: '',
-    image: null
+    name: "",
+    price: "",
+    ogPrice: "",
+    discount: "",
+    image: null,
   });
 
   const handleChange = (e) => {
-    if (e.target.name === 'image') {
+    if (e.target.name === "image") {
       setProductData({ ...productData, image: e.target.files[0] });
     } else {
       const { name, value } = e.target;
@@ -18,27 +19,43 @@ const AddProduct = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Call handleCreateProduct with productData
-    handleCreateProduct(productData);
-  };
+    const form = new FormData();
+    form.append("name", productData.name);
+    form.append("price", productData.price);
+    form.append("ogPrice", productData.ogPrice);
+    form.append("discount", productData.discount);
+    form.append("image", productData.image);
 
-  const handleCreateProduct = (productData) => {
-    // Define your logic for creating product here
-    console.log('Product Data:', productData);
+    const response = await fetch("http://127.0.0.1:8000/product/add/", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: form,
+    });
+    const data = await response.json();
+    if (response.ok) {
+      console.log("Product Added Successfully");
+      console.log("Product Data:", data);
+    } else {
+      console.log("Error Adding Product");
+    }
+
     // Reset form after submission
+    console.log("Product Data:", productData);
     setProductData({
-      name: '',
-      price: '',
-      ogPrice: '',
-      discount: '',
-      image: null
+      name: "",
+      price: "",
+      ogPrice: "",
+      discount: "",
+      image: null,
     });
   };
 
   return (
-    <div>
+    <div id="add-product-form" className="add-product-container">
       <h2>Add Product</h2>
       <form onSubmit={handleSubmit}>
         <div>

@@ -22,9 +22,6 @@ import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 const HomeProducts = () => {
   const productList = useSelector((state) => state.productList.value);
   const dispatch = useDispatch();
-  const handleCardClick = () => {
-    window.open(`/product/${product.pid}`, "_blank");
-  };
   useEffect(() => {
     (async () => {
       // Check if the user is already logged in

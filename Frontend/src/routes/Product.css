@@ -1,7 +1,7 @@
 body, html {
   margin: 0;
   padding: 0;
-  overflow: hidden; /* Prevent scroll bars */
+  /* overflow: hidden; Prevent scroll bars */
 }
 
 .product-page-name {

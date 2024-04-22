@@ -215,7 +215,6 @@ const Chatbot = ({ scroll_behavior }) => {
   };
 
   const scrollToBottom = () => {
-    console.log("Scrolling to bottom");
     messagesEndRef.current?.scrollIntoView({ behavior: scroll_behavior }); // Scroll to the last message
   };
 

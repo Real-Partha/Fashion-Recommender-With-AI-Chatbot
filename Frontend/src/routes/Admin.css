@@ -33,3 +33,7 @@
     animation-duration: 1s;
     animation-direction: reverse;
   }
+
+  .admin-body-comtainer{
+    margin-top:50px;
+  }
