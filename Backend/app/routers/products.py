@@ -1,6 +1,6 @@
 import os
 from fastapi import APIRouter, HTTPException, UploadFile, status, Depends, Form
-from ..database import get_product, get_random_products, add_product, get_last_product, add_product_owner, get_owner_products
+from ..database import get_product, get_random_products, add_product, get_last_product, add_product_owner, get_owner_products,delete_product,delete_product_owner,get_product_owner
 from .. import schemas
 from .. import oauth2
 
@@ -116,6 +116,36 @@ def getproductbyadmin(get_current_admin: schemas.Admin = Depends(oauth2.get_curr
             result.append(product)
 
         return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Product not found"
+        )
+    
+@router.delete("/delete/{product_id}/", status_code=status.HTTP_200_OK)
+def deleteproduct(product_id: int, get_current_admin: schemas.Admin = Depends(oauth2.get_current_admin)):
+    try:
+        data = get_product_owner(product_id)
+        if data:
+            if data["adminid"] == get_current_admin["adminid"]:
+                result1 = delete_product(product_id)
+                result2 = delete_product_owner(product_id)
+                if result1 and result2:
+                    return {"detail": "Product deleted successfully"}
+                else:
+                    print("Here 1")
+                    raise HTTPException(
+                        status_code=status.HTTP_400_BAD_REQUEST, detail="Product could not be deleted"
+                    )
+            else:
+                print("Here 2")
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST, detail="You are not the owner of this product"
+                )
+        else:
+            print("Here 3")
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="Product not found"
+            )
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Product not found"

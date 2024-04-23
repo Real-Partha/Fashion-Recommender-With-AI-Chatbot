@@ -121,6 +121,24 @@ def get_owner_products(adminid):
     data = collection.find({"adminid": adminid},{"_id":0})
     return data
 
+def get_product_owner(product_id):
+    db = connect()
+    collection = db["products_owners"]
+    data = collection.find_one({"pid": product_id},{"_id":0})
+    return data
+
+def delete_product_owner(product_id):
+    db = connect()
+    collection = db["products_owners"]
+    collection.delete_one({"pid": product_id})
+    return True
+
+def delete_product(product_id):
+    db = connect()
+    collection = db["products"]
+    collection.delete_one({"pid": product_id})
+    return True
+
 def get_random_products(number):
     db = connect()
     collection = db["products"]

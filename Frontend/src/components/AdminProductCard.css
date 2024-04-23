@@ -55,3 +55,8 @@
   align-items: center;
   flex-direction: column;
 }
+
+
+.update-admin-product,.delete-admin-product{
+    cursor: pointer;
+}
