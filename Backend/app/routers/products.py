@@ -1,6 +1,6 @@
 import os
 from fastapi import APIRouter, HTTPException, UploadFile, status, Depends, Form
-from ..database import get_product, get_random_products, add_product, get_last_product
+from ..database import get_product, get_random_products, add_product, get_last_product, add_product_owner, get_owner_products
 from .. import schemas
 from .. import oauth2
 
@@ -85,7 +85,13 @@ def addproduct(
         data["imglink"] = f"/productimages/{file}"
         result = add_product(data)
         if result:
-            return data
+            add_result = add_product_owner(new_pid, current_user["adminid"])
+            if add_result:
+                return data
+            else:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST, detail="Product could not be added"
+                )
         else:
             print("Inside Else")
             raise HTTPException(
@@ -95,4 +101,22 @@ def addproduct(
         print(e)
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Product could not be added"
+        )
+
+@router.get("/admin/show/", status_code=status.HTTP_200_OK, response_model=list[schemas.Product])
+def getproductbyadmin(get_current_admin: schemas.Admin = Depends(oauth2.get_current_admin)):
+    try:
+        data = get_owner_products(get_current_admin["adminid"])
+        data = list(data)
+        if len(data) == 0:
+            return []
+        result = []
+        for i in data:
+            product = get_product(i["pid"])
+            result.append(product)
+
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Product not found"
         )

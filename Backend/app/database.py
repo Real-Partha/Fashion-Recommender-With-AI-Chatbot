@@ -109,6 +109,18 @@ def get_product(product_id):
     data = collection.find_one({"pid": product_id},{"_id":0})
     return data
 
+def add_product_owner(product_id, admin_id):
+    db = connect()
+    collection = db["products_owners"]
+    collection.insert_one({"pid": product_id, "adminid": admin_id, "status": "active"})
+    return True
+
+def get_owner_products(adminid):
+    db = connect()
+    collection = db["products_owners"]
+    data = collection.find({"adminid": adminid},{"_id":0})
+    return data
+
 def get_random_products(number):
     db = connect()
     collection = db["products"]

@@ -4,10 +4,11 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import "./Admin.css";
 import AddProduct from "../components/AddProduct";
+import ShowAdminProducts from "../components/ShowAdminProducts";
 
 const Admin = () => {
-  const [admin, setAdmin] = useState(null);
-  const [showForm, setShowForm] = useState(false);
+  const [showAddProductForm, setShowForm] = useState(false);
+  const [showAdminProducts, setShowAdminProducts] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -45,19 +46,41 @@ const Admin = () => {
   }, []);
 
   const handleAddProductClick = () => {
-    setShowForm(!showForm);
+    setShowForm(!showAddProductForm);
+    setShowAdminProducts(false);
+  };
+
+  const handleAdminProductsClick = () => {
+    setShowAdminProducts(!showAdminProducts);
+    setShowForm(false);
   };
 
   return (
     <div>
       <Navbar />
-      <div className="admin-body-comtainer">
-        <button className="add-product-button" onClick={handleAddProductClick}>
-          Add Product
-        </button>
-        {showForm && (
-          <div className={showForm ? "slide-down" : "slide-up"}>
+      <div className="admin-body-container">
+        <div className="admin-body-container-menu">
+          <button
+            className="add-product-button"
+            onClick={handleAddProductClick}
+          >
+            Add Product
+          </button>
+          <button
+            className="show-admin-product-button"
+            onClick={handleAdminProductsClick}
+          >
+            Show Products
+          </button>
+        </div>
+        {showAddProductForm && (
+          <div className={showAddProductForm ? "slide-down" : "slide-up"}>
             {<AddProduct />}
+          </div>
+        )}
+        {showAdminProducts && (
+          <div className={showAdminProducts ? "slide-down" : "slide-up"}>
+            {<ShowAdminProducts />}
           </div>
         )}
       </div>
