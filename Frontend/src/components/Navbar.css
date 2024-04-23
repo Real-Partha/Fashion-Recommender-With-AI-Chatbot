@@ -30,3 +30,69 @@
   position: absolute;
   left : 10px;
 }
+
+
+/* ----------------- Button1 Styles ----------------- */
+
+.button1 {
+  display: inline-block;
+  transition: all 0.3s ease-in-out;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  color: #ffffff;
+  padding: 0.8em 2em;
+  cursor: pointer;
+  font-size: 18px;
+  border-radius: 0.5em;
+  /* background: linear-gradient(135deg, #009087, #0077cc); */
+  background: linear-gradient(135deg, #0262B5, #002D8E);
+
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.button1:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.button1:before,
+.button1:after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  display: block;
+  transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+  z-index: -1;
+}
+
+.button1:before {
+  left: 50%;
+  transform: translateX(-50%) scaleY(1) scaleX(1.25);
+  top: 100%;
+}
+
+.button1:after {
+  left: 55%;
+  transform: translateX(-10%) scaleY(1) scaleX(1.2);
+  top: 180%;
+}
+
+.button1:hover {
+  color: #ffffff;
+  background: linear-gradient(135deg, #0262B5, #002D8E);
+  /* background: linear-gradient(135deg, #0077cc, #005799); */
+}
+
+.button1:hover:before,
+.button1:hover:after {
+  top: -5%;
+  background-color: rgba(2, 98, 181, 0.25);
+  /* background-color: rgba(255, 255, 255, 0.15); */
+  transform: translateX(-10%) scaleY(1.2) scaleX(1.2);
+}
+

@@ -62,7 +62,6 @@ def addproduct(
     image: UploadFile = Form(None),
     current_user: schemas.Admin = Depends(oauth2.get_current_admin),
 ):
-    print(current_user)
     try:
         data = {}
         data["name"] = name

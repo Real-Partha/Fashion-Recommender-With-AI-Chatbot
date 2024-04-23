@@ -83,31 +83,36 @@ const Navbar = () => {
         style={authenticated ? { display: "none" } : { display: "flex" }}
       >
         <Link to="/signup">
-          <button className="relative border hover:border-sky-600 duration-500 group cursor-pointer text-sky-50 overflow-hidden h-10 w-40 rounded-md bg-sky-800 p-1 flex justify-center items-center font-extrabold">
+          {/* <button className="relative border hover:border-sky-600 duration-500 group cursor-pointer text-sky-50 overflow-hidden h-10 w-40 rounded-md bg-sky-800 p-1 flex justify-center items-center font-extrabold">
             <div className="absolute z-10 w-32 h-32 rounded-full group-hover:scale-150 transition-all duration-500 ease-in-out bg-sky-900 delay-150 group-hover:delay-75"></div>
             <div className="absolute z-10 w-28 h-28 rounded-full group-hover:scale-150 transition-all duration-500 ease-in-out bg-sky-800 delay-150 group-hover:delay-100"></div>
             <div className="absolute z-10 w-24 h-24 rounded-full group-hover:scale-150 transition-all duration-500 ease-in-out bg-sky-700 delay-150 group-hover:delay-150"></div>
             <div className="absolute z-10 w-20 h-20 rounded-full group-hover:scale-150 transition-all duration-500 ease-in-out bg-sky-600 delay-150 group-hover:delay-200"></div>
             <div className="absolute z-10 w-16 h-16 rounded-full group-hover:scale-150 transition-all duration-500 ease-in-out bg-sky-500 delay-150 group-hover:delay-300"></div>
             <p className="z-10">Signup</p>
-          </button>
+          </button> */}
+
+        <button className="button1">Sign Up</button>
+
         </Link>
         <Link to="/login">
-          <button className="relative border hover:border-sky-600 duration-500 group cursor-pointer text-sky-50 overflow-hidden h-10 w-40 rounded-md bg-sky-800 p-1 flex justify-center items-center font-extrabold">
+          {/* <button className="relative border hover:border-sky-600 duration-500 group cursor-pointer text-sky-50 overflow-hidden h-10 w-40 rounded-md bg-sky-800 p-1 flex justify-center items-center font-extrabold">
             <div className="absolute z-10 w-32 h-32 rounded-full group-hover:scale-150 transition-all duration-500 ease-in-out bg-sky-900 delay-150 group-hover:delay-75"></div>
             <div className="absolute z-10 w-28 h-28 rounded-full group-hover:scale-150 transition-all duration-500 ease-in-out bg-sky-800 delay-150 group-hover:delay-100"></div>
             <div className="absolute z-10 w-24 h-24 rounded-full group-hover:scale-150 transition-all duration-500 ease-in-out bg-sky-700 delay-150 group-hover:delay-150"></div>
             <div className="absolute z-10 w-20 h-20 rounded-full group-hover:scale-150 transition-all duration-500 ease-in-out bg-sky-600 delay-150 group-hover:delay-200"></div>
             <div className="absolute z-10 w-16 h-16 rounded-full group-hover:scale-150 transition-all duration-500 ease-in-out bg-sky-500 delay-150 group-hover:delay-300"></div>
             <p className="z-10">Login</p>
-          </button>
+          </button> */}
+
+        <button className="button1">Login</button>
         </Link>
       </div>
       <div
         className="navbar"
         style={authenticated? { display: "flex" } : { display: "none" }}
       >
-        {isAdmin && <h2 style={isAdmin?{display:"inline"}:{display:"none"}} className="navbar-admin-welcome" >You are logged in as {adminData.name} (Admin) </h2>}
+        {isAdmin && <h2 style={isAdmin?{display:"inline"}:{display:"none"}} className="navbar-admin-welcome" >You are logged in as {adminData.name} (Amdin) </h2>}
         <Link to="/orders">
         <button className="relative border hover:border-sky-600 duration-500 group cursor-pointer text-sky-50 overflow-hidden h-10 w-40 rounded-md bg-sky-800 p-1 flex justify-center items-center font-extrabold"
         style={isUser? {} : { display: "none" }}>
