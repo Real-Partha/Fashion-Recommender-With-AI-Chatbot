@@ -9,6 +9,8 @@ const AddProduct = () => {
     discount: "",
     image: null,
   });
+  const [productCreated, setProductCreated] = useState(false);
+  const [CreatedProduct, setCreatedProduct] = useState(null);
 
   const handleChange = (e) => {
     if (e.target.name === "image") {
@@ -37,8 +39,8 @@ const AddProduct = () => {
     });
     const data = await response.json();
     if (response.ok) {
-      console.log("Product Added Successfully");
-      console.log("Product Data:", data);
+      setCreatedProduct(data);
+      setProductCreated(true);
     } else {
       console.log("Error Adding Product");
     }
@@ -110,6 +112,7 @@ const AddProduct = () => {
         </div>
         <button type="submit">Add Product</button>
       </form>
+      {productCreated && <h2>Product Created Successfully with Product ID : {CreatedProduct.pid}</h2>}
     </div>
   );
 };

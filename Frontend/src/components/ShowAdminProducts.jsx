@@ -1,7 +1,7 @@
 import React from 'react'
-import ProductCard from './ProductCard'
 import "./ShowAdminProducts.css"
 import { useState,useEffect } from 'react'
+import AdminProductCard from './AdminProductCard'
 
 const ShowAdminProducts = () => {
   const [products, setProducts] = useState(null);
@@ -30,8 +30,11 @@ const ShowAdminProducts = () => {
   return (
     <div className="show-admin-products">
       {productsAvailable && products.map((product) => {
-        return <ProductCard key={product.id} product={product} />;
+        return <AdminProductCard key={product.id} product={product} />;
       }
+      )}
+      {productsAvailable && products.length === 0 && (
+        <h2>No Products Available</h2>
       )}
     </div>
   )

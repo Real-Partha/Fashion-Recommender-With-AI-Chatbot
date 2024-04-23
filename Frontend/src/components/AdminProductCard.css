@@ -1,0 +1,57 @@
+/* Chatbot.css */
+.admin-product-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  background-color: white;
+  margin: 5px 5px;
+}
+.admin-product-image {
+  margin-right: 20px;
+  width: 130px;
+  height: 140px;
+}
+
+.admin-product-details {
+  flex: 1;
+}
+
+.admin-product-name {
+  /* width: 160px; */
+  font-weight: bold;
+  font-size: 14px;
+  /* overflow: hidden; */
+  white-space: nowrap;
+  cursor: default;
+}
+
+.admin-product-name:hover {
+  cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+.admin-product-price {
+  margin-top: 5px;
+  margin-right: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #e0667a; /* Set the color of the price to #e0667a */
+}
+
+.admin-product-discount {
+  margin-top: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  background-color: #e0667a; /* Set the background color of the discount to #e0667a */
+  color: white;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+.admin-price-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
