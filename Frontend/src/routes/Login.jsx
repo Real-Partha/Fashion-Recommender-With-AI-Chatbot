@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./Login.css"; // Import the CSS file for styling
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { FaUser } from "react-icons/fa";
+import { FaLock } from "react-icons/fa";
 
 const LoginPage = () => {
   const [credentials, setCredentials] = useState("");
@@ -45,7 +47,7 @@ const LoginPage = () => {
             }, 5000);
           }
         }
-        else{
+        else {
           const response = await fetch("http://127.0.0.1:8000/admin/", {
             headers: {
               "Content-Type": "application/json",
@@ -150,42 +152,50 @@ const LoginPage = () => {
   return (
     <>
       <div className="login-container">
-        <div className="role-choice">
-          <div
-            className="user-login"
-            style={
-              choice === "user"
-                ? {
-                    color: "green",
-                    filter: "drop-shadow(0 0 0.5rem #cabdbdaa)",
-                  }
-                : { color: "white" }
-            }
-            onClick={() => handleRoleChoice("user")}
-          >
-            User
-          </div>
-          <div className="divider"></div>
-          <div
-            className="admin-login"
-            style={
-              choice === "user"
-                ? { color: "white" }
-                : {
-                    color: "green",
-                    filter: "drop-shadow(0 0 0.5rem #cabdbdaa)",
-                  }
-            }
-            onClick={() => handleRoleChoice("admin")}
-          >
-            Admin
-          </div>
-        </div>
         <h2>Login</h2>
+
+        {/* <h2>Login</h2> */}
         <form onSubmit={handleLogin}>
+          <div className="role-choice">
+            <div
+              className="user-login"
+              style={
+                choice === "user"
+                  ? {
+
+                    color: "white",
+                    background: "rgba(247, 193, 112, 0.267)",
+                    filter: "drop-shadow(0 0 0.5rem #cabdbdaa)",
+                  }
+                  : { color: "white" }
+              }
+              onClick={() => handleRoleChoice("user")}
+            >
+              User
+            </div>
+            <div className="divider"></div>
+            <div
+              className="admin-login"
+              style={
+                choice === "user"
+                  ? {
+                    color: "white",
+                  }
+                  : {
+                    filter: "drop-shadow(0 0 0.5rem #cabdbdaa)",
+                    background: "rgba(247, 193, 112, 0.267)",
+                    color: "white",
+                  }
+              }
+              onClick={() => handleRoleChoice("admin")}
+            >
+              Admin
+            </div>
+          </div>
           <div className="form-group">
-            <div className="credentials">Username or Email</div>
-            <input
+
+            {/* <div className="credentials">Username or Email</div> */}
+            <input placeholder="Username / Email"
               disabled={success}
               className="login-input"
               type="text"
@@ -194,6 +204,7 @@ const LoginPage = () => {
               onChange={(e) => setCredentials(e.target.value)}
               required
             />
+            <FaUser className="icon" />
           </div>
           <div
             className="error"
@@ -202,8 +213,9 @@ const LoginPage = () => {
             {error}
           </div>
           <div className="form-group">
-            <div className="credentials">Password</div>
+            {/* <div className="credentials">Password</div> */}
             <input
+              placeholder="Password"
               disabled={success}
               className="login-input"
               type="password"
@@ -212,6 +224,7 @@ const LoginPage = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+            <FaLock className="icon" />
           </div>
           <div
             className="error"

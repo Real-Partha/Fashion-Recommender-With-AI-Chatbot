@@ -158,14 +158,16 @@ const SignupPage = () => {
 
   return (
     <div className="signup-container">
+      <h2 style={{ margin: "10px 0" }}>Sign Up</h2>
       <div className="role-choice">
         <div
           className="user-login"
           style={
             choice === "user"
               ? {
-                  color: "green",
-                  filter: "drop-shadow(0 0 0.5rem #cabdbdaa)",
+                color: "white",
+                background: "rgba(247, 193, 112, 0.267)",
+                filter: "drop-shadow(0 0 0.5rem #cabdbdaa)",
                 }
               : { color: "white" }
           }
@@ -180,8 +182,9 @@ const SignupPage = () => {
             choice === "user"
               ? { color: "white" }
               : {
-                  color: "green",
-                  filter: "drop-shadow(0 0 0.5rem #cabdbdaa)",
+                filter: "drop-shadow(0 0 0.5rem #cabdbdaa)",
+                background: "rgba(247, 193, 112, 0.267)",
+                color: "white",
                 }
           }
           onClick={() => handleRoleChoice("admin")}
@@ -189,12 +192,13 @@ const SignupPage = () => {
           Admin
         </div>
       </div>
-      <h2 style={{ margin: "10px 0" }}>Sign Up</h2>
+      
       <form onSubmit={handleSignup}>
         {error && <div className="error">{errormsg}</div>}
         <div className="signup-div">
-          <div className="signup-credentials">Email:</div>
+          <div className="signup-credentials"></div>
           <input
+            placeholder="Email Address"
             type="email"
             value={user["email"]}
             onChange={(e) => setUser({ ...user, email: e.target.value })}
@@ -202,8 +206,9 @@ const SignupPage = () => {
           />
         </div>
         <div className="signup-div">
-          <div className="signup-credentials">Username:</div>
+          <div className="signup-credentials"></div>
           <input
+            placeholder="Username"
             type="text"
             value={user["username"]}
             onChange={(e) => setUser({ ...user, username: e.target.value })}
@@ -211,8 +216,9 @@ const SignupPage = () => {
           />
         </div>
         <div className="signup-div">
-          <div className="signup-credentials">Password:</div>
+          <div className="signup-credentials"></div>
           <input
+            placeholder="Password"
             type="password"
             value={user["password"]}
             onChange={(e) => setUser({ ...user, password: e.target.value })}
@@ -220,8 +226,9 @@ const SignupPage = () => {
           />
         </div>
         <div className="signup-div">
-          <div className="signup-credentials">Name:</div>
+          <div className="signup-credentials"></div>
           <input
+            placeholder="Name"
             type="text"
             value={user["name"]}
             onChange={(e) => setUser({ ...user, name: e.target.value })}
@@ -229,8 +236,9 @@ const SignupPage = () => {
           />
         </div>
         <div className="signup-div">
-          <div className="signup-credentials">Age:</div>
+          <div className="signup-credentials"></div>
           <input
+            placeholder="Age"
             type="number"
             value={user["age"]}
             onChange={(e) => setUser({ ...user, age: e.target.value })}
@@ -238,8 +246,9 @@ const SignupPage = () => {
           />
         </div>
         <div className="signup-div">
-          <div className="signup-credentials">Mobile:</div>
+          <div className="signup-credentials"></div>
           <input
+            placeholder="Phone no."
             type="tel"
             value={user["mobile"]}
             onChange={(e) => setUser({ ...user, mobile: e.target.value })}
