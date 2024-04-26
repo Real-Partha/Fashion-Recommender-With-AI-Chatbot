@@ -46,7 +46,7 @@
   font-size: 18px;
   border-radius: 0.5em;
   /* background: linear-gradient(135deg, #009087, #0077cc); */
-  background: linear-gradient(135deg, #0262B5, #002D8E);
+  background: linear-gradient(135deg, #ce7049, #a73319);
 
   border: none;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -84,14 +84,14 @@
 
 .button1:hover {
   color: #ffffff;
-  background: linear-gradient(135deg, #0262B5, #002D8E);
+  background: linear-gradient(135deg, #a93419, #ef7f51);
   /* background: linear-gradient(135deg, #0077cc, #005799); */
 }
 
 .button1:hover:before,
 .button1:hover:after {
   top: -5%;
-  background-color: rgba(2, 98, 181, 0.25);
+  background-color: rgba(247, 116, 10, 0.475);
   /* background-color: rgba(255, 255, 255, 0.15); */
   transform: translateX(-10%) scaleY(1.2) scaleX(1.2);
 }
