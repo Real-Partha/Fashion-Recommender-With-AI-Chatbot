@@ -31,11 +31,15 @@ body, html {
   border-radius: 10%;
   max-width: 80%;
   max-height: 70vh;
+  transition:transform 0.3s ease;
   
   
 
    /* Make image round */
 }
+.product-page-img:hover{
+  tranform:scale(1.2);
+  box-shadow:0px 0px 0px rgba(0,0,0,0.5);
 
 .product-details-scrollable {
   overflow-y: auto;
