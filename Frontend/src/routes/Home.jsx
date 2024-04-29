@@ -56,7 +56,7 @@ function Home() {
   }, []);
 
   return (
-    <div>
+    <div className="home-page-root">
       <Navbar />
       <HomeProducts />
       <div

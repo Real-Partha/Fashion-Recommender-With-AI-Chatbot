@@ -151,6 +151,7 @@ const LoginPage = () => {
 
   return (
     <div className = "login-body">
+      <div className="login-background"></div>
       <div className="login-container">
         <h2>Login</h2>
 

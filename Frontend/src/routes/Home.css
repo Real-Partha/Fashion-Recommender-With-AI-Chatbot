@@ -1,8 +1,9 @@
-#root {
-  max-width: 1280px;
+.home-page-root{
+  width: 100%;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 5rem;
   text-align: center;
+  background-color: rgb(180, 176, 176);
 }
 
 .chat-button-container {

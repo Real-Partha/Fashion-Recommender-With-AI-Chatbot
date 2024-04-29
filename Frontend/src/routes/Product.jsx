@@ -121,7 +121,7 @@ const Product = () => {
         </div>
       </div>}
       {!productFound && <div className="product-not-found">Product not found!</div>}
-    </div>
+    </div> 
   );
 };
 

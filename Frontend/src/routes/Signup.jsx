@@ -157,115 +157,117 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="signup-container">
-      <h2 style={{ margin: "10px 0" }}>Sign Up</h2>
-      <div className="role-choice">
-        <div
-          className="user-login"
-          style={
-            choice === "user"
-              ? {
-                color: "white",
-                background: "rgba(247, 193, 112, 0.267)",
-                filter: "drop-shadow(0 0 0.5rem #cabdbdaa)",
-                }
-              : { color: "white" }
-          }
-          onClick={() => handleRoleChoice("user")}
-        >
-          User
+    <div className="signup-body">
+      <div className="signup-container">
+        <h2 style={{ margin: "10px 0" }}>Sign Up</h2>
+        <div className="role-choice">
+          <div
+            className="user-login"
+            style={
+              choice === "user"
+                ? {
+                    color: "white",
+                    background: "rgba(247, 193, 112, 0.267)",
+                    filter: "drop-shadow(0 0 0.5rem #cabdbdaa)",
+                  }
+                : { color: "white" }
+            }
+            onClick={() => handleRoleChoice("user")}
+          >
+            User
+          </div>
+          <div className="divider"></div>
+          <div
+            className="admin-login"
+            style={
+              choice === "user"
+                ? { color: "white" }
+                : {
+                    filter: "drop-shadow(0 0 0.5rem #cabdbdaa)",
+                    background: "rgba(247, 193, 112, 0.267)",
+                    color: "white",
+                  }
+            }
+            onClick={() => handleRoleChoice("admin")}
+          >
+            Admin
+          </div>
         </div>
-        <div className="divider"></div>
-        <div
-          className="admin-login"
-          style={
-            choice === "user"
-              ? { color: "white" }
-              : {
-                filter: "drop-shadow(0 0 0.5rem #cabdbdaa)",
-                background: "rgba(247, 193, 112, 0.267)",
-                color: "white",
-                }
-          }
-          onClick={() => handleRoleChoice("admin")}
-        >
-          Admin
-        </div>
-      </div>
-      
-      <form onSubmit={handleSignup}>
-        {error && <div className="error">{errormsg}</div>}
-        <div className="signup-div">
-          <div className="signup-credentials"></div>
-          <input
-            placeholder="Email Address"
-            type="email"
-            value={user["email"]}
-            onChange={(e) => setUser({ ...user, email: e.target.value })}
-            required
-          />
-        </div>
-        <div className="signup-div">
-          <div className="signup-credentials"></div>
-          <input
-            placeholder="Username"
-            type="text"
-            value={user["username"]}
-            onChange={(e) => setUser({ ...user, username: e.target.value })}
-            required
-          />
-        </div>
-        <div className="signup-div">
-          <div className="signup-credentials"></div>
-          <input
-            placeholder="Password"
-            type="password"
-            value={user["password"]}
-            onChange={(e) => setUser({ ...user, password: e.target.value })}
-            required
-          />
-        </div>
-        <div className="signup-div">
-          <div className="signup-credentials"></div>
-          <input
-            placeholder="Name"
-            type="text"
-            value={user["name"]}
-            onChange={(e) => setUser({ ...user, name: e.target.value })}
-            required
-          />
-        </div>
-        <div className="signup-div">
-          <div className="signup-credentials"></div>
-          <input
-            placeholder="Age"
-            type="number"
-            value={user["age"]}
-            onChange={(e) => setUser({ ...user, age: e.target.value })}
-            required
-          />
-        </div>
-        <div className="signup-div">
-          <div className="signup-credentials"></div>
-          <input
-            placeholder="Phone no."
-            type="tel"
-            value={user["mobile"]}
-            onChange={(e) => setUser({ ...user, mobile: e.target.value })}
-            required
-          />
-        </div>
-        <button type="submit" className="signup-button">
-          Sign Up
-        </button>
-      </form>
 
-      <div
-        className="redirect-timer"
-        style={created ? { display: "block" } : { display: "none" }}
-      >
-        {choice === "user" ? "User" : "Admin"} registered ... Redirecting in to
-        login....
+        <form onSubmit={handleSignup}>
+          {error && <div className="error">{errormsg}</div>}
+          <div className="signup-div">
+            <div className="signup-credentials"></div>
+            <input
+              placeholder="Email Address"
+              type="email"
+              value={user["email"]}
+              onChange={(e) => setUser({ ...user, email: e.target.value })}
+              required
+            />
+          </div>
+          <div className="signup-div">
+            <div className="signup-credentials"></div>
+            <input
+              placeholder="Username"
+              type="text"
+              value={user["username"]}
+              onChange={(e) => setUser({ ...user, username: e.target.value })}
+              required
+            />
+          </div>
+          <div className="signup-div">
+            <div className="signup-credentials"></div>
+            <input
+              placeholder="Password"
+              type="password"
+              value={user["password"]}
+              onChange={(e) => setUser({ ...user, password: e.target.value })}
+              required
+            />
+          </div>
+          <div className="signup-div">
+            <div className="signup-credentials"></div>
+            <input
+              placeholder="Name"
+              type="text"
+              value={user["name"]}
+              onChange={(e) => setUser({ ...user, name: e.target.value })}
+              required
+            />
+          </div>
+          <div className="signup-div">
+            <div className="signup-credentials"></div>
+            <input
+              placeholder="Age"
+              type="number"
+              value={user["age"]}
+              onChange={(e) => setUser({ ...user, age: e.target.value })}
+              required
+            />
+          </div>
+          <div className="signup-div">
+            <div className="signup-credentials"></div>
+            <input
+              placeholder="Phone no."
+              type="tel"
+              value={user["mobile"]}
+              onChange={(e) => setUser({ ...user, mobile: e.target.value })}
+              required
+            />
+          </div>
+          <button type="submit" className="signup-button">
+            Sign Up
+          </button>
+        </form>
+
+        <div
+          className="redirect-timer"
+          style={created ? { display: "block" } : { display: "none" }}
+        >
+          {choice === "user" ? "User" : "Admin"} registered ... Redirecting in
+          to login....
+        </div>
       </div>
     </div>
   );
