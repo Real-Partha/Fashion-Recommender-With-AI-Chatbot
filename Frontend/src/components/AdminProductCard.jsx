@@ -94,7 +94,7 @@ const AdminProductCard = ({ product }) => {
       }
     );
     if (response.ok) {
-      console.log("Product deleted successfully");
+      
     } else {
       console.error("Error deleting product");
     }

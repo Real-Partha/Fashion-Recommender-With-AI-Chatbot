@@ -39,6 +39,7 @@ const Product = () => {
   const [selectedSize, setSelectedSize] = useState("M"); // State to track the selected size
   const params = useParams();
   const productid = parseInt(params.productid);
+  const [productFound, setProductFound] = useState(false);
 
   useEffect(() => {
     const fetchProductData = async () => {
@@ -49,9 +50,12 @@ const Product = () => {
         );
 
         const data = await response.json();
-        setTimeout(() => {
-          setProductData(data);
-        }, 10);
+        if (response.ok) {
+           setProductFound(true);
+          setTimeout(() => {
+            setProductData(data);
+          }, 10);
+        }
       } catch (error) {
         console.error("Error fetching product data:", error);
       }
@@ -73,15 +77,12 @@ const Product = () => {
 
   return (
     <div>
-      <div className="product-page-container">
+      {productFound && <div className="product-page-container">
         <img src={productData.imglink} alt="" className="product-page-img" />
         <div className="product-details-scrollable">
           <div className="product-page-details">
             <div className="product-page-name">{productData.name}</div>
-            <div className="product-page-pid">{productData.pid}</div>
-            <div className="product-page-ofprice">
-              Original Price: ${productData.ofprice}
-            </div>
+            <div className="product-page-ofprice">${productData.ofprice}</div>
             <div className="product-page-discount">
               {productData.discount}% Off
             </div>
@@ -118,7 +119,8 @@ const Product = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div>}
+      {!productFound && <div className="product-not-found">Product not found!</div>}
     </div>
   );
 };

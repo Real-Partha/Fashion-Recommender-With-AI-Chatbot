@@ -150,7 +150,7 @@ const LoginPage = () => {
   };
 
   return (
-    <>
+    <div className = "login-body">
       <div className="login-container">
         <h2>Login</h2>
 
@@ -250,7 +250,7 @@ const LoginPage = () => {
       >
         Redirecting in {redirectTimer} seconds...
       </div>
-    </>
+    </div>
   );
 };
 

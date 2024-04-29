@@ -1,6 +1,8 @@
 body{
-  overflow: hidden;
+  /* overflow: hidden; */
 }
+
+
 
 .signup-container {
   width: 420px;

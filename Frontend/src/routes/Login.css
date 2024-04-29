@@ -4,16 +4,26 @@
   box-sizing: border-box;
 }
 
+.login-body{
+  /* background: url("../public/beautiful-girls-park.jpg") no-repeat center center/cover; */
+  /* backdrop-filter: blur(2.5px); */
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
 body {
   /* background: url("D:\SE\Fashion-Recommender-With-AI-Chatbot\Frontend\public\bgimg.png") no-repeat center center/cover; */
   /* background: url("D:\SE\Fashion-Recommender-With-AI-Chatbot\Frontend\public\6d710806-d849-43d1-9d79-ed6c6c1bfccb.jpg") no-repeat center center/cover; */
-  background: url("../public/beautiful-girls-park.jpg") no-repeat center center/cover;
+  /* background: url("../public/beautiful-girls-park.jpg") no-repeat center center/cover; */
   /* background: url("D:\SE\Fashion-Recommender-With-AI-Chatbot\Frontend\public\bgimg.png") no-repeat center center/cover; */
   
   /* background: url("D:\SE\Fashion-Recommender-With-AI-Chatbot\Frontend\public\freepik-export-20240425185942sroT.png") no-repeat center center/cover; */
   /* background: url("D:\SE\Fashion-Recommender-With-AI-Chatbot\Frontend\public\freepik-export-20240425195735QN86.jpeg") no-repeat center center/cover; */
-  backdrop-filter: blur(2.5px);
-  width: 100%;;
+  /* backdrop-filter: blur(2.5px); */
+  /* width: 100%;; */
 }
 
 
