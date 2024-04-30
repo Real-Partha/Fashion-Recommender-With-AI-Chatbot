@@ -1,3 +1,4 @@
+from time import sleep
 import google.generativeai as genai
 from .config import settings
 from .text_recommend import recommend
@@ -229,6 +230,7 @@ def response(prompt1):
                 return {"type": "product", "data": final}
             else:
                 response = "Please Provide Product Name along with discount for recommendations."
+                # sleep(20)
                 return {"type": "text", "data": response}
 
         else:

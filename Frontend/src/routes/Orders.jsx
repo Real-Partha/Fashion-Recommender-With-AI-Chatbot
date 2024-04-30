@@ -13,7 +13,7 @@ const Orders = () => {
     try {
       const orderresponse = await fetch("http://127.0.0.1:8000/orders/user/", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("usertoken")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
       const orderdata = await orderresponse.json();

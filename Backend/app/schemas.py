@@ -21,7 +21,7 @@ class Admin(BaseUser):
     mobile : int    
 
 class TokenData(BaseModel):
-    userid: int
+    id: int
     token: str
     
 class AcceptUser(BaseUser):

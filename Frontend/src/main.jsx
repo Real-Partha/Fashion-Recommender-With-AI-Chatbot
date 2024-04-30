@@ -4,11 +4,13 @@ import Home from "./routes/Home.jsx";
 import Login from "./routes/Login.jsx";
 import Signup from "./routes/Signup.jsx";
 import Product from "./routes/Product.jsx";
+import Admin from "./routes/Admin.jsx";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { store } from "./redux/store";
 import { Provider } from "react-redux";
 import Orders from "./routes/Orders.jsx";
+import NotFound from "./routes/NotFound.jsx";
 
 const router = createBrowserRouter([
   {
@@ -24,12 +26,21 @@ const router = createBrowserRouter([
     element: <Signup />,
   },
   {
-    path: "/product",
+    path: "/product/:productid",
     element: <Product />,
   },
   {
     path: "/orders",
     element: <Orders />,
+  },
+  {
+    path: "/admin",
+    element: <Admin />,
+  },
+  {
+    path: "*",
+    element: <NotFound />,
+  
   },
 ]);
 

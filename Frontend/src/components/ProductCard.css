@@ -1,25 +1,21 @@
 /* Chatbot.css */
 .product-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  max-width: 200px;
-  /* margin-bottom: 10px; */
-  padding: 10px;
-  /* border: 1px solid #ccc; */
-  box-shadow: 1px 0.5px 1em #303030aa;
-  border-radius: 5px;
-  background-color: rgb(255, 31, 68);
-  margin: 5px 5px;
-  /* color: rgb(26, 81, 101) */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 200px;
+    padding: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    background-color: white;
+    margin: 5px 5px;
 }
-
 .product-image {
   width: 130px; /* Set the maximum width of the image */
   /* max-height: 100px; */
   height: 140px;
-  border: 2px solid black;;
+  /* border: 2px solid rgb(0, 0, 0);; */
 }
 
 .product-details {
@@ -45,16 +41,18 @@
   margin-right: 10px;
   font-size: 14px;
   font-weight: bold;
+  color: #e0667a; /* Set the color of the price to #e0667a */
 }
 
 .product-discount {
   margin-top: 5px;
   font-size: 14px;
   font-weight: bold;
-  animation: flash 1s infinite, changeColor 3s infinite;
-  filter: drop-shadow(0 0 5px #000000);
+  background-color: #e0667a; /* Set the background color of the discount to #e0667a */
+  color: white;
+  padding: 2px 4px;
+  border-radius: 3px;
 }
-
 .price-container {
   display: flex;
   justify-content: center;

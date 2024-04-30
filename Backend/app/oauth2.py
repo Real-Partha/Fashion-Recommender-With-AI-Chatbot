@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from . import schemas
 from fastapi.security import OAuth2PasswordBearer
 from fastapi import Depends, HTTPException, status
-from .database import get_userbyid,token_entry,verify_token
+from .database import get_userbyid,token_entry,verify_token,get_adminbyid
 from .config import settings
 
 oauth2_schema = OAuth2PasswordBearer(tokenUrl="login")
@@ -28,22 +28,28 @@ def create_access_token(data: dict):
 def verify_access_token(token: str):
     try:
         if not verify_token(token):
+            print("Here 1")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Token has Expired",
                 headers={"WWW-Authenticate": "Bearer"},
             )
         payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
-        id: int = payload["userid"]
+        try:
+            id: int = payload["userid"]
+        except:
+            id: int = payload["adminid"]
 
         if id == None:
+            print("Here 2")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="You are not authorized",
                 headers={"WWW-Authenticate": "Bearer"},
             )
-        token_data = schemas.TokenData(userid=id, token=token)
+        token_data = schemas.TokenData(id=id, token=token)
     except Exception as e:
+        print("Here 3")
         token_entry(token,"expired")
         raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -55,14 +61,14 @@ def verify_access_token(token: str):
 
 def get_current_user(token: str = Depends(oauth2_schema)):
     token_data = verify_access_token(token)
-    userid = token_data.userid
+    userid = token_data.id
     user = get_userbyid(userid)
     return user
 
 def get_current_admin(token: str = Depends(oauth2_schema)):
     token_data = verify_access_token(token)
-    userid = token_data.userid
-    user = get_userbyid(userid)
-    return user
+    adminid = token_data.id
+    admin = get_adminbyid(adminid)
+    return admin
 
 

@@ -90,12 +90,54 @@ def verify_token(token):
     else:
         return False
 
+def add_product(data):
+    db = connect()
+    collection = db["products"]
+    collection.insert_one(data)
+    return True
+
+def get_last_product():
+    db = connect()
+    collection = db["products"]
+    last_product = collection.find({},{"_id":0}).sort("pid", pymongo.DESCENDING).limit(1)
+    last_product = list(last_product)
+    return last_product[0] if len(last_product) > 0 else None
 
 def get_product(product_id):
     db = connect()
     collection = db["products"]
     data = collection.find_one({"pid": product_id},{"_id":0})
     return data
+
+def add_product_owner(product_id, admin_id):
+    db = connect()
+    collection = db["products_owners"]
+    collection.insert_one({"pid": product_id, "adminid": admin_id, "status": "active"})
+    return True
+
+def get_owner_products(adminid):
+    db = connect()
+    collection = db["products_owners"]
+    data = collection.find({"adminid": adminid},{"_id":0})
+    return data
+
+def get_product_owner(product_id):
+    db = connect()
+    collection = db["products_owners"]
+    data = collection.find_one({"pid": product_id},{"_id":0})
+    return data
+
+def delete_product_owner(product_id):
+    db = connect()
+    collection = db["products_owners"]
+    collection.delete_one({"pid": product_id})
+    return True
+
+def delete_product(product_id):
+    db = connect()
+    collection = db["products"]
+    collection.delete_one({"pid": product_id})
+    return True
 
 def get_random_products(number):
     db = connect()
@@ -109,8 +151,6 @@ def get_random_products(number):
 def get_orders_user(userid):
     db = connect()
     collection = db["orders"]
-    print("inside database :",userid)
-    print("inside database :",type(userid))
     data = collection.find({"userid": userid},{"_id":0})
     return data
 

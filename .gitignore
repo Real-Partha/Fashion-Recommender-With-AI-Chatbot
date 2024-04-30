@@ -10,3 +10,5 @@ Frontend/public/images/
 Backend/Debug/dataset
 faiss_index_ids.npy
 faiss_index.index
+node_modules/
+Frontend/public/productimages/

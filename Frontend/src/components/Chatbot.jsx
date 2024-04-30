@@ -3,8 +3,9 @@ import "./Chatbot.css";
 import ProductCard from "./ProductCard";
 import { useSelector, useDispatch } from "react-redux";
 import { setProductList } from "../redux/ProductList/productList";
+// import errorGif from "../assets/error.gif";
 
-const Chatbot = () => {
+const Chatbot = ({ scroll_behavior }) => {
   const [user, setUser] = useState("");
   const [chats, setChats] = useState({});
   const [message, setMessage] = useState("");
@@ -18,11 +19,24 @@ const Chatbot = () => {
   useEffect(() => {
     (async () => {
       // Check if the user is already logged in
-      const token = localStorage.getItem("usertoken");
+      const token = localStorage.getItem("token");
       if (token === null) {
         setAuthenticated(false);
-        setDetails("You are not logged in...Please login to continue...");
+        setDetails("You are not logged in...\nPlease login to continue...");
       } else {
+        if (localStorage.getItem("tokentype") === "admin") {
+          const response = await fetch("http://127.0.0.1:8000/admin/", {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          });
+          if (response.ok) {
+            setSuccessMessage("You are already logged in as Admin...");
+            setSuccess(true);
+            window.location.href = "/admin";
+          }
+        }
         setProcessing(true);
         fetchChatData();
         setProcessing(false);
@@ -38,7 +52,7 @@ const Chatbot = () => {
     try {
       const response = await fetch("http://127.0.0.1:8000/chats/", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("usertoken")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
       const data = await response.json();
@@ -53,12 +67,8 @@ const Chatbot = () => {
       ) {
         setAuthenticated(false);
         setDetails(
-          "Your Session has expired...Please login again to continue..."
+          "Your Session has expired...\nPlease login again to continue..."
         );
-      } else {
-        localStorage.removeItem("usertoken");
-        setAuthenticated(false);
-        setDetails(data["detail"]);
       }
 
       // console.log(chatHistory.payload)
@@ -141,7 +151,7 @@ const Chatbot = () => {
       const response = await fetch("http://127.0.0.1:8000/chats/", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("usertoken")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         // body: JSON.stringify({ message }),
         body: formData,
@@ -205,7 +215,7 @@ const Chatbot = () => {
   };
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }); // Scroll to the last message
+    messagesEndRef.current?.scrollIntoView({ behavior: scroll_behavior }); // Scroll to the last message
   };
 
   const handleImageUpload = (event) => {
@@ -341,8 +351,9 @@ const Chatbot = () => {
         <div ref={messagesEndRef} />
         <div
           className="chatbot-error"
-          style={authenticated ? { display: "none" } : { display: "block" }}
+          style={authenticated ? { display: "none" } : { display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}
         >
+          <img src="error.gif" alt="Error" style={{height:"100px",width:"100px", filter:"drop-shadow(0 0 0.2rem #de5151)"}}/>
           {details}
         </div>
         <div className="input-container">
@@ -352,9 +363,14 @@ const Chatbot = () => {
             name="upload"
             style={{ display: "none" }}
             accept="image/*"
+            disabled={!authenticated}
             onChange={handleImageUpload}
           />
-          <label for="upload" className="upload-button">
+          <label
+            for="upload"
+            className="upload-button"
+            disabled={!authenticated}
+          >
             <lord-icon
               src="https://cdn.lordicon.com/bzqvamqv.json"
               trigger="hover"

@@ -4,20 +4,62 @@
   box-sizing: border-box;
 }
 
+.login-body {
+  /* background: url("../beautiful-girls-park.jpg") no-repeat center center/cover;
+  backdrop-filter: blur(2.5px) !important; */
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.login-background {
+  background: url("../beautiful-girls-park.jpg") no-repeat center center/cover;
+  filter: blur(4px);
+  z-index: -1;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.login-container h2 {
+  font-size: 32px;
+  color: #ffffff;
+  margin-bottom: 20px;
+  /* box-shadow: 0 0 10px rgba(0, 0, 0, .1); */
+  padding: 10px 20px;
+  border-radius: 30px 30px 0 0;
+  /* width: 100%; */
+  border-width: 0 0 1.2px 0;
+}
+
 .login-container {
+  /* margin-left: 50vw; */
+  background: rgba(154, 130, 101, 0.74);
+  /* backdrop-filter: blur(30px); */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #242424;
-  border: 2px solid #ffffff;
-  box-shadow: 0 0 2em #646cffaa;
-  padding: 20px 30px;
+  /* height: 100vh; */
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 2em #000000a2;
+  padding: 30px 40px;
   width: 35vw;
-  border-radius: 40px;
+  border-radius: 10px;
+}
+
+input {
+  color: black !important;
 }
 
 form {
+  background: transparent;
+  /* backdrop-filter: blur(30px); */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -26,23 +68,33 @@ form {
 }
 
 .credentials {
-  color: #fff;
+  color: #252525;
   font-size: 1.1em;
   margin-bottom: 20px;
 }
 
 .form-group {
-  width: 80%;
+  display: flex;
+  width: 100%;
   margin: 20px 0;
+  /* backdrop-filter: blur(30px); */
 }
 
 .login-input {
   width: 100%;
+  height: 100%;
+  /* background: transparent; */
+  border: none;
   padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  margin-top: 10px;
-  filter: drop-shadow(0 0 0.5rem #7e7e7eaa);
+  border: 1px solid rgba(224, 224, 224, 0.735);
+  color: black !important;
+  border-radius: 40px;
+  filter: drop-shadow(0 0 0.5rem #321111aa);
+  margin-left: 10px;
+}
+
+.login input::placeholder {
+  color: #695151e2;
 }
 
 .login-input:disabled {
@@ -51,32 +103,37 @@ form {
 }
 
 .login-button {
-  margin-top: 20px;
-  background-color: #565ac7;
-  color: #fff;
+  width: 100%;
+  height: 45px;
+  background: #f89e59a5;
   border: none;
-  border-radius: 5px;
+  outline: none;
+  border-radius: 40px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  margin-top: 20px;
+  color: white;
+  font-weight: 700;
   padding: 10px 20px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .login-button:hover {
-  background-color: #296e43;
+  background-color: #d88250;
 }
 
 .login-button:disabled {
-  background-color: #535460;
+  background-color: #565763;
   border: none;
   cursor: not-allowed;
 }
 
-.redirect-timer{
+.redirect-timer {
   color: #fff56c;
   font-size: 1.1em;
   margin-top: 20px;
 }
-
 
 .hidden {
   display: none;
@@ -92,14 +149,16 @@ form {
   font-size: 1.1em;
 }
 
-.role-choice{
+.role-choice {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 0px;
+  margin-top: 0;
+  gap: 20%;
 }
 
-.divider{
+.divider {
   color: #fff;
   margin: 0 50px;
   width: 2px;
@@ -107,9 +166,28 @@ form {
   z-index: 1;
 }
 
-.user-login,.admin-login{
+.user-login,
+.admin-login {
   color: #fff;
-  font-size: 1.6em;
-  font-weight: bold;
+  font-size: 1em;
   cursor: pointer;
+  /* background: rgba(247, 193, 112, 0.267); */
+  padding: 0.2em 1em;
+  border-radius: 20px;
+  transition: 0.3s ease;
+}
+
+.user-login:hover,
+.admin-login:hover {
+  background: rgba(247, 193, 112, 0.267);
+}
+
+.icon {
+  position: relative;
+  right: 40px;
+  justify-content: center;
+  top: 8px;
+  color: #a09f9f;
+  font-size: 1.1em;
+  /* margin-right: 10px; */
 }

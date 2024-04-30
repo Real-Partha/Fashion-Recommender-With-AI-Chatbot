@@ -32,34 +32,35 @@ async def chat(
     userid = current_user["userid"]
     curr_date = datetime.now().strftime("%d-%m-%Y")
     curr_time = datetime.now().strftime("%H:%M")
-    print(message)
+    print("Message Received :",message)
     # Update text message in database
-    flag = False
-    db_data = read(userid)
-    for data in db_data:
-        if data["userid"] == userid and data["date"] == curr_date:
-            flag = True
-            update(
-                userid,
-                curr_date,
-                {"time": curr_time, "type": "text", "message": message, "role": "user"},
+    if message is not None:
+        flag = False
+        db_data = read(userid)
+        for data in db_data:
+            if data["userid"] == userid and data["date"] == curr_date:
+                flag = True
+                update(
+                    userid,
+                    curr_date,
+                    {"time": curr_time, "type": "text", "message": message, "role": "user"},
+                )
+                break
+        if not flag:
+            insert(
+                {
+                    "userid": userid,
+                    "date": curr_date,
+                    "chats": [
+                        {
+                            "time": curr_time,
+                            "type": "text",
+                            "message": message,
+                            "role": "user",
+                        }
+                    ],
+                }
             )
-            break
-    if not flag:
-        insert(
-            {
-                "userid": userid,
-                "date": curr_date,
-                "chats": [
-                    {
-                        "time": curr_time,
-                        "type": "text",
-                        "message": message,
-                        "role": "user",
-                    }
-                ],
-            }
-        )
 
     # Process image if provided
     if image is not None:

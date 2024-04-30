@@ -8,32 +8,55 @@ import { setUser } from "../redux/User/userSlice";
 
 function Home() {
   const [chatbotVisible, setChatbotVisible] = useState(false);
+  const [behaviorCount, setBehaviorCount] = useState(0);
+  const [behavior, setBehavior] = useState("smooth");
   const dispatch = useDispatch();
 
   const toggleChatbot = () => {
     setChatbotVisible((prevVisible) => !prevVisible);
+    setBehaviorCount(behaviorCount + 1); 
+    if (behaviorCount > 1) {
+      setBehavior("auto");
+    }
   };
 
   useEffect(() => {
     (async () => {
       // Check if the user is already logged in
-      const token = localStorage.getItem("usertoken");
+      document.title = 'Home | Pearl Fashion | Online Fashion Shopping'
+      const token = localStorage.getItem("token");
       if (token !== null) {
+        if (localStorage.getItem("tokentype") === "user") {
         try {
           const response = await fetch("http://127.0.0.1:8000/users/", {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("usertoken")}`,
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
           });
           const data = await response.json();
           dispatch(setUser(data));
         } catch (error) {}
       }
+      else{
+        try {
+          const response = await fetch("http://127.0.0.1:8000/admin/", {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          });
+          // const data = await response.json();
+          // dispatch(setUser(data));
+          if (response.ok){
+            window.location.href = "/admin";
+          }
+        } catch (error) {}
+      }
+    }
     })();
   }, []);
 
   return (
-    <div>
+    <div className="home-page-root">
       <Navbar />
       <HomeProducts />
       <div
@@ -50,9 +73,9 @@ function Home() {
           <div className="chat-button-background"></div>
           <svg
             className="chat-bubble"
-            width="100"
-            height="100"
-            viewBox="0 0 100 100"
+            width="90"
+            height="90"
+            viewBox="-4 -4 100 100"
           >
             <g className="bubble">
               <path
@@ -90,7 +113,7 @@ function Home() {
           </svg>
         </div>
       </div>
-      {chatbotVisible && <Chatbot />}
+      {chatbotVisible && <Chatbot scroll_behavior={behavior} />}
     </div>
   );
 }
