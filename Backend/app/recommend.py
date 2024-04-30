@@ -2,6 +2,7 @@ import google.generativeai as genai
 from .config import settings
 from .text_recommend import recommend
 from .database import get_product
+from spellchecker import SpellChecker
 
 # import config
 
@@ -36,53 +37,78 @@ preprompt = "You are a prompt helper for a fashion product recommendation system
 #     The prompt user gave is :"
 
 # spell check function starts here
-def load_dictionary(file_path):
-    with open(file_path, 'r') as file:
-        return [line.strip() for line in file]
+# def load_dictionary(file_path):
+#     with open(file_path, 'r') as file:
+#         return [line.strip() for line in file]
 
-def wagner_fischer(s1, s2):
-    len_s1, len_s2 = len(s1), len(s2)
-    if len_s1 > len_s2:
-        s1, s2 = s2, s1
-        len_s1, len_s2 = len_s2, len_s1
+# def wagner_fischer(s1, s2):
+#     len_s1, len_s2 = len(s1), len(s2)
+#     if len_s1 > len_s2:
+#         s1, s2 = s2, s1
+#         len_s1, len_s2 = len_s2, len_s1
 
-    current_row = range(len_s1 + 1)
-    for i in range(1, len_s2 + 1):
-        previous_row, current_row = current_row, [i] + [0] * len_s1
-        for j in range(1, len_s1 + 1):
-            add, delete, change = previous_row[j] + 1, current_row[j-1] + 1, previous_row[j-1]
-            if s1[j-1] != s2[i-1]:
-                change += 1
-            current_row[j] = min(add, delete, change)
+#     current_row = range(len_s1 + 1)
+#     for i in range(1, len_s2 + 1):
+#         previous_row, current_row = current_row, [i] + [0] * len_s1
+#         for j in range(1, len_s1 + 1):
+#             add, delete, change = previous_row[j] + 1, current_row[j-1] + 1, previous_row[j-1]
+#             if s1[j-1] != s2[i-1]:
+#                 change += 1
+#             current_row[j] = min(add, delete, change)
 
-    return current_row[len_s1]
+#     return current_row[len_s1]
 
-def spell_check(word, dictionary):
-    suggestions = []
+# def spell_check(word, dictionary):
+#     suggestions = []
 
-    for correct_word in dictionary:
-        distance = wagner_fischer(word, correct_word)
-        suggestions.append((correct_word, distance))
+#     for correct_word in dictionary:
+#         distance = wagner_fischer(word, correct_word)
+#         suggestions.append((correct_word, distance))
 
-    suggestions.sort(key=lambda x: x[1])
-    return suggestions[:1]
+#     suggestions.sort(key=lambda x: x[1])
+#     return suggestions[:1]
 # Spell check function ends here
-dictionary = load_dictionary(settings.dictionary_url)
+def load_correction_dictionary(file_path):
+    correction_dict = {}
+    with open(file_path, 'r') as file:
+        for line in file:
+            incorrect, correct = line.strip().split(':')
+            correction_dict[incorrect.strip()] = correct.strip()
+    return correction_dict
+
+def correct_spelling(prompt, correction_dict, spell_checker):
+    corrected_prompt = []
+    for word in prompt.split():
+        if word.lower() in correction_dict:
+            print(f"Correcting '{word}' to '{correction_dict[word.lower()]}'")
+            corrected_prompt.append(correction_dict[word.lower()])
+        else:
+            corrected_word = spell_checker.correction(word)
+            corrected_prompt.append(corrected_word)
+    return ' '.join(corrected_prompt)
+
+
+
+# dictionary = load_dictionary(settings.dictionary_url)
 
 def response(prompt1):
     # response = model.generate_content(preprompt + prompt)
     # return response.text
-    str1 = ""
-    for i in prompt1.split():
-        if i.isnumeric():
-            str1 += i + " "
-            continue
-        suggestions = spell_check(i, dictionary)
-        #join the words into another string
-        suggestions = [elem[0] for elem in suggestions]
-        # put space between the words
-        str1 += " ".join(suggestions) + " "
-    prompt = str1
+    # str1 = ""
+    # for i in prompt1.split():
+    #     if i.isnumeric():
+    #         str1 += i + " "
+    #         continue
+    #     suggestions = spell_check(i, dictionary)
+    #     #join the words into another string
+    #     suggestions = [elem[0] for elem in suggestions]
+    #     # put space between the words
+    #     str1 += " ".join(suggestions) + " "
+    # prompt = str1
+    correction_file = '/Users/mdehteshamansari00/Fashion-Recommender-With-AI-Chatbot/Backend/app/Data/fashion_dictionary.txt'  # File containing corrections (icorrect_word : correct_word)
+    spell = SpellChecker()
+    correction_dict = load_correction_dictionary(correction_file)
+    prompt = correct_spelling(prompt1, correction_dict, spell)
     print(prompt)
     dict = {
         "product_name": None,

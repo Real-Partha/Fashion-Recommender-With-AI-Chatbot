@@ -7,3 +7,6 @@ Backend/app/Data/test.csv
 Backend/app/Data/faiss_index_ids.npy
 Backend/app/Data/faiss_index.index
 Frontend/public/images/
+Backend/Debug/dataset
+faiss_index_ids.npy
+faiss_index.index
