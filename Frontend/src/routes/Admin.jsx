@@ -5,10 +5,13 @@ import Navbar from "../components/Navbar";
 import "./Admin.css";
 import AddProduct from "../components/AddProduct";
 import ShowAdminProducts from "../components/ShowAdminProducts";
+import PendingProducts from "../components/PendingProducts";
 
 const Admin = () => {
   const [showAddProductForm, setShowForm] = useState(false);
   const [showAdminProducts, setShowAdminProducts] = useState(false);
+  const [showPendingProducts, setShowPendingProducts] = useState(false);
+  const [admin, setAdmin] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -48,12 +51,20 @@ const Admin = () => {
   const handleAddProductClick = () => {
     setShowForm(!showAddProductForm);
     setShowAdminProducts(false);
+    setShowPendingProducts(false);
   };
 
   const handleAdminProductsClick = () => {
     setShowAdminProducts(!showAdminProducts);
+    setShowPendingProducts(false);
     setShowForm(false);
   };
+
+  const handleAdminPendingProductsClick = () => {
+    setShowPendingProducts(!showPendingProducts);
+    setShowAdminProducts(false);
+    setShowForm(false);
+  }
 
   return (
     <div>
@@ -72,6 +83,12 @@ const Admin = () => {
           >
             Show Products
           </button>
+          <button
+            className="show-admin-pending-product-button"
+            onClick={handleAdminPendingProductsClick}
+          >
+            Show Pending Orders
+          </button>
         </div>
         {showAddProductForm && (
           <div className={showAddProductForm ? "slide-down" : "slide-up"}>
@@ -83,6 +100,12 @@ const Admin = () => {
             {<ShowAdminProducts />}
           </div>
         )}
+        {showPendingProducts && (
+          <div className={showPendingProducts ? "slide-down" : "slide-up"}>
+            {<PendingProducts />}
+          </div>
+        )}
+        
       </div>
     </div>
   );

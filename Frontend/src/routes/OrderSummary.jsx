@@ -5,9 +5,11 @@ const OrderSummary = () => {
   const params = useParams();
   const orderId = params.orderid;
   const [orderData, setOrderData] = useState({});
-  const [error, setError] = useState("");
+  const [orderFound, setOrderFound] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    document.title = "Order Summary | Pearl Fashion";
     (async ()=>{
       const orderresponse = await fetch(`http://127.0.0.1:8000/orders/${orderId}`, {
         headers: {
@@ -17,6 +19,7 @@ const OrderSummary = () => {
       const orderdata = await orderresponse.json();
       if (orderresponse.ok){
         setOrderData(orderdata);
+        setOrderFound(true);
       }
       else{
         setError(orderdata.detail);
@@ -27,10 +30,24 @@ const OrderSummary = () => {
 
   return (<div>
     {error && <div>{error}</div>}
-    {!error && (
-      <div>
-        {JSON.stringify(orderData)}
-      </div>
+    {!error && orderFound && (
+      <div key={orderData.orderid} className="pending-product-card">
+      <h2>Order ID: {orderData.orderid}</h2>
+      <p>Recipient Name: {orderData.recipientName}</p>
+      <p>Address: {orderData.address}</p>
+      <p>State: {orderData.state}</p>
+      <p>Pincode: {orderData.pincode}</p>
+      <p>Residence Type: {orderData.residenceType}</p>
+      <p>Mobile: {orderData.mobile}</p>
+      <p>Payment Type: {orderData.paymentType}</p>
+      <p>Product Name: {orderData.product.name}</p>
+      <p>Product Price: {orderData.product.price}</p>
+      <p>Total: {orderData.total}</p>
+      <p>User ID: {orderData.userid}</p>
+      <p>Status: {orderData.status}</p>
+      <p>Date: {orderData.date}</p>
+      <p>Time: {orderData.time}</p>
+    </div>
     )}
   </div>);
 };

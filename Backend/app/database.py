@@ -165,3 +165,23 @@ def create_order(data):
     collection = db["orders"]
     collection.insert_one(data)
     return True
+
+def create_order_log(data):
+    db = connect()
+    collection = db["orders_log"]
+    collection.insert_one(data)
+    return True
+
+def get_pending_orders(adminid):
+    db = connect()
+    collection = db["orders_log"]
+    data = collection.find({"adminid": adminid, "status": "placed"},{"_id":0})
+    return data
+
+def approve_order(orderid):
+    db = connect()
+    collection = db["orders_log"]
+    collection.update_one({"orderid": orderid}, {"$set": {"status": "approved"}})
+    collection = db["orders"]
+    collection.update_one({"orderid": orderid}, {"$set": {"status": "approved"}})
+    return True

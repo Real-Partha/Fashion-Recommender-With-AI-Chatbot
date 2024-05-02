@@ -99,7 +99,7 @@ const Product = () => {
 
     if (response.ok) {
       const data = await response.json();
-      navigate(`/order/${data.orderid}`);
+      navigate(`/order/${data.orderid}/`);
       // alert("Order placed successfully!");
     } else {
       alert("Order could not be placed!");
