@@ -22,6 +22,7 @@ dc
 tote
 secret
 t-shirt
+tshirt
 vans
 cufflinks
 sneakers
@@ -353,7 +354,6 @@ dl1961
 handbags
 lacoste
 under
-goods
 bodysuits
 balance
 tommy
