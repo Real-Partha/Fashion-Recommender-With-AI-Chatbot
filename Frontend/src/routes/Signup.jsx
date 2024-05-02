@@ -158,6 +158,7 @@ const SignupPage = () => {
 
   return (
     <div className="signup-body">
+      <div className="signup-background"></div>
       <div className="signup-container">
         <h2 style={{ margin: "10px 0" }}>Sign Up</h2>
         <div className="role-choice">

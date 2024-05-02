@@ -61,14 +61,21 @@ class Product(BaseModel):
     discount: float
     imglink: str
 
-class Order(BaseModel):
-    products: list[Product]
+class AcceptOrder(BaseModel):
+    recipientName : str
+    address : str
+    state : str
+    pincode : int
+    residenceType : str
+    mobile : int
+    paymentType : str
+    product: Product
     total: float
 
-class OrderView(Order):
+
+class OrderView(AcceptOrder):
     orderid: str
     status: str
     date: str
     userid: int
     time: str
-    

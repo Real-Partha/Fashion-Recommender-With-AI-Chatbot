@@ -32,8 +32,6 @@ const Chatbot = ({ scroll_behavior }) => {
             },
           });
           if (response.ok) {
-            setSuccessMessage("You are already logged in as Admin...");
-            setSuccess(true);
             window.location.href = "/admin";
           }
         }

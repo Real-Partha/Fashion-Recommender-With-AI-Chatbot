@@ -4,6 +4,7 @@ import "./NotFound.css";
 const NotFound = () => {
   return (
     <div>
+      <div className="not-found-background"></div>
       <div class="main_wrapper">
         <div class="main">
           <div class="antenna">

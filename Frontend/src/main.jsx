@@ -11,6 +11,7 @@ import { store } from "./redux/store";
 import { Provider } from "react-redux";
 import Orders from "./routes/Orders.jsx";
 import NotFound from "./routes/NotFound.jsx";
+import OrderSummary from "./routes/OrderSummary.jsx";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
   {
     path: "/admin",
     element: <Admin />,
+  },
+  {
+    path: "/order/:orderid",
+    element: <OrderSummary />,
   },
   {
     path: "*",

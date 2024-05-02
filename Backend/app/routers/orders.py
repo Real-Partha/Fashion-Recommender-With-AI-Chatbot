@@ -25,7 +25,7 @@ def get_order_id(id: str, current_user: schemas.User = Depends(oauth2.get_curren
 
 
 @router.post("/place/", status_code=status.HTTP_201_CREATED)
-def place_order(order: schemas.Order, current_user: schemas.User = Depends(oauth2.get_current_user)):
+def place_order(order: schemas.AcceptOrder, current_user: schemas.User = Depends(oauth2.get_current_user)):
     data = order.model_dump()
     data["userid"] = current_user["userid"]
     data["status"] = "placed"
@@ -42,6 +42,6 @@ def place_order(order: schemas.Order, current_user: schemas.User = Depends(oauth
     current_time = datetime.now().strftime("%H:%M:%S")
     data["time"] = current_time
     if create_order(data):
-        return {"message": "Order placed successfully"}
+        return {"orderid": temp_orderid, "status": "Order Placed Successfully"}
     else:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Order could not be placed")
