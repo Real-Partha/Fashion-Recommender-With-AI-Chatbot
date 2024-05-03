@@ -2,8 +2,8 @@ import pandas as pd
 from pymongo import MongoClient
 
 # Connect to MongoDB
-client = MongoClient('localhost', 27017)
-db = client['fashion']
+client = MongoClient("mongodb+srv://parthapratimpaul2003:qxwdSH5OU95IWB8r@fashion-ecommerce.6funcp3.mongodb.net/?retryWrites=true&w=majority&appName=Fashion-Ecommerce")
+db = client['Fashion']
 collection = db['products']
 
 # Read CSV file into pandas DataFrame

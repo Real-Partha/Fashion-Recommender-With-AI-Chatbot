@@ -203,7 +203,7 @@ const Product = () => {
             }}
           >
             <img
-              src="/public/back-button.png"
+              src="/back-button.png"
               alt="back"
               style={{ height: "50px", width: "50px" }}
             />
