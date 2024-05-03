@@ -14,6 +14,7 @@ class Setting(BaseSettings):
     color_path_url: str
     greeting_path_url: str
     saved_model_path: str
+    database_url: str
 
     class Config:
         env_file = ".env"
