@@ -168,9 +168,8 @@ const Product = () => {
                     (size, index) => (
                       <div
                         key={index}
-                        className={`eachSize ${
-                          selectedSize === size ? "activeSize" : ""
-                        }`}
+                        className={`eachSize ${selectedSize === size ? "activeSize" : ""
+                          }`}
                         onClick={() => handleSizeSelection(size)}
                       >
                         <span>{size}</span>
@@ -196,6 +195,19 @@ const Product = () => {
       )}
       {authenticated && (
         <div className="product-order-data">
+          <div
+            className="product-back-button"
+            onClick={(e) => {
+              setAuthenticated(false);
+              document.title = productData.name;
+            }}
+          >
+            <img
+              src="/public/back-button.png"
+              alt="back"
+              style={{ height: "50px", width: "50px" }}
+            />
+          </div>
           <form onSubmit={handleOrderSubmission} className="product-order-form">
             <div>
               <label htmlFor="address">Address:</label>
@@ -226,12 +238,15 @@ const Product = () => {
             </div>
             <div>
               <label htmlFor="residenceType">Residence Type:</label>
-              <input
-                type="text"
+              <select
                 id="residenceType"
                 value={residenceType}
                 onChange={(e) => setResidenceType(e.target.value)}
-              />
+              >
+                <option value="house">House</option>
+                <option value="apartment">Apartment</option>
+                <option value="condo">Office</option>
+              </select>
             </div>
             <div>
               <label htmlFor="pincode">Pincode:</label>
@@ -251,16 +266,24 @@ const Product = () => {
                 onChange={(e) => setState(e.target.value)}
               />
             </div>
+
+            <div className="col-2">
+
             <div>
               <label htmlFor="paymentType">Payment Type:</label>
-              <input
-                type="text"
+              <select
                 id="paymentType"
                 value={paymentType}
                 onChange={(e) => setPaymentType(e.target.value)}
-              />
+              >
+                <option value="credit">Credit Card</option>
+                <option value="debit">Debit Card</option>
+                <option value="paypal">UPI</option>
+                <option value="other">Internet Banking</option>
+              </select>
             </div>
             <button type="submit">Submit</button>
+          </div>
           </form>
         </div>
       )}
