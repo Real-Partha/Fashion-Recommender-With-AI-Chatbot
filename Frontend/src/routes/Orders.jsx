@@ -31,13 +31,9 @@ const Orders = () => {
             <div>Order Status : {order.status}</div>
             <div>
               Products :
-              {order.products.map((product, index) => {
-                return (
-                  <div key={index}>
-                    <ProductCard product={product} />
-                  </div>
-                );
-              })}
+              <div>
+                <ProductCard product={order.product} />
+              </div>
             </div>
             <div>Total Amount : {order.total}</div>
             <div>Date of Order : {order.date}</div>

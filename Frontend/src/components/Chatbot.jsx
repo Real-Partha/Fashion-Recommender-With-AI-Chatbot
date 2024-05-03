@@ -13,6 +13,7 @@ const Chatbot = ({ scroll_behavior }) => {
   const [authenticated, setAuthenticated] = useState(false); // To check if the user is authenticated
   const [details, setDetails] = useState("");
   const [image, setImage] = useState(null);
+  const [chatDataRecieved, setChatDataRecieved] = useState(false);
   const messagesEndRef = useRef(null);
   const dispatch = useDispatch();
 
@@ -23,6 +24,7 @@ const Chatbot = ({ scroll_behavior }) => {
       if (token === null) {
         setAuthenticated(false);
         setDetails("You are not logged in...\nPlease login to continue...");
+        setChatDataRecieved(true);
       } else {
         if (localStorage.getItem("tokentype") === "admin") {
           const response = await fetch("http://127.0.0.1:8000/admin/", {
@@ -56,6 +58,7 @@ const Chatbot = ({ scroll_behavior }) => {
       const data = await response.json();
       if (response.ok) {
         setAuthenticated(true);
+        setChatDataRecieved(true);
         setUser(data["user"]);
         setChats(data["data"]);
         console.log(chats);
@@ -64,18 +67,11 @@ const Chatbot = ({ scroll_behavior }) => {
         data["detail"] === "Not Authenticated"
       ) {
         setAuthenticated(false);
+        setChatDataRecieved(true);
         setDetails(
           "Your Session has expired...\nPlease login again to continue..."
         );
       }
-
-      // console.log(chatHistory.payload)
-      // setChats(chatHistory.payload.data)
-      // setUser(chatHistory.payload.user)
-      // console.log(chats)
-      // console.log(user)
-      // setAuthenticated(true)
-      // console.log(chatHistory)
     } catch (error) {
       console.error(error.message);
     }
@@ -347,13 +343,13 @@ const Chatbot = ({ scroll_behavior }) => {
         )}
 
         <div ref={messagesEndRef} />
-        <div
+        {chatDataRecieved && <div
           className="chatbot-error"
           style={authenticated ? { display: "none" } : { display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}
         >
           <img src="error.gif" alt="Error" style={{height:"100px",width:"100px", filter:"drop-shadow(0 0 0.2rem #de5151)"}}/>
           {details}
-        </div>
+        </div>}
         <div className="input-container">
           <input
             type="file"

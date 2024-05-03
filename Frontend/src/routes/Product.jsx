@@ -24,7 +24,6 @@ const Product = () => {
   useEffect(() => {
     const fetchProductData = async () => {
       try {
-        console.log("Type of productid:", typeof productid);
         const response = await fetch(
           `http://127.0.0.1:8000/product/${productid}/`
         );
@@ -132,7 +131,7 @@ const Product = () => {
         const data = await response.json();
         if (response.ok) {
           setAuthenticated(true);
-          alert("You are now buying the product!");
+          document.title = "Place Order";
         } else if (
           data["detail"] === "Token has Expired" ||
           data["detail"] === "Not Authenticated"
@@ -203,7 +202,7 @@ const Product = () => {
             }}
           >
             <img
-              src="/public/back-button.png"
+              src="/back-button.png"
               alt="back"
               style={{ height: "50px", width: "50px" }}
             />
