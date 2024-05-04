@@ -35,6 +35,7 @@ def search_txt(prompt1):
         "price_range": None,
         "is_discounts": None,
         "color": None,
+        "gender": None
     }
     fashion_path = settings.fashion_path_url
     color_path = settings.color_path_url
