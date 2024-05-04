@@ -77,11 +77,31 @@ def search_txt(prompt1):
                     dict["color"] += " "+i
             if i.isdigit():
                 dict["price_range"] = i
+            if i in gender:
+                dict["gender"] = i
     
     if dict["is_discounts"]:
         if dict["discounts"]:
             if dict["product_name"]:
                 if dict["color"]:
+                    if dict["gender"]:
+                        print(dict)
+                        products=recommend(dict["gender"]+" "+dict["color"]+" "+dict["product_name"],30)
+                        products = list(products)
+                        products = list(map(int, products))
+                        prod=[]
+                        for i in products:
+                            product = get_product(i)
+                            prod.append(product)
+                        final = []
+                        for i in prod:
+                            if i["discount"] >= int(dict["discounts"]):
+                                final.append(i)
+                        product_name = dict["product_name"]
+                        if len(final) == 0:
+                            response = f"Sorry, there no {product_name} with that discount."
+                            return {"type": "text", "data": response}
+                        return {"type": "product", "data": final}
                     print(dict)
                     products=recommend(dict["color"]+" "+dict["product_name"],30)
                     products = list(products)
@@ -100,6 +120,25 @@ def search_txt(prompt1):
                         return {"type": "text", "data": response}
                     return {"type": "product", "data": final}
                 # search product
+                if dict["gender"]:
+                    print(dict)
+                    products=recommend(dict["gender"]+" "+dict["product_name"],30)
+                    products = list(products)
+                    products = list(map(int, products))
+                    prod=[]
+                    for i in products:
+                        product = get_product(i)
+                        prod.append(product)
+                    final = []
+                    for i in prod:
+                        if i["discount"] >= int(dict["discounts"]):
+                            final.append(i)
+
+                    product_name = dict["product_name"]
+                    if len(final) == 0:
+                        response = f"Sorry, there no {product_name} with that discount."
+                        return {"type": "text", "data": response}
+                    return {"type": "product", "data": final}
                 print(dict)
                 products=recommend(dict["product_name"],30)
                 products = list(products)
@@ -131,8 +170,44 @@ def search_txt(prompt1):
         if dict["product_name"]:
             if dict["price_range"]:
                 if dict['color']:
+                    if dict["gender"]:
+                        print(dict)
+                        products=recommend(dict["gender"]+" "+dict["color"]+" "+dict["product_name"],30)
+                        products = list(products)
+                        products = list(map(int, products))
+                        prod=[]
+                        for i in products:
+                            product = get_product(i)
+                            prod.append(product)
+                        final = []
+                        for i in prod:
+                            if i["price"] <= int(dict["price_range"]):
+                                final.append(i)
+                        product_name = dict["product_name"]
+                        if len(final) == 0:
+                            response = f"Sorry, there no {product_name} within that price range."
+                            return {"type": "text", "data": response}
+                        return {"type": "product", "data": final}
                     print(dict)
                     products=recommend(dict["color"]+" "+dict["product_name"],30)
+                    products = list(products)
+                    products = list(map(int, products))
+                    prod=[]
+                    for i in products:
+                        product = get_product(i)
+                        prod.append(product)
+                    final = []
+                    for i in prod:
+                        if i["price"] <= int(dict["price_range"]):
+                            final.append(i)
+                    product_name = dict["product_name"]
+                    if len(final) == 0:
+                        response = f"Sorry, there no {product_name} within that price range."
+                        return {"type": "text", "data": response}
+                    return {"type": "product", "data": final}
+                if dict["gender"]:
+                    print(dict)
+                    products=recommend(dict["gender"]+" "+dict["product_name"],30)
                     products = list(products)
                     products = list(map(int, products))
                     prod=[]
@@ -166,8 +241,28 @@ def search_txt(prompt1):
                 
                 return {"type": "product", "data": final}
             if dict["color"]:
+                if dict["gender"]:
+                    print(dict)
+                    products=recommend(dict["gender"]+" "+dict["color"]+" "+dict["product_name"],30)
+                    products = list(products)
+                    products = list(map(int, products))
+                    prod=[]
+                    for i in products:
+                        product = get_product(i)
+                        prod.append(product)
+                    return {"type": "product", "data": prod}
                 print(dict)
                 products=recommend(dict["color"]+" "+dict["product_name"],30)
+                products = list(products)
+                products = list(map(int, products))
+                prod=[]
+                for i in products:
+                    product = get_product(i)
+                    prod.append(product)
+                return {"type": "product", "data": prod}
+            if dict["gender"]:
+                print(dict)
+                products=recommend(dict["gender"]+" "+dict["product_name"],30)
                 products = list(products)
                 products = list(map(int, products))
                 prod=[]
