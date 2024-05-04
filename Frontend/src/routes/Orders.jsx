@@ -26,7 +26,7 @@ const Orders = () => {
     <div>
       {orders.length !== 0 ? (
         orders.map((order, index) => (
-          <div key={index} className="Order-Card">
+          <div key={index} className="Order-Card" onClick={(e)=>{window.open(`/order/${order.orderid}/`,"_blank")}} style={{cursor:"pointer"}}>
             <div>Order ID : {order.orderid}</div>
             <div>Order Status : {order.status}</div>
             <div>

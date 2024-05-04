@@ -1,0 +1,6 @@
+.pending-orders-body{
+    display: flex;
+    flex-wrap: wrap;
+    margin: auto;
+    overflow: hidden;
+}

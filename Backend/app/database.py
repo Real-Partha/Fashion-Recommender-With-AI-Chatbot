@@ -185,3 +185,17 @@ def approve_order(orderid):
     collection = db["orders"]
     collection.update_one({"orderid": orderid}, {"$set": {"status": "approved"}})
     return True
+
+def cancel_order(orderid):
+    db = connect()
+    collection = db["orders_log"]
+    collection.update_one({"orderid": orderid}, {"$set": {"status": "cancelled"}})
+    collection = db["orders"]
+    collection.update_one({"orderid": orderid}, {"$set": {"status": "cancelled"}})
+    return True
+
+def get_order_by_admin(adminid):
+    db = connect()
+    collection = db["orders_log"]
+    data = collection.find({"adminid": adminid},{"_id":0})
+    return data

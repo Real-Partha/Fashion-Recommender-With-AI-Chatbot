@@ -27,7 +27,7 @@ const PendingProducts = () => {
   }, []);
 
   return (
-    <div>
+    <div className="pending-orders-body">
       {pendingOrders &&
         pendingOrders.map((order) => {
           return <PendingProductCard key={order.orderid} order={order} />;

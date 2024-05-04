@@ -52,7 +52,7 @@ const HomeProducts = () => {
         {productList.length !== 0 ? (
           productList.map((product, index) => (
             // <Link className="text-link" to={/productDetail/${product.id}}>
-              <div className="product" key={product.id}onClick={(e)=>{window.open(`/product/${product.pid}`, "_blank");}} style={{cursor:"pointer"}}>
+              <div className="product" key={product.id} onClick={(e)=>{window.open(`/product/${product.pid}`, "_blank");}} style={{cursor:"pointer"}}>
                 <img src={product.imglink} alt="product" />
                 <h3 title={product.name}>{product.name.slice(0, 22)}...</h3>
                 <div className="DisPrice">
