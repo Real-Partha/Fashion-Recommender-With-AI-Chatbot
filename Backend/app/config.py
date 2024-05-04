@@ -16,6 +16,7 @@ class Setting(BaseSettings):
     saved_model_path: str
     database_url: str
     gender_path_url: str
+    correction_path_url: str
 
     class Config:
         env_file = ".env"
