@@ -7,6 +7,15 @@ from .. import oauth2
 router = APIRouter(prefix="/product", tags=["product"])
 
 
+@router.get("/sanket/")
+def getsanket(current_user: schemas.Admin = Depends(oauth2.get_current_admin)):
+    if current_user:
+        return {"message": "Sanket is here"}
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="You are not authorized"
+        )
+
 @router.get(
     "/{product_id}/", status_code=status.HTTP_200_OK, response_model=schemas.Product
 )
@@ -52,13 +61,12 @@ def getrandomproducts(number: int):
             detail="Products could not be fetched",
         )
 
-
 @router.post("/add/", status_code=status.HTTP_201_CREATED, response_model=schemas.Product)
 def addproduct(
     name: str = Form(None),
     price: float = Form(None),
     ogPrice: float = Form(None),
-    discount: int = Form(None),
+    discount: float = Form(None),
     image: UploadFile = Form(None),
     current_user: schemas.Admin = Depends(oauth2.get_current_admin),
 ):

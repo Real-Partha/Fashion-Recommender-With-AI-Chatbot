@@ -6,11 +6,13 @@ import "./Admin.css";
 import AddProduct from "../components/AddProduct";
 import ShowAdminProducts from "../components/ShowAdminProducts";
 import PendingProducts from "../components/PendingProducts";
+import AllAdminOrders from "../components/AllAdminOrders";
 
 const Admin = () => {
   const [showAddProductForm, setShowForm] = useState(false);
   const [showAdminProducts, setShowAdminProducts] = useState(false);
   const [showPendingProducts, setShowPendingProducts] = useState(false);
+  const [showAllOrders, setShowAllOrders] = useState(false);
   const [admin, setAdmin] = useState(null);
   const navigate = useNavigate();
 
@@ -41,6 +43,9 @@ const Admin = () => {
             const data = await response.json();
             setAdmin(data);
           }
+          else {
+            navigate("/");
+          }
         }
       } else {
         navigate("/");
@@ -52,16 +57,25 @@ const Admin = () => {
     setShowForm(!showAddProductForm);
     setShowAdminProducts(false);
     setShowPendingProducts(false);
+    setShowAllOrders(false);
   };
-
+  
   const handleAdminProductsClick = () => {
     setShowAdminProducts(!showAdminProducts);
     setShowPendingProducts(false);
     setShowForm(false);
+    setShowAllOrders(false);
   };
-
+  
   const handleAdminPendingProductsClick = () => {
     setShowPendingProducts(!showPendingProducts);
+    setShowAdminProducts(false);
+    setShowForm(false);
+    setShowAllOrders(false);
+  }
+  const handleAdminAllOrdersClick = () => {
+    setShowAllOrders(!showAllOrders);
+    setShowPendingProducts(false);
     setShowAdminProducts(false);
     setShowForm(false);
   }
@@ -89,6 +103,12 @@ const Admin = () => {
           >
             Show Pending Orders
           </button>
+          <button
+            className="show-admin-all-button"
+            onClick={handleAdminAllOrdersClick}
+          >
+            Show All Orders
+          </button>
         </div>
         {showAddProductForm && (
           <div className={showAddProductForm ? "slide-down" : "slide-up"}>
@@ -103,6 +123,11 @@ const Admin = () => {
         {showPendingProducts && (
           <div className={showPendingProducts ? "slide-down" : "slide-up"}>
             {<PendingProducts />}
+          </div>
+        )}
+        {showAllOrders && (
+          <div className={showAllOrders ? "slide-down" : "slide-up"}>
+            {<AllAdminOrders />}
           </div>
         )}
         

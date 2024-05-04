@@ -106,7 +106,7 @@ def response(prompt1):
     #     # put space between the words
     #     str1 += " ".join(suggestions) + " "
     # prompt = str1
-    correction_file = '/Users/mdehteshamansari00/Fashion-Recommender-With-AI-Chatbot/Backend/app/Data/fashion_dictionary.txt'  # File containing corrections (icorrect_word : correct_word)
+    correction_file = 'D:\\SE\\Fashion-Recommender-With-AI-Chatbot\Backend\\app\Data\\fashion_dictionary.txt'  # File containing corrections (icorrect_word : correct_word)
     spell = SpellChecker()
     correction_dict = load_correction_dictionary(correction_file)
     prompt = correct_spelling(prompt1, correction_dict, spell)

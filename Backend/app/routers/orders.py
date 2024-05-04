@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Form
 from .. import schemas, oauth2
-from ..database import get_ordersbyid, get_orders_user, create_order, create_order_log, get_product_owner, get_pending_orders, approve_order
+from ..database import get_ordersbyid, get_orders_user, create_order, create_order_log, get_product_owner, get_pending_orders, approve_order, get_order_by_admin, cancel_order
 import time
 import random
 import string
@@ -58,7 +58,6 @@ def place_order(order: schemas.AcceptOrder, current_user: schemas.User = Depends
     
 @router.get("/admin/pending/",response_model=list[schemas.OrderView])
 def getpendingorder(current_admin: schemas.Admin = Depends(oauth2.get_current_admin)):
-    print(current_admin)
     adminid = current_admin["adminid"]
     data = get_pending_orders(adminid)
     data = list(data)
@@ -85,3 +84,33 @@ def approvependingorder(current_admin: schemas.Admin = Depends(oauth2.get_curren
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Order not found")
     else:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Orderid not provided")
+    
+@router.post("/admin/cancel/", status_code=status.HTTP_201_CREATED)
+def cancelpendingorder(current_admin: schemas.Admin = Depends(oauth2.get_current_admin), orderid: str = Form(None)):
+    adminid = current_admin["adminid"]
+    data = get_pending_orders(adminid)
+    data = list(data)
+    if not data:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No Pending Orders")
+    if orderid:
+        for order in data:
+            if order["orderid"] == orderid:
+                if cancel_order(orderid):
+                    return {"orderid": orderid, "status": "Order Cancelled Successfully"}
+                else:
+                    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Order could not be cancelled")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Order not found")
+    else:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Orderid not provided")
+    
+@router.get("/admin/all/",response_model=list[schemas.OrderView])
+def getallorders(current_admin: schemas.Admin = Depends(oauth2.get_current_admin)):
+    adminid = current_admin["adminid"]
+    data = get_order_by_admin(adminid)
+    data = list(data)
+    orders = []
+    for order in data:
+        order_data = get_ordersbyid(order["orderid"])
+        orders.append(order_data)
+    orders = orders[::-1]
+    return orders

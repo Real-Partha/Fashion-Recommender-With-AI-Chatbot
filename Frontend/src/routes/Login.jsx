@@ -154,8 +154,6 @@ const LoginPage = () => {
       <div className="login-background"></div>
       <div className="login-container">
         <h2>Login</h2>
-
-        {/* <h2>Login</h2> */}
         <form onSubmit={handleLogin}>
           <div className="role-choice">
             <div
@@ -165,8 +163,8 @@ const LoginPage = () => {
                   ? {
 
                     color: "white",
-                    background: "rgba(247, 193, 112, 0.267)",
-                    filter: "drop-shadow(0 0 0.5rem #cabdbdaa)",
+                    background: "rgba(216, 130, 80)",
+                    filter: "drop-shadow(0 0 0.5rem #000000)",
                   }
                   : { color: "white" }
               }
@@ -183,8 +181,8 @@ const LoginPage = () => {
                     color: "white",
                   }
                   : {
-                    filter: "drop-shadow(0 0 0.5rem #cabdbdaa)",
-                    background: "rgba(247, 193, 112, 0.267)",
+                    filter: "drop-shadow(0 0 0.5rem #000000)",
+                    background: "rgba(216, 130, 80)",
                     color: "white",
                   }
               }

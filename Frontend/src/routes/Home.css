@@ -3,7 +3,8 @@
   margin: 0 auto;
   padding: 5rem;
   text-align: center;
-  background-color: rgb(180, 176, 176);
+  /* background-color: rgb(180, 176, 176); */
+  background-color: rgb(255, 228, 202);
 }
 
 .chat-button-container {

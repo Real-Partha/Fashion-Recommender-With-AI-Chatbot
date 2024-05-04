@@ -16,10 +16,10 @@ const Product = () => {
   const [address, setAddress] = useState("");
   const [recipientName, setRecipientName] = useState("");
   const [mobile, setMobile] = useState("");
-  const [residenceType, setResidenceType] = useState("");
+  const [residenceType, setResidenceType] = useState("house");
   const [pincode, setPincode] = useState("");
   const [state, setState] = useState("");
-  const [paymentType, setPaymentType] = useState("");
+  const [paymentType, setPaymentType] = useState("cod");
 
   useEffect(() => {
     const fetchProductData = async () => {
@@ -110,11 +110,6 @@ const Product = () => {
     setSelectedSize(size);
   };
 
-  const handleStarClick = () => {
-    alert("Product added to cart!");
-    navigator.clipboard.writeText("Product added to cart!");
-  };
-
   const handlebuyClick = async () => {
     // alert("Product bought successfully!");
     const token = localStorage.getItem("token");
@@ -182,9 +177,6 @@ const Product = () => {
               <ProductRating rating={rating} setRating={setRating} />
 
               <div className="product-page-buttons">
-                <button className="add-to-cart-btn" onClick={handleStarClick}>
-                  Add to Cart
-                </button>
                 <button className="buy-now-btn" onClick={handlebuyClick}>
                   Buy Now
                 </button>
@@ -195,29 +187,21 @@ const Product = () => {
       )}
       {authenticated && (
         <div className="product-order-data">
-          <div
-            className="product-back-button"
+          <div 
+            className="product-order-heading"
             onClick={(e) => {
               setAuthenticated(false);
               document.title = productData.name;
             }}
           >
             <img
-              src="/public/back-button.png"
+              src="/back-button.png"
               alt="back"
               style={{ height: "50px", width: "50px" }}
             />
+            <span>Order Details</span>
           </div>
           <form onSubmit={handleOrderSubmission} className="product-order-form">
-            <div>
-              <label htmlFor="address">Address:</label>
-              <input
-                type="text"
-                id="address"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-              />
-            </div>
             <div>
               <label htmlFor="recipientName">Recipient Name:</label>
               <input
@@ -228,22 +212,40 @@ const Product = () => {
               />
             </div>
             <div>
+              <label htmlFor="address">Address:</label>
+              <input
+                type="text"
+                id="address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+              />
+            </div>
+            <div>
               <label htmlFor="mobile">Phone Number:</label>
               <input
                 type="text"
                 id="mobile"
                 value={mobile}
-                onChange={(e) => setMobile(e.target.value)}
+                onChange={(e) => {
+                  const phoneNumber = e.target.value
+                    .replace(/\D/g, "")
+                    .slice(0, 10); // Remove non-numeric characters and limit to 10 digits
+                  setMobile(phoneNumber);
+                }}
+                maxLength={10}
               />
             </div>
             <div>
               <label htmlFor="residenceType">Residence Type:</label>
-              <input
-                type="text"
+              <select
                 id="residenceType"
                 value={residenceType}
                 onChange={(e) => setResidenceType(e.target.value)}
-              />
+              >
+                <option value="House">House</option>
+                <option value="Apartment">Apartment</option>
+                <option value="Office">Office</option>
+              </select>
             </div>
             <div>
               <label htmlFor="pincode">Pincode:</label>
@@ -251,7 +253,13 @@ const Product = () => {
                 type="text"
                 id="pincode"
                 value={pincode}
-                onChange={(e) => setPincode(e.target.value)}
+                onChange={(e) => {
+                  const pincodeNumber = e.target.value
+                    .replace(/\D/g, "")
+                    .slice(0, 10); // Remove non-numeric characters and limit to 10 digits
+                  setPincode(pincodeNumber);
+                }}
+                maxLength={6}
               />
             </div>
             <div>
@@ -263,16 +271,24 @@ const Product = () => {
                 onChange={(e) => setState(e.target.value)}
               />
             </div>
-            <div>
-              <label htmlFor="paymentType">Payment Type:</label>
-              <input
-                type="text"
-                id="paymentType"
-                value={paymentType}
-                onChange={(e) => setPaymentType(e.target.value)}
-              />
+
+            <div className="col-2">
+              <div>
+                <label htmlFor="paymentType">Payment Type:</label>
+                <select
+                  id="paymentType"
+                  value={paymentType}
+                  onChange={(e) => setPaymentType(e.target.value)}
+                >
+                  <option value="COD">Cash on Delivery</option>
+                  <option value="Credit Card">Credit Card</option>
+                  <option value="Debit card">Debit Card</option>
+                  <option value="UPI">UPI</option>
+                  <option value="Internet Banking">Internet Banking</option>
+                </select>
+              </div>
+              <button type="submit">Submit</button>
             </div>
-            <button type="submit">Submit</button>
           </form>
         </div>
       )}

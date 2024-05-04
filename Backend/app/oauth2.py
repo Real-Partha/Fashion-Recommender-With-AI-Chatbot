@@ -28,7 +28,6 @@ def create_access_token(data: dict):
 def verify_access_token(token: str):
     try:
         if not verify_token(token):
-            print("Here 1")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Token has Expired",
@@ -41,7 +40,6 @@ def verify_access_token(token: str):
             id: int = payload["adminid"]
 
         if id == None:
-            print("Here 2")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="You are not authorized",
@@ -49,7 +47,6 @@ def verify_access_token(token: str):
             )
         token_data = schemas.TokenData(id=id, token=token)
     except Exception as e:
-        print("Here 3")
         token_entry(token,"expired")
         raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,

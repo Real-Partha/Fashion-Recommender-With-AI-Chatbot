@@ -40,4 +40,8 @@
   .add-product-container button[type="submit"]:hover {
     background-color: #0056b3;
   }
+
+  .add-product-form-data input:disabled{
+    cursor: not-allowed;
+  }
   
