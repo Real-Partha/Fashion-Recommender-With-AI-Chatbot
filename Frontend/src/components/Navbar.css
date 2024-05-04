@@ -12,11 +12,12 @@
 .navbar {
   display: flex;
   justify-content: flex-end !important;
-  background-color: #333; /* Change this to your desired background color */
+  background-color: #333; 
   padding: 10px 20px;
-  background-color: rgba(36, 36, 36, 0.5); /* Transparent black color */
+  background-color: rgba(36, 36, 36, 0.5);
   backdrop-filter: blur(20px);
   box-shadow: 0 0 20px rgba(184, 255, 249, 0.458);
+  /* height: 14vh; */
 }
 
 .navbar button{

@@ -187,8 +187,8 @@ const Product = () => {
       )}
       {authenticated && (
         <div className="product-order-data">
-          <div
-            className="product-back-button"
+          <div 
+            className="product-order-heading"
             onClick={(e) => {
               setAuthenticated(false);
               document.title = productData.name;
@@ -199,6 +199,7 @@ const Product = () => {
               alt="back"
               style={{ height: "50px", width: "50px" }}
             />
+            <span>Order Details</span>
           </div>
           <form onSubmit={handleOrderSubmission} className="product-order-form">
             <div>

@@ -122,7 +122,7 @@
 
 .homepageProducts .product img:hover{
     max-height: 70vh;
-    transition: transform 2.3s ease;
+    transition: transform 0.3s ease;
 }
 
 .homepageProducts .product h3{
