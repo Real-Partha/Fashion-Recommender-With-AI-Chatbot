@@ -23,6 +23,24 @@ const PendingProductCard = ({ order }) => {
     }
   };
 
+  const handleCancelOrder = async () => {
+    let formdata = new FormData();
+    formdata.append("orderid", order.orderid);
+    const response = await fetch(
+      "http://127.0.0.1:8000/orders/admin/cancel/",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: formdata,
+      }
+    );
+    if (response.ok) {
+      setOrderStatus("Cancelled");
+    }
+  };
+
   return (
     <div className="pending-product-card" >
       <div style={orderStatus==='placed'?{display:"block"}:{display:"none"}}>
@@ -35,10 +53,8 @@ const PendingProductCard = ({ order }) => {
         <p>Mobile: {order.mobile}</p>
         <p>Payment Type: {order.paymentType}</p>
         <p>Product Name: {order.product.name}</p>
-        <p>Product Price: {order.product.price}</p>
         <p>Total: {order.total}</p>
         <p>User ID: {order.userid}</p>
-        <p>Status: {orderStatus}</p>
         <p>Date: {order.date}</p>
         <p>Time: {order.time}</p>
         <button
@@ -47,9 +63,18 @@ const PendingProductCard = ({ order }) => {
         >
           Approve Order
         </button>
+        <button
+          className="pending-product-card-cancel"
+          onClick={handleCancelOrder}
+        >
+          Cancel Order
+        </button>
       </div>
       <div style={orderStatus==='Approved'?{display:"block",color:"#009688"}:{display:"none"}}>
         Order Approved Successfully!!
+      </div>
+      <div style={orderStatus==='Cancelled'?{display:"block",color:"#f94125"}:{display:"none"}}>
+        Order Cancelled!!
       </div>
     </div>
   );
