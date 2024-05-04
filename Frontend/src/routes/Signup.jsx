@@ -3,12 +3,6 @@ import "./Signup.css"; // Import the CSS file for styling
 import { useNavigate } from "react-router-dom";
 
 const SignupPage = () => {
-  //   const [email, setEmail] = useState("");
-  //   const [username, setUsername] = useState("");
-  //   const [password, setPassword] = useState("");
-  //   const [name, setName] = useState("");
-  //   const [age, setAge] = useState("");
-  //   const [mobile, setMobile] = useState("");
   const [user, setUser] = useState({});
   const [created, setCreated] = useState(false); // To check if the user is created
   const [error, setError] = useState(false); // To display error message
@@ -162,38 +156,41 @@ const SignupPage = () => {
       <div className="signup-container">
         <h2 style={{ margin: "10px 0" }}>Sign Up</h2>
         <div className="role-choice">
-          <div
-            className="user-login"
-            style={
-              choice === "user"
-                ? {
+            <div
+              className="user-login"
+              style={
+                choice === "user"
+                  ? {
+
                     color: "white",
-                    background: "rgba(247, 193, 112, 0.267)",
+                    background: "#cd6d00",
                     filter: "drop-shadow(0 0 0.5rem #cabdbdaa)",
                   }
-                : { color: "white" }
-            }
-            onClick={() => handleRoleChoice("user")}
-          >
-            User
-          </div>
-          <div className="divider"></div>
-          <div
-            className="admin-login"
-            style={
-              choice === "user"
-                ? { color: "white" }
-                : {
-                    filter: "drop-shadow(0 0 0.5rem #cabdbdaa)",
-                    background: "rgba(247, 193, 112, 0.267)",
+                  : { color: "white" }
+              }
+              onClick={() => handleRoleChoice("user")}
+            >
+              User
+            </div>
+            <div className="divider"></div>
+            <div
+              className="admin-login"
+              style={
+                choice === "user"
+                  ? {
                     color: "white",
                   }
-            }
-            onClick={() => handleRoleChoice("admin")}
-          >
-            Admin
+                  : {
+                    filter: "drop-shadow(0 0 0.5rem #cabdbdaa)",
+                    background: "#cd6d00",
+                    color: "white",
+                  }
+              }
+              onClick={() => handleRoleChoice("admin")}
+            >
+              Admin
+            </div>
           </div>
-        </div>
 
         <form onSubmit={handleSignup}>
           {error && <div className="error">{errormsg}</div>}

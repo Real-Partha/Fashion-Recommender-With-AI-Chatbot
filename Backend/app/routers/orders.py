@@ -112,4 +112,5 @@ def getallorders(current_admin: schemas.Admin = Depends(oauth2.get_current_admin
     for order in data:
         order_data = get_ordersbyid(order["orderid"])
         orders.append(order_data)
+    orders = orders[::-1]
     return orders

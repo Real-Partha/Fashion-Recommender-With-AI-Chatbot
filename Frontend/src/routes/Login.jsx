@@ -154,8 +154,6 @@ const LoginPage = () => {
       <div className="login-background"></div>
       <div className="login-container">
         <h2>Login</h2>
-
-        {/* <h2>Login</h2> */}
         <form onSubmit={handleLogin}>
           <div className="role-choice">
             <div
