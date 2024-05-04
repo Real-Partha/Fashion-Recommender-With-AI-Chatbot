@@ -118,16 +118,20 @@ def response(prompt1):
         "is_discounts": None,
         "greetings": None,
         "color": None,
+        "gender": None,
     }
     fashion_path = settings.fashion_path_url
     color_path = settings.color_path_url
     greeting_path = settings.greeting_path_url
+    gender_path = settings.gender_path_url
     with open(fashion_path, "r") as f:
         fashion_articles = f.read().split("\n")
     with open(color_path, "r") as f:
         colors = f.read().split("\n")
     with open(greeting_path, "r") as f:
         greetings = f.read().split("\n")
+    with open(gender_path, "r") as f:
+        gender = f.read().split("\n")
     if "discount" in prompt or "discounts" in prompt:
         dict["is_discounts"] = True
         for i in prompt.split():
@@ -148,6 +152,8 @@ def response(prompt1):
                     dict["greetings"] = i
                 else:
                     dict["greetings"] += " "+i
+            if i in gender:
+                dict["gender"] = i
     else:
         dict["is_discounts"] = False
         for i in prompt.split():
