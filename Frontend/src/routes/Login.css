@@ -150,36 +150,49 @@ form {
 }
 
 .role-choice {
+  width: 400px;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 0px;
   margin-top: 0;
-  gap: 20%;
+  position: relative;
+  gap: 140%;
 }
 
 .divider {
-  color: #fff;
+  /* color: #fff;
   margin: 0 50px;
   width: 2px;
   height: 10px;
-  z-index: 1;
+  z-index: 1; */
+  height: 100%;
+  width: 3px;
+  box-shadow: 0 0 10px rgb(255, 123, 0);
+  background: rgb(255, 223, 193);
+  position: absolute;
+  top:0;
 }
 
 .user-login,
 .admin-login {
   color: #fff;
-  font-size: 1em;
+  font-size: 1.2em;
   cursor: pointer;
   /* background: rgba(247, 193, 112, 0.267); */
   padding: 0.2em 1em;
   border-radius: 20px;
   transition: 0.3s ease;
+  font-weight: bold;
+
 }
 
 .user-login:hover,
 .admin-login:hover {
-  background: rgba(247, 193, 112, 0.267);
+  /* background: rgba(247, 193, 112, 0.267); */
+  background: #cd6d009b;
+  box-shadow: 0 0 0 7px #cd6d009b;
+  
 }
 
 .icon {

@@ -16,10 +16,10 @@ const Product = () => {
   const [address, setAddress] = useState("");
   const [recipientName, setRecipientName] = useState("");
   const [mobile, setMobile] = useState("");
-  const [residenceType, setResidenceType] = useState("");
+  const [residenceType, setResidenceType] = useState("house");
   const [pincode, setPincode] = useState("");
   const [state, setState] = useState("");
-  const [paymentType, setPaymentType] = useState("");
+  const [paymentType, setPaymentType] = useState("cod");
 
   useEffect(() => {
     const fetchProductData = async () => {
@@ -110,11 +110,6 @@ const Product = () => {
     setSelectedSize(size);
   };
 
-  const handleStarClick = () => {
-    alert("Product added to cart!");
-    navigator.clipboard.writeText("Product added to cart!");
-  };
-
   const handlebuyClick = async () => {
     // alert("Product bought successfully!");
     const token = localStorage.getItem("token");
@@ -167,8 +162,9 @@ const Product = () => {
                     (size, index) => (
                       <div
                         key={index}
-                        className={`eachSize ${selectedSize === size ? "activeSize" : ""
-                          }`}
+                        className={`eachSize ${
+                          selectedSize === size ? "activeSize" : ""
+                        }`}
                         onClick={() => handleSizeSelection(size)}
                       >
                         <span>{size}</span>
@@ -181,9 +177,6 @@ const Product = () => {
               <ProductRating rating={rating} setRating={setRating} />
 
               <div className="product-page-buttons">
-                <button className="add-to-cart-btn" onClick={handleStarClick}>
-                  Add to Cart
-                </button>
                 <button className="buy-now-btn" onClick={handlebuyClick}>
                   Buy Now
                 </button>
@@ -209,21 +202,21 @@ const Product = () => {
           </div>
           <form onSubmit={handleOrderSubmission} className="product-order-form">
             <div>
-              <label htmlFor="address">Address:</label>
-              <input
-                type="text"
-                id="address"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-              />
-            </div>
-            <div>
               <label htmlFor="recipientName">Recipient Name:</label>
               <input
                 type="text"
                 id="recipientName"
                 value={recipientName}
                 onChange={(e) => setRecipientName(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="address">Address:</label>
+              <input
+                type="text"
+                id="address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
               />
             </div>
             <div>
@@ -267,22 +260,22 @@ const Product = () => {
             </div>
 
             <div className="col-2">
-
-            <div>
-              <label htmlFor="paymentType">Payment Type:</label>
-              <select
-                id="paymentType"
-                value={paymentType}
-                onChange={(e) => setPaymentType(e.target.value)}
-              >
-                <option value="credit">Credit Card</option>
-                <option value="debit">Debit Card</option>
-                <option value="paypal">UPI</option>
-                <option value="other">Internet Banking</option>
-              </select>
+              <div>
+                <label htmlFor="paymentType">Payment Type:</label>
+                <select
+                  id="paymentType"
+                  value={paymentType}
+                  onChange={(e) => setPaymentType(e.target.value)}
+                >
+                  <option value="cod">Cash on Delivery</option>
+                  <option value="credit-card">Credit Card</option>
+                  <option value="debit-card">Debit Card</option>
+                  <option value="upi">UPI</option>
+                  <option value="internet-banking">Internet Banking</option>
+                </select>
+              </div>
+              <button type="submit">Submit</button>
             </div>
-            <button type="submit">Submit</button>
-          </div>
           </form>
         </div>
       )}

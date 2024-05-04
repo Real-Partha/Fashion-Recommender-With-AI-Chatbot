@@ -30,7 +30,7 @@ const ShowAdminProducts = () => {
   return (
     <div className="show-admin-products">
       {productsAvailable && products.map((product) => {
-        return <AdminProductCard key={product.id} product={product} />;
+        return <AdminProductCard key={product.pid} product={product} />;
       }
       )}
       {productsAvailable && products.length === 0 && (

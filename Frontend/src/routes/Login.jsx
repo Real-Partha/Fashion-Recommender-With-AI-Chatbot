@@ -165,7 +165,7 @@ const LoginPage = () => {
                   ? {
 
                     color: "white",
-                    background: "rgba(247, 193, 112, 0.267)",
+                    background: "#cd6d00",
                     filter: "drop-shadow(0 0 0.5rem #cabdbdaa)",
                   }
                   : { color: "white" }
@@ -184,7 +184,7 @@ const LoginPage = () => {
                   }
                   : {
                     filter: "drop-shadow(0 0 0.5rem #cabdbdaa)",
-                    background: "rgba(247, 193, 112, 0.267)",
+                    background: "#cd6d00",
                     color: "white",
                   }
               }
