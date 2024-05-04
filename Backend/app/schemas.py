@@ -36,6 +36,7 @@ class AcceptAdmin(BaseUser):
     age : int
     mobile : int
 
+
 class Login(BaseModel):
     credentials: str
     password: str
