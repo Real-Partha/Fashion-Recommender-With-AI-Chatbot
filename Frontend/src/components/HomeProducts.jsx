@@ -52,7 +52,7 @@ const HomeProducts = ({ isRecommendedProduct }) => {
 
   const loadMoreProducts = async () => {
     try {
-      if (!isRecommendedProduct) {
+      if (!resultRetrieved) {
         setLoadingMore(true);
         const response = await fetch(
           "http://127.0.0.1:8000/product/random/more/20/",
