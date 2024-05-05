@@ -53,6 +53,7 @@ def response(prompt1):
     spell = SpellChecker()
     correction_dict = load_correction_dictionary(correction_file)
     prompt = correct_spelling(prompt1, correction_dict, spell)
+    prompt = prompt.lower()
     print(prompt)
     dict = {
         "product_name": None,

@@ -18,7 +18,6 @@ blushes
 windbreakers
 salomon
 jumpsuits
-dc
 tote
 secret
 t-shirt
@@ -31,6 +30,7 @@ beanies
 polo
 belt
 necklaces
+necklace
 hoodie
 accessories
 superdry
@@ -85,7 +85,6 @@ gucci
 brand
 ralph
 eyeliners
-21
 terrain
 face
 clips
@@ -126,8 +125,6 @@ moschino
 pantaloons
 avenue
 sweater
-h&m
-true
 hair
 dresses
 socks
@@ -159,7 +156,6 @@ obey
 warmers
 playsuits
 leggings
-j
 max
 dorothy
 dior
@@ -187,11 +183,11 @@ flying
 aurelia
 diamond
 dupattas
+dupatta
 rei
 manyavar
 zalando
 chanel
-for
 nike
 trousers
 oakley
@@ -233,6 +229,7 @@ boohoo
 lapel
 spencer
 vines
+chain
 mules
 keychains
 balmain
@@ -250,9 +247,6 @@ umbrellas
 nail
 polish
 shawls
-women
-womens
-women's
 wallets
 alexander
 dick's
@@ -438,3 +432,14 @@ sun
 glass
 glasses
 sunglass
+army
+half
+full
+pant
+ben10
+kurta
+undergarment
+garment
+underwear
+towel
+saree
