@@ -94,11 +94,11 @@ async def chat(
                 "data": "Sorry, I am not able to understand this.",
             }
     else:
-        print(get_image(f"../Frontend/public/images/{file}"))
-        response_data = {
-            "type": "text",
-            "data": "Currently Recommendation using only image is in progress...Please Try Again Later...",
-        }
+        response_data = get_image(f"../Frontend/public/images/{file}")
+        # response_data = {
+        #     "type": "text",
+        #     "data": "Currently Recommendation using only image is in progress...Please Try Again Later...",
+        # }
 
     # Update database with response
     if response_data["type"] == "text":

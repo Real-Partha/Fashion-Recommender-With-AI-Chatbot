@@ -2,13 +2,16 @@ import React from "react";
 import { useEffect, useState, useRef } from "react";
 import "./ProductCard";
 import "./HomeProducts.css";
+import { useSelector } from "react-redux";
 
-const HomeProducts = () => {
+const HomeProducts = ({isRecommendedProduct}) => {
   const [loadingMore, setLoadingMore] = useState(false);
   const [productListState, setProductListState] = useState([]);
   const lastProductRef = useRef(null);
   const debounceTimeout = useRef(null);
-  let mydata=[];
+  let mydata = [];
+  const productList = useSelector((state) => state.productList.value);
+
   useEffect(() => {
     loadInitialProducts();
     window.addEventListener("scroll", handleScroll);
@@ -18,12 +21,18 @@ const HomeProducts = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (productList.length !== 0) {
+      setProductListState(productList);
+    }
+  }, [productList]);
+
   const loadInitialProducts = async () => {
     try {
       const response = await fetch("http://127.0.0.1:8000/product/random/50");
       const data = await response.json();
       setProductListState(data);
-      mydata=data;
+      mydata = data;
     } catch (err) {
       console.log(err);
     }
@@ -31,32 +40,26 @@ const HomeProducts = () => {
 
   const loadMoreProducts = async () => {
     try {
-      setLoadingMore(true);
-      const response = await fetch(
-        "http://127.0.0.1:8000/product/random/more/20/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(mydata),
-        }
-      );
-      // const response = await axios.post(
-      //   "http://127.0.0.1:8000/product/random/more/20/",formdata,
-      //   {
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //   }
-      // )
-      const newData = await response.json();
-      // const newData = response.data;
-      mydata = [...mydata, ...newData];
-      setProductListState((prevProductList) => [
-        ...prevProductList,
-        ...newData,
-      ]);
+      console.log(isRecommendedProduct)
+      if (!isRecommendedProduct) {
+        setLoadingMore(true);
+        const response = await fetch(
+          "http://127.0.0.1:8000/product/random/more/20/",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(mydata),
+          }
+        );
+        const newData = await response.json();
+        mydata = [...mydata, ...newData];
+        setProductListState((prevProductList) => [
+          ...prevProductList,
+          ...newData,
+        ]);
+      }
     } catch (err) {
       console.log(err);
     } finally {
