@@ -8,9 +8,11 @@ from sklearn.neighbors import NearestNeighbors
 import matplotlib.pyplot as plt
 
 # Load pre-computed embeddings and filenames
-# feature_list = np.load("D:\\SRM AP All Documents\\College Files\\Semester - VI\\Software Engineering\\Fashion Recommender Final\\Backend\\app\\Data\\embeddings.npy")
+feature_list = np.load("/Users/mdehteshamansari00/Fashion-Recommender-With-AI-Chatbot/Backend/app/Data/embeddings.npy")
 
-def get_image(query_image_path,feature_list="feature_list"):
+with open('/Users/mdehteshamansari00/Fashion-Recommender-With-AI-Chatbot/Backend/app/Data/filenames.txt', 'r') as file:
+    filenames = [filename.replace("\\", "/") for filename in file.read().splitlines()]
+def get_image(query_image_path,feature_list=feature_list):
     
     # Load pre-trained ResNet50 model for feature extraction
     base_model = ResNet50(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
@@ -32,12 +34,15 @@ def get_image(query_image_path,feature_list="feature_list"):
     query_features = model.predict(query_img_processed).flatten()
     normalized_query_features = query_features / norm(query_features)
     # Define the Nearest Neighbors model
-    neighbors = NearestNeighbors(n_neighbors=16, algorithm='brute', metric='euclidean')
+    neighbors = NearestNeighbors(n_neighbors=31, algorithm='brute', metric='euclidean')
     neighbors.fit(feature_list)
 
     # Find nearest neighbors based on the query features
     distances, indices = neighbors.kneighbors([normalized_query_features])
     # give the indices of the 5 nearest neighbors
-    return indices[0]
-
+    # return indices[0]
+    lst = []
+    for i,idx in enumerate(indices[0][1:31]):
+        lst.append(filenames[idx].split("/")[-1].replace(".jpg", ""))
+    return lst
 # print(get_image(feature_list, 'test3.png'))
