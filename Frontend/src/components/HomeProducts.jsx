@@ -8,7 +8,7 @@ const HomeProducts = () => {
   const [productListState, setProductListState] = useState([]);
   const lastProductRef = useRef(null);
   const debounceTimeout = useRef(null);
-
+  let mydata=[];
   useEffect(() => {
     loadInitialProducts();
     window.addEventListener("scroll", handleScroll);
@@ -23,6 +23,7 @@ const HomeProducts = () => {
       const response = await fetch("http://127.0.0.1:8000/product/random/50");
       const data = await response.json();
       setProductListState(data);
+      mydata=data;
     } catch (err) {
       console.log(err);
     }
@@ -31,9 +32,6 @@ const HomeProducts = () => {
   const loadMoreProducts = async () => {
     try {
       setLoadingMore(true);
-      let formdata = new FormData();
-      formdata.append("productList", productListState);
-      console.log(productListState);
       const response = await fetch(
         "http://127.0.0.1:8000/product/random/more/20/",
         {
@@ -41,7 +39,7 @@ const HomeProducts = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: formdata,
+          body: JSON.stringify(mydata),
         }
       );
       // const response = await axios.post(
@@ -54,6 +52,7 @@ const HomeProducts = () => {
       // )
       const newData = await response.json();
       // const newData = response.data;
+      mydata = [...mydata, ...newData];
       setProductListState((prevProductList) => [
         ...prevProductList,
         ...newData,

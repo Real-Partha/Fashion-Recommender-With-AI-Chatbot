@@ -6,6 +6,7 @@ from fastapi import APIRouter, Depends, Form, UploadFile
 from .. import oauth2, schemas
 from ..database import insert, read, update
 from ..recommend import response
+from ..img_predict import get_image
 
 router = APIRouter(prefix="/chats", tags=["chats"])
 
@@ -61,7 +62,7 @@ async def chat(
                     ],
                 }
             )
-
+    file = ""
     # Process image if provided
     if image is not None:
         # Save image to file
@@ -93,6 +94,7 @@ async def chat(
                 "data": "Sorry, I am not able to understand this.",
             }
     else:
+        print(get_image(f"../Frontend/public/images/{file}"))
         response_data = {
             "type": "text",
             "data": "Currently Recommendation using only image is in progress...Please Try Again Later...",

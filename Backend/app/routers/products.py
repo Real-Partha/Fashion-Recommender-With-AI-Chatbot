@@ -1,6 +1,6 @@
 import os
 from time import sleep
-from fastapi import APIRouter, HTTPException, UploadFile, status, Depends, Form
+from fastapi import APIRouter, HTTPException, UploadFile, status, Depends, Form,Body
 from ..database import get_product, get_random_products, add_product, get_last_product, add_product_owner, get_owner_products,delete_product,delete_product_owner,get_product_owner
 from .. import schemas
 from .. import oauth2
@@ -37,28 +37,26 @@ def getproduct(product_id: int):
         )
 
 @router.post("/random/more/{number}/",status_code=status.HTTP_200_OK,response_model=list[schemas.Product])
-def getmorerandomproducts(number: int,productListState: list = Form(None)):
-# def getmorerandomproducts(number: int,productListState: list[schemas.Product] = Form(None)):
+def getmorerandomproducts(number: int,productList: list = Body(default=[])):
     if number == 0:
         return []
 
     try:
-        # new_products = []
-        # while len(new_products) < number:
-        #     data = get_random_products(number-len(new_products))
-        #     for i in data:
-        #         if i not in productListState:
-        #             new_products.append(i)
-        # return list(productListState)+new_products
-        print(productListState)
-        data = get_random_products(number)
-        if data:
-            return data
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Products could not be fetched",
-            )
+        new_products = []
+        while len(new_products) < number:
+            data = get_random_products(number-len(new_products))
+            for i in data:
+                if i not in productList:
+                    new_products.append(i)
+        return new_products
+        # data = get_random_products(number)
+        # if data:
+        #     return data
+        # else:
+        #     raise HTTPException(
+        #         status_code=status.HTTP_404_NOT_FOUND,
+        #         detail="Products could not be fetched",
+        #     )
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

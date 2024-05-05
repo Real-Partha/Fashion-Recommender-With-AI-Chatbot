@@ -8,9 +8,9 @@ from sklearn.neighbors import NearestNeighbors
 import matplotlib.pyplot as plt
 
 # Load pre-computed embeddings and filenames
-feature_list = np.load('embeddings.npy')
+# feature_list = np.load("D:\\SRM AP All Documents\\College Files\\Semester - VI\\Software Engineering\\Fashion Recommender Final\\Backend\\app\\Data\\embeddings.npy")
 
-def get_image(feature_list,query_image_path):
+def get_image(query_image_path,feature_list="feature_list"):
     
     # Load pre-trained ResNet50 model for feature extraction
     base_model = ResNet50(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
@@ -22,7 +22,7 @@ def get_image(feature_list,query_image_path):
         GlobalMaxPooling2D()
     ])
     # Load an image for query
-    query_image_path = 'test3.png'
+    # query_image_path = 'test3.png'
     query_img = image.load_img(query_image_path, target_size=(224, 224))
     query_img_array = image.img_to_array(query_img)
     query_img_array = np.expand_dims(query_img_array, axis=0)
@@ -40,4 +40,4 @@ def get_image(feature_list,query_image_path):
     # give the indices of the 5 nearest neighbors
     return indices[0]
 
-print(get_image(feature_list, 'test3.png'))
+# print(get_image(feature_list, 'test3.png'))
