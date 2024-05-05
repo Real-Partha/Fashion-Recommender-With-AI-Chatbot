@@ -6,14 +6,16 @@ from tensorflow.keras.layers import GlobalMaxPooling2D
 from tensorflow.keras.applications.resnet50 import ResNet50, preprocess_input
 from sklearn.neighbors import NearestNeighbors
 import matplotlib.pyplot as plt
+from .config import settings
+from .database import get_product
 
 # Load pre-computed embeddings and filenames
-feature_list = np.load("/Users/mdehteshamansari00/Fashion-Recommender-With-AI-Chatbot/Backend/app/Data/embeddings.npy")
+feature_list = np.load(settings.embeddings_path_url)
 
-with open('/Users/mdehteshamansari00/Fashion-Recommender-With-AI-Chatbot/Backend/app/Data/filenames.txt', 'r') as file:
+with open(settings.filenames_path_url, 'r') as file:
     filenames = [filename.replace("\\", "/") for filename in file.read().splitlines()]
 def get_image(query_image_path,feature_list=feature_list):
-    
+    print(filenames[:5])
     # Load pre-trained ResNet50 model for feature extraction
     base_model = ResNet50(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
     base_model.trainable = False
@@ -44,5 +46,13 @@ def get_image(query_image_path,feature_list=feature_list):
     lst = []
     for i,idx in enumerate(indices[0][1:31]):
         lst.append(filenames[idx].split("/")[-1].replace(".jpg", ""))
-    return lst
-# print(get_image(feature_list, 'test3.png'))
+
+    print(lst)
+    products = []
+    for i in lst:
+        product = get_product(int(i))
+        if product:
+            products.append(product)
+    if products != []:
+        return {"type": "product", "data": products}
+    return {"type": "text", "data": "Currently Recommendation using only image is in progress...Please Try Again Later..."}

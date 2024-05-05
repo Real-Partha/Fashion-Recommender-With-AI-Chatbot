@@ -7,24 +7,12 @@ from .. import oauth2
 
 router = APIRouter(prefix="/product", tags=["product"])
 
-
-@router.get("/sanket/")
-def getsanket(current_user: schemas.Admin = Depends(oauth2.get_current_admin)):
-    if current_user:
-        return {"message": "Sanket is here"}
-    else:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="You are not authorized"
-        )
-
 @router.get(
     "/{product_id}/", status_code=status.HTTP_200_OK, response_model=schemas.Product
 )
 def getproduct(product_id: int):
     try:
         data = get_product(product_id)
-
-        # print(data)
         if data:
             return dict(data)
         else:
@@ -49,14 +37,6 @@ def getmorerandomproducts(number: int,productList: list = Body(default=[])):
                 if i not in productList:
                     new_products.append(i)
         return new_products
-        # data = get_random_products(number)
-        # if data:
-        #     return data
-        # else:
-        #     raise HTTPException(
-        #         status_code=status.HTTP_404_NOT_FOUND,
-        #         detail="Products could not be fetched",
-        #     )
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
