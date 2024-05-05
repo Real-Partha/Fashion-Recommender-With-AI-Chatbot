@@ -1,10 +1,27 @@
 import os
-from fastapi import APIRouter, HTTPException, UploadFile, status, Depends, Form
+from time import sleep
+from fastapi import APIRouter, HTTPException, UploadFile, status, Depends, Form,Body
 from ..database import get_product, get_random_products, add_product, get_last_product, add_product_owner, get_owner_products,delete_product,delete_product_owner,get_product_owner
 from .. import schemas
 from .. import oauth2
+from ..search import search_txt
 
 router = APIRouter(prefix="/product", tags=["product"])
+
+@router.get("/search/{query}/", status_code=status.HTTP_200_OK, response_model=list[schemas.Product])
+def searchproduct(query: str):
+    try:
+        data = search_txt(query)
+        if data:
+            return data["data"]
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="Product not found"
+            )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Product not found"
+        )
 
 
 @router.get(
@@ -13,8 +30,6 @@ router = APIRouter(prefix="/product", tags=["product"])
 def getproduct(product_id: int):
     try:
         data = get_product(product_id)
-
-        # print(data)
         if data:
             return dict(data)
         else:
@@ -26,6 +41,24 @@ def getproduct(product_id: int):
             status_code=status.HTTP_404_NOT_FOUND, detail="Product not found"
         )
 
+@router.post("/random/more/{number}/",status_code=status.HTTP_200_OK,response_model=list[schemas.Product])
+def getmorerandomproducts(number: int,productList: list = Body(default=[])):
+    if number == 0:
+        return []
+
+    try:
+        new_products = []
+        while len(new_products) < number:
+            data = get_random_products(number-len(new_products))
+            for i in data:
+                if i not in productList:
+                    new_products.append(i)
+        return new_products
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Products could not be fetched",
+        )
 
 @router.get(
     "/random/{number}",
@@ -40,6 +73,7 @@ def getrandomproducts(number: int):
     try:
         data = get_random_products(number)
         if data:
+            sleep(2)
             return data[:number]
         else:
             raise HTTPException(
@@ -51,7 +85,6 @@ def getrandomproducts(number: int):
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Products could not be fetched",
         )
-
 
 @router.post("/add/", status_code=status.HTTP_201_CREATED, response_model=schemas.Product)
 def addproduct(
@@ -150,3 +183,4 @@ def deleteproduct(product_id: int, get_current_admin: schemas.Admin = Depends(oa
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Product not found"
         )
+    

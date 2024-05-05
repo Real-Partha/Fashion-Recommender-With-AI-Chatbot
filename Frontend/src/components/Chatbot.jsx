@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setProductList } from "../redux/ProductList/productList";
 // import errorGif from "../assets/error.gif";
 
-const Chatbot = ({ scroll_behavior }) => {
+const Chatbot = ({ scroll_behavior,setIsRecommendedProduct }) => {
   const [user, setUser] = useState("");
   const [chats, setChats] = useState({});
   const [message, setMessage] = useState("");
@@ -159,6 +159,7 @@ const Chatbot = ({ scroll_behavior }) => {
       const { type, msg, prod } = await response.json();
       if (type === "product") {
         dispatch(setProductList(prod));
+        setIsRecommendedProduct(true);
       }
       // Update the chats state with the response
       setChats((prevChats) => {

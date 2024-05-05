@@ -6,6 +6,7 @@ from fastapi import APIRouter, Depends, Form, UploadFile
 from .. import oauth2, schemas
 from ..database import insert, read, update
 from ..recommend import response
+from ..img_predict import get_image
 
 router = APIRouter(prefix="/chats", tags=["chats"])
 
@@ -61,7 +62,7 @@ async def chat(
                     ],
                 }
             )
-
+    file = ""
     # Process image if provided
     if image is not None:
         # Save image to file
@@ -83,7 +84,23 @@ async def chat(
         )
 
     # Process text message and get response
-    if message != None:
+    if message != None and image != None:
+        response_data_msg = response(message)
+        response_data_img = get_image(f"../Frontend/public/images/{file}")
+        if response_data_msg["type"]=="product":
+            merged_product = []
+            merged_product.extend(response_data_msg["data"][:3])
+            merged_product.extend(response_data_img["data"][:2])
+            merged_product.extend(response_data_msg["data"][3:])
+            merged_product.extend(response_data_img["data"][2:])
+            response_data = {
+                "type": "product",
+                "data": merged_product,
+            }
+        else:
+            response_data = response_data_img
+    
+    elif message != None:
         try:
             response_data = response(message)
         except Exception as e:
@@ -93,10 +110,11 @@ async def chat(
                 "data": "Sorry, I am not able to understand this.",
             }
     else:
-        response_data = {
-            "type": "text",
-            "data": "Currently Recommendation using only image is in progress...Please Try Again Later...",
-        }
+        response_data = get_image(f"../Frontend/public/images/{file}")
+        # response_data = {
+        #     "type": "text",
+        #     "data": "Currently Recommendation using only image is in progress...Please Try Again Later...",
+        # }
 
     # Update database with response
     if response_data["type"] == "text":

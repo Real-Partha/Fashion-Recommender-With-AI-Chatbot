@@ -133,7 +133,7 @@ const AddProduct = () => {
   return (
     <div id="add-product-form" className="add-product-container">
       <h2>Add Product</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="add-product-form-data">
         <div>
           <label>Name:</label>
           <input
@@ -163,6 +163,7 @@ const AddProduct = () => {
             onChange={handleChange}
             required
             disabled={!ogpriceentered}
+            title={!ogpriceentered ? "Please enter Original Price first" : ""}
           />
         </div>
         <div>
@@ -174,6 +175,7 @@ const AddProduct = () => {
             onChange={handleChange}
             required
             disabled={!ogpriceentered}
+            title={!ogpriceentered ? "Please enter Original Price first" : ""}
           />
         </div>
         <div>

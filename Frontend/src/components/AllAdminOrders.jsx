@@ -22,7 +22,7 @@ const AllAdminOrders = () => {
   }, []);
 
   return (
-    <div className="all-admin-orders-containers">
+    <div className="all-admin-orders-containers ">
       {orders &&
         orders.map((order) => {
           return (

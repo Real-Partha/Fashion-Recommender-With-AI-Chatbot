@@ -15,6 +15,10 @@ class Setting(BaseSettings):
     greeting_path_url: str
     saved_model_path: str
     database_url: str
+    gender_path_url: str
+    correction_path_url: str
+    filenames_path_url: str
+    embeddings_path_url: str
 
     class Config:
         env_file = ".env"

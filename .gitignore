@@ -12,3 +12,5 @@ faiss_index_ids.npy
 faiss_index.index
 node_modules/
 Frontend/public/productimages/
+Backend/app/Data/embeddings.npy
+products_datafinal_save.csv

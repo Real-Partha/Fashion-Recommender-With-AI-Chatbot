@@ -223,7 +223,13 @@ const Product = () => {
                 type="text"
                 id="mobile"
                 value={mobile}
-                onChange={(e) => setMobile(e.target.value)}
+                onChange={(e) => {
+                  const phoneNumber = e.target.value
+                    .replace(/\D/g, "")
+                    .slice(0, 10); // Remove non-numeric characters and limit to 10 digits
+                  setMobile(phoneNumber);
+                }}
+                maxLength={10}
               />
             </div>
             <div>
@@ -233,9 +239,9 @@ const Product = () => {
                 value={residenceType}
                 onChange={(e) => setResidenceType(e.target.value)}
               >
-                <option value="house">House</option>
-                <option value="apartment">Apartment</option>
-                <option value="condo">Office</option>
+                <option value="House">House</option>
+                <option value="Apartment">Apartment</option>
+                <option value="Office">Office</option>
               </select>
             </div>
             <div>
@@ -244,7 +250,13 @@ const Product = () => {
                 type="text"
                 id="pincode"
                 value={pincode}
-                onChange={(e) => setPincode(e.target.value)}
+                onChange={(e) => {
+                  const pincodeNumber = e.target.value
+                    .replace(/\D/g, "")
+                    .slice(0, 10); // Remove non-numeric characters and limit to 10 digits
+                  setPincode(pincodeNumber);
+                }}
+                maxLength={6}
               />
             </div>
             <div>
@@ -265,11 +277,11 @@ const Product = () => {
                   value={paymentType}
                   onChange={(e) => setPaymentType(e.target.value)}
                 >
-                  <option value="cod">Cash on Delivery</option>
-                  <option value="credit-card">Credit Card</option>
-                  <option value="debit-card">Debit Card</option>
-                  <option value="upi">UPI</option>
-                  <option value="internet-banking">Internet Banking</option>
+                  <option value="COD">Cash on Delivery</option>
+                  <option value="Credit Card">Credit Card</option>
+                  <option value="Debit card">Debit Card</option>
+                  <option value="UPI">UPI</option>
+                  <option value="Internet Banking">Internet Banking</option>
                 </select>
               </div>
               <button type="submit">Submit</button>

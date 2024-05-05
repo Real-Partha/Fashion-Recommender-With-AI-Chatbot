@@ -8,9 +8,10 @@ from .config import settings
 def recommend(user_query,k):
     # Load your dataset
     # df = pd.read_csv("test.csv")
-    
+    user_query = user_query.lower()
     products = pd.read_csv(settings.products_url, on_bad_lines="skip")
-    new_product = products[['id', 'productDisplayName']]
+    new_product = products[['id', 'productDisplayName']].copy()
+    new_product['productDisplayName'] = new_product['productDisplayName'].str.lower()
     # Load pre-trained Universal Sentence Encoder
     # embed = hub.load("https://tfhub.dev/google/universal-sentence-encoder/4")
     embed = hub.load(settings.saved_model_path)

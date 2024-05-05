@@ -1,3 +1,4 @@
+scaf: scarf
 ghosw: ghost
 ohost: ghost
 ghosa: ghost
@@ -238,7 +239,7 @@ chiios: chinos
 chinos: chinos
 chvnos: chinos
 chinvs: chinos
-pant: pants
+pant: pant
 panthloons: pantaloons
 pantaloons: pantaloons
 kantaloons: pantaloons
@@ -2624,3 +2625,4 @@ meal: teal
 ueal: teal
 tdal: teal
 teal: teal
+ben10: ben10

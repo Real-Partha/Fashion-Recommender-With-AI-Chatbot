@@ -1,0 +1,14 @@
+male
+female
+girl
+boy
+man
+woman
+gentleman
+lady
+guy
+men
+women
+gentlemen
+kid
+kids

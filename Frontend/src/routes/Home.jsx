@@ -10,6 +10,12 @@ function Home() {
   const [chatbotVisible, setChatbotVisible] = useState(false);
   const [behaviorCount, setBehaviorCount] = useState(0);
   const [behavior, setBehavior] = useState("smooth");
+  const [isRecommendedProduct, setIsRecommendedProduct] = useState(false);
+  console.log("isRecommendedProduct: ", isRecommendedProduct)
+  useEffect(() => {
+    console.log("isRecommendedProduct changed to: ", isRecommendedProduct)
+  }, [isRecommendedProduct])
+  
   const dispatch = useDispatch();
 
   const toggleChatbot = () => {
@@ -58,7 +64,7 @@ function Home() {
   return (
     <div className="home-page-root">
       <Navbar />
-      <HomeProducts />
+      <HomeProducts isRecommendedProduct={isRecommendedProduct} />
       <div
         className={`${
           !chatbotVisible
@@ -113,7 +119,7 @@ function Home() {
           </svg>
         </div>
       </div>
-      {chatbotVisible && <Chatbot scroll_behavior={behavior} />}
+      {chatbotVisible && <Chatbot scroll_behavior={behavior} setIsRecommendedProduct={setIsRecommendedProduct} />}
     </div>
   );
 }
