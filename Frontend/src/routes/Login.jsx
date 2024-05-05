@@ -244,10 +244,13 @@ const LoginPage = () => {
         <p>{successMessage}</p>
       </div>
       <div
-        className="redirect-timer"
+        className="redirect-t
+        
+        
+        er"
         style={success ? { display: "block" } : { display: "none" }}
       >
-        Redirecting in {redirectTimer} seconds...
+        <div class="loader"></div>
       </div>
     </div>
   );

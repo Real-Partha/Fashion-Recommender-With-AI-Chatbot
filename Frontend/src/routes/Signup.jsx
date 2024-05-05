@@ -163,26 +163,24 @@ const SignupPage = () => {
                   ? {
 
                     color: "white",
-                    background: "#cd6d00",
-                    filter: "drop-shadow(0 0 0.5rem #cabdbdaa)",
+                    filter: "drop-shadow(0 0 0.5rem #000000)",
+                    background: "rgba(216, 130, 80)",
                   }
-                  : { color: "white" }
-              }
-              onClick={() => handleRoleChoice("user")}
-            >
-              User
-            </div>
-            <div className="divider"></div>
-            <div
-              className="admin-login"
-              style={
-                choice === "user"
-                  ? {
-                    color: "white",
-                  }
-                  : {
-                    filter: "drop-shadow(0 0 0.5rem #cabdbdaa)",
-                    background: "#cd6d00",
+                : { color: "white" }
+            }
+            onClick={() => handleRoleChoice("user")}
+          >
+            User
+          </div>
+          <div className="divider"></div>
+          <div
+            className="admin-login"
+            style={
+              choice === "user"
+                ? { color: "white" }
+                : {
+                    filter: "drop-shadow(0 0 0.5rem #000000)",
+                    background: "rgba(216, 130, 80)",
                     color: "white",
                   }
               }

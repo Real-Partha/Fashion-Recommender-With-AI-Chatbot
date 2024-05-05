@@ -36,7 +36,7 @@
 }
 
 .product-page-img:hover {
-  transform: scale(1.2);
+  transform: scale(1.1);
   box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.5);
 }
 
@@ -67,7 +67,7 @@
 .product-page-price {
   font-size: 22px;
   font-weight: bold;
-  color: #009688;
+  color: #dd8100;
   margin-bottom: 10px;
 }
 
@@ -107,11 +107,11 @@
 }
 
 .eachSize:hover {
-  background-color: #e0e0e0;
+  background-color: #e06f4c;
 }
 
 .activeSize {
-  background-color: #009688;
+  background-color: #e06f4c;
   color: #fff;
 }
 
@@ -140,17 +140,49 @@
   padding: 12px 24px;
   border: none;
   border-radius: 5px;
-  background-color: #009688;
+  /* background-color: #f0912b; */
   color: #fff;
   font-size: 18px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  /* transition: all 0.3s ease-in-out; */
+  /* transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1); */
+  background: linear-gradient(135deg, #e89a78, #a73319);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+  
+  /* transition: background-color 0.3s; */
+}
+
+
+
+.buy-now-btn:before {
+  left: 50%;
+  transform: translateX(-50%) scaleY(1) scaleX(1.25);
+  top: 100%;
+}
+
+.buy-now-btn:after {
+  left: 55%;
+  transform: translateX(-10%) scaleY(1) scaleX(1.2);
+  
+  top: 180%;
 }
 
 .add-to-cart-btn:hover,
 .buy-now-btn:hover {
-  background-color: #00796b;
+  color: #ffffff;
+  background: linear-gradient(135deg, #a93419, #ef7f51);;
 }
+
+
+
+.buy-now-btn:hover:before,
+.buy-now-btn:hover:after {
+  top: -5%;
+  background-color: rgba(247, 116, 10, 0.475);
+  /* background-color: rgba(255, 255, 255, 0.15); */
+  transform: translateX(-10%) scaleY(1.2) scaleX(1.2);
+}
+
 
 /* Media query for smaller screens */
 @media screen and (max-width: 768px) {
@@ -200,6 +232,7 @@
   flex: 1;
   /* Take up 50% of the width */
   max-width: 45%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   /* Limit maximum width */
   /* Ensure the image fits within the container */
 
@@ -342,7 +375,7 @@
   width: calc(100% - 10px);
   padding: 0.5rem;
   font-size: 1rem;
-  background-color: #007bff;
+  background-color: #e06f4c;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -351,7 +384,7 @@
 }
 
 .product-order-form button:hover {
-  background-color: #0056b3;
+  background-color: #da5830;
 }
 
 .product-order-form button {
@@ -364,4 +397,13 @@
   border-radius: 3px;
   cursor: pointer;
   font-size: 17px;
+}
+
+.product-order-backBtn{
+  color: #da5830;
+  
+}
+.product-order-backBtn:hover{
+  color: #e06f4c;
+  cursor: pointer;
 }
