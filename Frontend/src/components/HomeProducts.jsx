@@ -4,11 +4,16 @@ import "./ProductCard";
 import "./HomeProducts.css";
 import { useSelector } from "react-redux";
 
-const HomeProducts = ({isRecommendedProduct}) => {
+const HomeProducts = ({ isRecommendedProduct }) => {
+  const [loading, setLoading] = useState(true);
+  const [searchLoading, setSearchLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [productListState, setProductListState] = useState([]);
   const lastProductRef = useRef(null);
   const debounceTimeout = useRef(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [resultQuery, setResultQuery] = useState("");
+  const [resultRetrieved, setResultRetrieved] = useState(false);
   let mydata = [];
   const productList = useSelector((state) => state.productList.value);
 
@@ -22,15 +27,22 @@ const HomeProducts = ({isRecommendedProduct}) => {
   }, []);
 
   useEffect(() => {
+    setResultRetrieved(false);
+    setResultQuery("");
     if (productList.length !== 0) {
-      setProductListState(productList);
+      const shuffledList = [...productList].sort(() => Math.random() - 0.5);
+      setProductListState(shuffledList);
+      // setProductListState(productList);
     }
   }, [productList]);
 
   const loadInitialProducts = async () => {
     try {
+      setResultRetrieved(false);
+      setResultQuery("");
       const response = await fetch("http://127.0.0.1:8000/product/random/50");
       const data = await response.json();
+      setLoading(false);
       setProductListState(data);
       mydata = data;
     } catch (err) {
@@ -40,7 +52,6 @@ const HomeProducts = ({isRecommendedProduct}) => {
 
   const loadMoreProducts = async () => {
     try {
-      console.log(isRecommendedProduct)
       if (!isRecommendedProduct) {
         setLoadingMore(true);
         const response = await fetch(
@@ -86,64 +97,149 @@ const HomeProducts = ({isRecommendedProduct}) => {
     }
   };
 
+  const handleSearch = async (event) => {
+    event.preventDefault();
+
+    try {
+      setSearchLoading(true);
+      const response = await fetch(
+        `http://127.0.0.1:8000/product/search/${searchQuery}`
+      );
+      const searchData = await response.json();
+      setResultQuery(searchQuery);
+      setSearchQuery("");
+      setProductListState(searchData);
+      setResultRetrieved(true);
+      setSearchLoading(false);
+    } catch (error) {
+      console.error("Error searching for products:", error);
+    }
+  };
+
   return (
     <>
-      <div className="homepageProducts">
-        <h1>Products</h1>
-        <div className="products">
-          {productListState.length !== 0 ? (
-            productListState.map((product, index) => (
-              <div
-                className="product"
-                key={product.pid}
-                ref={
-                  index === productListState.length - 1 ? lastProductRef : null
-                }
-                onClick={(e) => {
-                  window.open(`/product/${product.pid}`, "_blank");
-                }}
-                style={{ cursor: "pointer" }}
+      {!loading && (
+        <div className="home-search">
+          <form onSubmit={handleSearch}>
+            <div className="inputBox_container">
+              <svg
+                className="search_icon"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 48 48"
+                alt="search icon"
               >
-                <img src={product.imglink} alt="product" />
-                <h3 title={product.name}>{product.name.slice(0, 22)}...</h3>
-                <div className="DisPrice">
-                  <p>
-                    ₹{product.ofprice} <del>₹{product.price}</del>
-                  </p>
-                  <p>{product.discount}%</p>
-                </div>
+                <path d="M46.599 46.599a4.498 4.498 0 0 1-6.363 0l-7.941-7.941C29.028 40.749 25.167 42 21 42 9.402 42 0 32.598 0 21S9.402 0 21 0s21 9.402 21 21c0 4.167-1.251 8.028-3.342 11.295l7.941 7.941a4.498 4.498 0 0 1 0 6.363zM21 6C12.717 6 6 12.714 6 21s6.717 15 15 15c8.286 0 15-6.714 15-15S29.286 6 21 6z"></path>
+              </svg>
+              <input
+                className="inputBox"
+                id="inputBox"
+                type="text"
+                placeholder="Search For Products"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+          </form>
+          <div className="search-result-query">
+            {resultRetrieved && <div>Showing results for "{resultQuery}"</div>}
+          </div>
+        </div>
+      )}
+      {searchLoading && (
+        <div className="search-loader">
+          <div class="loader">
+            <div class="loaderMiniContainer">
+              <div class="barContainer">
+                <span class="bar"></span>
+                <span class="bar bar2"></span>
               </div>
-            ))
-          ) : (
-            // <div>Loading...</div>
-            <div>
-              <div class="home-loader-container">
-                <div class="dot dot-1"></div>
-                <div class="dot dot-2"></div>
-                <div class="dot dot-3"></div>
-              </div>
-
-              <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <filter id="goo">
-                    <feGaussianBlur
-                      result="blur"
-                      stdDeviation="10"
-                      in="SourceGraphic"
-                    ></feGaussianBlur>
-                    <feColorMatrix
-                      values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 21 -7"
-                      mode="matrix"
-                      in="blur"
-                    ></feColorMatrix>
-                  </filter>
-                </defs>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 101 114"
+                class="svgIcon"
+              >
+                <circle
+                  stroke-width="7"
+                  stroke="black"
+                  transform="rotate(36.0692 46.1726 46.1727)"
+                  r="29.5497"
+                  cy="46.1727"
+                  cx="46.1726"
+                ></circle>
+                <line
+                  stroke-width="7"
+                  stroke="black"
+                  y2="111.784"
+                  x2="97.7088"
+                  y1="67.7837"
+                  x1="61.7089"
+                ></line>
               </svg>
             </div>
-          )}
+          </div>
         </div>
-        {loadingMore && <p>Loading more Products...</p>}
-      </div>
+      )}
+      {!searchLoading && (
+        <div className="homepageProducts">
+          <h1>Products</h1>
+          <div className="products">
+            {productListState.length !== 0 ? (
+              productListState.map((product, index) => (
+                <div
+                  className="product"
+                  key={product.pid}
+                  ref={
+                    index === productListState.length - 1
+                      ? lastProductRef
+                      : null
+                  }
+                  onClick={(e) => {
+                    window.open(`/product/${product.pid}`, "_blank");
+                  }}
+                  style={{ cursor: "pointer" }}
+                >
+                  <img src={product.imglink} alt="product" />
+                  <h3 title={product.name}>{product.name.slice(0, 22)}...</h3>
+                  <div className="DisPrice">
+                    <p>
+                      ₹{product.ofprice} <del>₹{product.price}</del>
+                    </p>
+                    <p>{product.discount}%</p>
+                  </div>
+                </div>
+              ))
+            ) : (
+              // <div>Loading...</div>
+              <div>
+                <div class="home-loader-container">
+                  <div class="dot dot-1"></div>
+                  <div class="dot dot-2"></div>
+                  <div class="dot dot-3"></div>
+                </div>
+
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <filter id="goo">
+                      <feGaussianBlur
+                        result="blur"
+                        stdDeviation="10"
+                        in="SourceGraphic"
+                      ></feGaussianBlur>
+                      <feColorMatrix
+                        values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 21 -7"
+                        mode="matrix"
+                        in="blur"
+                      ></feColorMatrix>
+                    </filter>
+                  </defs>
+                </svg>
+              </div>
+            )}
+          </div>
+          {loadingMore && <p>Loading more Products...</p>}
+        </div>
+      )}
     </>
   );
 };
