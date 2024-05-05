@@ -4,8 +4,25 @@ from fastapi import APIRouter, HTTPException, UploadFile, status, Depends, Form,
 from ..database import get_product, get_random_products, add_product, get_last_product, add_product_owner, get_owner_products,delete_product,delete_product_owner,get_product_owner
 from .. import schemas
 from .. import oauth2
+from ..search import search_txt
 
 router = APIRouter(prefix="/product", tags=["product"])
+
+@router.get("/search/{query}/", status_code=status.HTTP_200_OK, response_model=list[schemas.Product])
+def searchproduct(query: str):
+    try:
+        data = search_txt(query)
+        if data:
+            return data["data"]
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="Product not found"
+            )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Product not found"
+        )
+
 
 @router.get(
     "/{product_id}/", status_code=status.HTTP_200_OK, response_model=schemas.Product

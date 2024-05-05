@@ -84,7 +84,23 @@ async def chat(
         )
 
     # Process text message and get response
-    if message != None:
+    if message != None and image != None:
+        response_data_msg = response(message)
+        response_data_img = get_image(f"../Frontend/public/images/{file}")
+        if response_data_msg["type"]=="product":
+            merged_product = []
+            merged_product.extend(response_data_msg["data"][:3])
+            merged_product.extend(response_data_img["data"][:2])
+            merged_product.extend(response_data_msg["data"][3:])
+            merged_product.extend(response_data_img["data"][2:])
+            response_data = {
+                "type": "product",
+                "data": merged_product,
+            }
+        else:
+            response_data = response_data_img
+    
+    elif message != None:
         try:
             response_data = response(message)
         except Exception as e:
