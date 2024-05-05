@@ -47,7 +47,7 @@ const HomeProducts = () => {
   return(
     <>
     <div className="homepageProducts">
-        <h1>Products</h1>
+        <div className="heading">Products</div>
         <div className="products">
         {productList.length !== 0 ? (
           productList.map((product, index) => (

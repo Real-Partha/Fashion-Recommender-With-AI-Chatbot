@@ -12,16 +12,24 @@
 .navbar {
   display: flex;
   justify-content: flex-end !important;
-  background-color: #333; 
   padding: 10px 20px;
-  background-color: rgba(36, 36, 36, 0.5);
-  backdrop-filter: blur(20px);
-  box-shadow: 0 0 20px rgba(184, 255, 249, 0.458);
-  /* height: 14vh; */
+  background-color: #f6a168;
+  border-radius: 0 0 4px 4px;
+  background: linear-gradient(135deg, #ce7049, #a73319);
+  position: sticky;  
+  top: 0;
+  z-index: -1;
+  /* height: 10px; */
+     /* box-shadow: 0 0 20px rgba(184, 255, 249, 0.458); */
 }
 
+
 .navbar button{
-  margin : 3px 10px;
+  margin : 1px 10px;
+  height: 30px;
+  width: 80px;
+  border-radius: 5px;
+  font-size: small;
 }
 
 .navbar-admin-welcome{
@@ -36,7 +44,10 @@
 /* ----------------- Button1 Styles ----------------- */
 
 .button1 {
-  display: inline-block;
+  /* display: inline-block; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
   transition: all 0.3s ease-in-out;
   position: relative;
   overflow: hidden;
@@ -48,7 +59,6 @@
   border-radius: 0.5em;
   /* background: linear-gradient(135deg, #009087, #0077cc); */
   background: linear-gradient(135deg, #ce7049, #a73319);
-
   border: none;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
 }

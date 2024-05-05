@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "./Product.css";
 import { useNavigate } from "react-router-dom";
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
 const Product = () => {
   const [productData, setProductData] = useState({});
@@ -194,11 +195,7 @@ const Product = () => {
               document.title = productData.name;
             }}
           >
-            <img
-              src="/back-button.png"
-              alt="back"
-              style={{ height: "50px", width: "50px" }}
-            />
+            <KeyboardBackspaceIcon className="product-order-backBtn"/>      {/*---------------------------Back Button*/}
             <span>Order Details</span>
           </div>
           <form onSubmit={handleOrderSubmission} className="product-order-form">
