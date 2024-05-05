@@ -351,6 +351,7 @@
     font-size: 2em;
     font-weight: bold;
     border-bottom:  2px solid #be4a2a;
+}
     
   .home-loader-container {
     z-index: 1000;
@@ -594,5 +595,4 @@
   }
   .svgIcon circle {
     fill: rgba(98, 65, 142, 0.238);
-  }
   }

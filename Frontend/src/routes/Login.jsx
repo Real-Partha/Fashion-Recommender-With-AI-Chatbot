@@ -250,7 +250,7 @@ const LoginPage = () => {
         er"
         style={success ? { display: "block" } : { display: "none" }}
       >
-        <div class="loader"></div>
+        <div class="login-loader"></div>
       </div>
     </div>
   );

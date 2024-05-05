@@ -204,7 +204,7 @@ form {
   /* margin-right: 10px; */
 }
 
-.loader {
+.login-loader {
   border: 4px solid #f3f3f3; /* Light grey */
   border-top: 4px solid #fb4c4c; /* Blue */
   border-radius: 50%;
