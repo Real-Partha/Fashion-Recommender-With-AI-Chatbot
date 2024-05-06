@@ -19,6 +19,7 @@
   position: sticky;  
   top: 0;
   z-index: -1;
+  
   /* height: 10px; */
      /* box-shadow: 0 0 20px rgba(184, 255, 249, 0.458); */
 }
@@ -28,8 +29,11 @@
   margin : 1px 10px;
   height: 30px;
   width: 80px;
+  border-width: 2px solid #a73319;
+  background-color: white;
   border-radius: 5px;
   font-size: small;
+  /* margin-right: 26px */
 }
 
 .navbar-admin-welcome{
@@ -53,7 +57,7 @@
   overflow: hidden;
   z-index: 1;
   color: #ffffff;
-  padding: 0.8em 2em;
+  /* padding: 0.8em 2em; */
   cursor: pointer;
   font-size: 18px;
   border-radius: 0.5em;

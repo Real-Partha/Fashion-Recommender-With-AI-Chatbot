@@ -78,12 +78,10 @@ const Navbar = () => {
 
   return (
     <div className="navbar-wrapper">
-      <img src="D:\SE\Fashion-Recommender-With-AI-Chatbot\Frontend\public\logo.png" alt="" />
       <div
         className="navbar"
         style={authenticated ? { display: "none" } : { display: "flex" }}
       >
-        <img src="D:\SE\Fashion-Recommender-With-AI-Chatbot\Frontend\public\logo.png" alt="" />
         
 
         <Link to="/signup">
@@ -114,10 +112,12 @@ const Navbar = () => {
           <button className="button1">Login</button>
         </Link>
       </div>
+      
       <div
         className="navbar"
         style={authenticated ? { display: "flex" } : { display: "none" }}
       >
+        
         {isAdmin && <h2 style={isAdmin ? { display: "inline" } : { display: "none" }} className="navbar-admin-welcome" >You are logged in as {adminData.name} (Admin) </h2>}
         <Link to="/orders">
           <button className="button1"
