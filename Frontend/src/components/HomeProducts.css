@@ -86,10 +86,10 @@
 .homepageProducts {
     display: flex;
     flex-direction: column;
-    margin-top: 0.6em;
+    margin: -1.3rem;
     background-color: rgb(250, 203, 172);
     border-radius: 8px;
-    ;
+    padding: 3em;
 }
 
 .homepageProducts h1 {
@@ -475,10 +475,12 @@
 
   .home-search{
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content:end;
+    align-items:end;
     flex-direction: column;
-    margin-top: 2em;
+    justify-items: end;
+    margin-top: 1.2em;
+
   }
 
   .search-result-query{
@@ -496,7 +498,7 @@
     max-width: 14em;
     width: fit-content;
     height: fit-content;
-    background-color: #5c6370;
+    background-color: #f4f6fa;
     border-radius: 0.8em;
     overflow: hidden;
   }

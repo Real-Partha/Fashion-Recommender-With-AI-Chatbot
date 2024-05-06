@@ -78,12 +78,10 @@ const Navbar = () => {
 
   return (
     <div className="navbar-wrapper">
-      <img src="D:\SE\Fashion-Recommender-With-AI-Chatbot\Frontend\public\logo.png" alt="" />
       <div
         className="navbar"
         style={authenticated ? { display: "none" } : { display: "flex" }}
       >
-        <img src="D:\SE\Fashion-Recommender-With-AI-Chatbot\Frontend\public\logo.png" alt="" />
         
 
         <Link to="/signup">
