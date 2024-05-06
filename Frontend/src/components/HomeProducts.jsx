@@ -32,7 +32,6 @@ const HomeProducts = ({ isRecommendedProduct }) => {
     if (productList.length !== 0) {
       const shuffledList = [...productList].sort(() => Math.random() - 0.5);
       setProductListState(shuffledList);
-      // setProductListState(productList);
     }
   }, [productList]);
 
@@ -214,7 +213,7 @@ const HomeProducts = ({ isRecommendedProduct }) => {
                   >
                     {product.name}
                   </h3>
-                  <div className="price-details">
+                  <div className="home-page-price-details">
                     <span style={{margin:"10px"}}>₹{Math.ceil(product.price)}</span>
                     <del>₹{Math.ceil(product.ofprice)}</del>
                   </div>

@@ -73,7 +73,7 @@ const Navbar = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("tokentype");
     setAuthenticated(false);
-    navigate("/");
+    window.location.reload();
   };
 
   return (
