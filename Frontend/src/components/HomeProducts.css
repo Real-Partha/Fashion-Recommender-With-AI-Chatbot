@@ -125,6 +125,16 @@
     color: inherit;
     text-decoration: inherit;
 } */
+.home-products-discount{
+    background-color: #fd4545;
+    color: wheat;
+    font-weight: bold;
+    margin: 0.5em;
+    padding:5px;
+    border-radius: 5px;
+
+}
+
 
 .homepageProducts .product img {
     width: 15.5em;
@@ -144,11 +154,11 @@
     font-size: 1em;
 }
 
-.DisPrice {
+.home-page-price-details {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     margin: .5em;
+    width: 90%;
 }
 
 .homepageProducts .product p {
@@ -310,30 +320,6 @@
     transform: scale(1.05);
 }
 
-.product-details {
-    padding: 1em;
-}
-
-.product-details h3 {
-    margin-bottom: 0.5rem;
-    font-size: 1.2em;
-}
-
-.product-details p {
-    font-size: 1em;
-    color: #906b78;
-    margin-bottom: 0.5em;
-}
-
-.product-price {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.product-price span {
-    font-weight: bold;
-}
 
 @media screen and (max-width: 960px) {
     .products {
