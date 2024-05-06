@@ -112,10 +112,12 @@ const Navbar = () => {
           <button className="button1">Login</button>
         </Link>
       </div>
+      
       <div
         className="navbar"
         style={authenticated ? { display: "flex" } : { display: "none" }}
       >
+        
         {isAdmin && <h2 style={isAdmin ? { display: "inline" } : { display: "none" }} className="navbar-admin-welcome" >You are logged in as {adminData.name} (Admin) </h2>}
         <Link to="/orders">
           <button className="button1"

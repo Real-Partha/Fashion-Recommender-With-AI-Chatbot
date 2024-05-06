@@ -182,7 +182,6 @@ const HomeProducts = ({ isRecommendedProduct }) => {
       )}
       {!searchLoading && (
         <div className="homepageProducts">
-          <h1>Products</h1>
           <div className="products">
             {productListState.length !== 0 ? (
               productListState.map((product, index) => (
