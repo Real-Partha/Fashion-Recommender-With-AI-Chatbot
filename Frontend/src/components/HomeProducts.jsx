@@ -197,15 +197,26 @@ const HomeProducts = ({ isRecommendedProduct }) => {
                   onClick={(e) => {
                     window.open(`/product/${product.pid}`, "_blank");
                   }}
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: "pointer",position:"relative" }}
                 >
                   <img src={product.imglink} alt="product" />
-                  <h3 title={product.name}>{product.name.slice(0, 22)}...</h3>
-                  <div className="DisPrice">
-                    <p>
-                      ₹{product.ofprice} <del>₹{product.price}</del>
-                    </p>
-                    <p>{product.discount}%</p>
+                  <span className="home-products-discount" style={{position:"absolute",top:"0",left:"0"}}>
+                      - {Math.floor(product.discount)}%
+                    </span>
+                  <h3
+                    title={product.name}
+                    style={{
+                      width: "80%",
+                      textOverflow: "ellipsis",
+                      overflow: "hidden",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {product.name}
+                  </h3>
+                  <div className="price-details">
+                    <span style={{margin:"10px"}}>₹{Math.ceil(product.price)}</span>
+                    <del>₹{Math.ceil(product.ofprice)}</del>
                   </div>
                 </div>
               ))

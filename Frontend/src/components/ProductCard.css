@@ -10,13 +10,30 @@
     border-radius: 5px;
     background-color: white;
     margin: 5px 5px;
+    position: relative;
 }
+
 .product-image {
   width: 130px; /* Set the maximum width of the image */
-  /* max-height: 100px; */
   height: 140px;
   /* border: 2px solid rgb(0, 0, 0);; */
 }
+
+.product-buy-button{
+  font-size: 0.8rem;
+  padding: 3px 6px;
+  margin: 5px 0;
+  border-radius: 10px;
+  background-color: rgb(255, 154, 59);
+  color: beige;
+  font-weight: bold;
+}
+
+.product-buy-button:hover{
+  cursor: pointer;
+  background-color: rgb(193, 93, 0) ;
+}
+
 
 .product-details {
   flex: 1;
@@ -32,16 +49,20 @@
   cursor: default;
 }
 
-.product-name:hover {
-  cursor: pointer; /* Change cursor to pointer on hover */
-}
-
 .product-price {
+  padding: 5px;
   margin-top: 5px;
-  margin-right: 10px;
   font-size: 14px;
   font-weight: bold;
   color: #e0667a; /* Set the color of the price to #e0667a */
+}
+
+.original-product-price{
+  padding: 5px;
+  margin-top: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #5e4146c9;
 }
 
 .product-discount {
@@ -50,8 +71,11 @@
   font-weight: bold;
   background-color: #e0667a; /* Set the background color of the discount to #e0667a */
   color: white;
-  padding: 2px 4px;
+  padding: 2px 8px;
   border-radius: 3px;
+  position: absolute;
+  top: 5px;
+  left: 5px;
 }
 .price-container {
   display: flex;
