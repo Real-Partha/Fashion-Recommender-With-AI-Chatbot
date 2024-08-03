@@ -43,7 +43,7 @@ Here is what you need to be able to run Fashion Recommender With AI Chatbot
 
 3. Installing Dependencies
     ```sh
-    pip install -r requirnments.txt
+    pip install -r requirements.txt
     ```
 
 ### Configuring Frontend
@@ -69,7 +69,7 @@ Here is what you need to be able to run Fashion Recommender With AI Chatbot
 
 2. Start the Backend Server
     ```sh
-    unicorn app.main:app --reload
+    uvicorn app.main:app --reload
     ```
 ### Start Frontend
 
